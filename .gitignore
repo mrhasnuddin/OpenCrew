@@ -1,0 +1,60 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/versions
+
+# next.js
+/.next/
+/out/
+/build
+next-env.d.ts
+
+# production
+*.tsbuildinfo
+
+# testing
+/coverage
+
+# environment — only .env.example is tracked
+.env
+.env*.local
+.env.development
+.env.production
+
+# vercel
+.vercel
+
+# debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# os / editor
+.DS_Store
+Thumbs.db
+*.pem
+.idea/
+.vscode/
+
+# ---------------------------------------------------------------------------
+# Internal material — this repo is PUBLIC.
+#
+# The pitch deck, the founding brief and the docs/ set (brand identity, copy
+# deck) are internal business material, and docs/ additionally contains claims
+# still pending verification. They stay local. If this repo is ever made
+# private, these can be un-ignored — but they must never land in public history,
+# because deleting a file later does not remove it from git.
+# ---------------------------------------------------------------------------
+/OPENCREW V3.pdf
+/opencrew.md
+/docs/
+
+# Claude Code local state — machine-specific paths and permissions.
+.claude/settings.local.json
+.agents/
