@@ -58,3 +58,10 @@ Thumbs.db
 # Claude Code local state — machine-specific paths and permissions.
 .claude/settings.local.json
 .agents/
+
+# Raw showcase photography — source only. The site serves the optimised
+# derivatives in public/showcase/web/; the 4–8 MB originals stay local.
+/public/showcase/*.jpg
+/public/showcase/*.JPG
+/public/showcase/*.jpeg
+/public/showcase/*.png

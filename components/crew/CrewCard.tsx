@@ -19,7 +19,7 @@ import { ROLE_LABELS, type CrewMember } from '@/content/crew';
  * source so `object-cover` never has to guess.
  */
 
-const THUMB = 88;
+const THUMB = 120;
 
 function Thumbnail({ member }: { member: CrewMember }) {
   if (member.portrait) {
@@ -29,8 +29,8 @@ function Thumbnail({ member }: { member: CrewMember }) {
         alt=""
         width={THUMB}
         height={THUMB}
-        sizes="88px"
-        className="size-[88px] shrink-0 rounded-md border border-border object-cover"
+        sizes="120px"
+        className="size-[120px] shrink-0 rounded-md border border-border object-cover"
       />
     );
   }
@@ -38,7 +38,7 @@ function Thumbnail({ member }: { member: CrewMember }) {
   return (
     <span
       aria-hidden="true"
-      className="flex size-[88px] shrink-0 items-center justify-center rounded-md border border-gold-950 bg-ink-800 text-2xl font-medium text-ink-300"
+      className="flex size-[120px] shrink-0 items-center justify-center rounded-md border border-gold-950 bg-ink-800 text-2xl font-medium text-ink-300"
     >
       {member.initials}
     </span>
@@ -77,25 +77,20 @@ export function CrewCard({ member }: { member: CrewMember }) {
         </div>
       </div>
 
-      {/* -------------------------------------------------- experience */}
+      {/* ------------------------------------------- experience + niche
+          One block, not two: a hairline between three credential lines and
+          five chips made the card read as a form. Experience leads because
+          it is the verifiable part; the chips scan as classification. */}
       <div className="border-t border-border px-6 py-5">
-        <p className="eyebrow mb-4">Experience</p>
         <ul className="flex flex-col gap-2">
           {member.credentials.slice(0, 3).map((c) => (
             <li key={c} className="flex gap-3 text-sm text-secondary">
-              <span aria-hidden="true" className="text-disabled">
-                —
-              </span>
+              <span aria-hidden="true" className="marker-dot" />
               <span className="line-clamp-1">{c}</span>
             </li>
           ))}
         </ul>
-      </div>
-
-      {/* ------------------------------------------------------- niche */}
-      <div className="border-t border-border px-6 py-5">
-        <p className="eyebrow mb-4">Niche</p>
-        <ul className="flex flex-wrap gap-2">
+        <ul className="mt-4 flex flex-wrap gap-2">
           {member.roles.slice(0, 2).map((r) => (
             <li
               key={r}

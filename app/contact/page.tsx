@@ -6,12 +6,16 @@ import { CLOSING_CTA } from '@/content/site';
 import { CONTACT } from '@/content/contact';
 
 export const metadata: Metadata = {
-  title: 'Start a Project',
+  title: 'Contact',
   description:
-    'Tell us about your project — stage, target market, role needs, resource needs and timeline. We reply within two business days.',
+    'Tell us about your project: stage, target market, role needs, resource needs and timeline. We reply within two business days.',
 };
 
-export default function StartPage() {
+/**
+ * The named door — the reference has /contacts with a form; ours carries the
+ * four-step brief plus the direct channels. Formerly /start (301 kept).
+ */
+export default function ContactPage() {
   return (
     <>
       <Section className="pt-8 pb-7 lg:pt-9">

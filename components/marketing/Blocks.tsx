@@ -36,9 +36,7 @@ export function ListGroup({ title, items }: { title: string; items: string[] }) 
       <ul className="flex flex-col gap-3">
         {items.map((item) => (
           <li key={item} className="flex gap-4 text-secondary">
-            <span aria-hidden="true" className="text-disabled">
-              —
-            </span>
+            <span aria-hidden="true" className="marker-dot" />
             <span>{item}</span>
           </li>
         ))}

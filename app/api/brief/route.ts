@@ -71,7 +71,7 @@ export async function POST(request: Request) {
 
   const subject =
     (payload.subject ?? '').slice(0, 200).trim() ||
-    (kind === 'application' ? 'Crew application — OPENCREW' : 'Project brief — OPENCREW');
+    (kind === 'application' ? 'Crew application · OPENCREW' : 'Project brief · OPENCREW');
 
   try {
     const res = await fetch('https://api.resend.com/emails', {

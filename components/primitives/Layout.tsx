@@ -51,11 +51,7 @@ export function Section({
         {(eyebrow || title || lead) && (
           <header className="mb-7 flex flex-col gap-5 lg:mb-8">
             {eyebrow ? <p className="eyebrow">{eyebrow}</p> : null}
-            {title ? (
-              <h2 className="text-2xl tracking-[-0.015em] lg:text-3xl lg:tracking-[-0.02em]">
-                {title}
-              </h2>
-            ) : null}
+            {title ? <h2 className="section-title">{title}</h2> : null}
             {lead ? <p className="lead-measure text-lg text-secondary">{lead}</p> : null}
           </header>
         )}

@@ -85,7 +85,7 @@ export function IntakeForm() {
     } catch {
       /* ignore */
     }
-    // Handed over from the footer panel: /start?email=…
+    // Handed over from the footer panel: /contact?email=…
     // Read from location rather than useSearchParams so this page stays
     // statically rendered without a Suspense boundary.
     try {
@@ -144,7 +144,7 @@ export function IntakeForm() {
       values.length ? `${label}: ${values.join(', ')}\n` : '';
 
     const text =
-      `PROJECT BRIEF — OPENCREW\n\n` +
+      `PROJECT BRIEF · OPENCREW\n\n` +
       line('Project', brief.project) +
       line('Website', brief.website) +
       line('Deck', brief.deck) +
@@ -176,7 +176,7 @@ export function IntakeForm() {
     return (
       <BriefHandoff
         kind="brief"
-        subject={`Project brief — ${brief.project}`}
+        subject={`Project brief: ${brief.project}`}
         body={composed}
         replyTo={brief.email}
         onEdit={() => setComposed(null)}
@@ -311,7 +311,7 @@ export function IntakeForm() {
                   ))}
                 </Select>
               </Field>
-              <Field id="model" label="Preferred engagement model" help="Optional — we can advise.">
+              <Field id="model" label="Preferred engagement model" help="Optional. We can advise.">
                 <Select value={brief.model} onChange={(e) => set('model', e.target.value)}>
                   <option value="">No preference</option>
                   {ENGAGEMENT_MODELS.map((m) => (

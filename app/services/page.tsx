@@ -9,7 +9,7 @@ import { SERVICES } from '@/content/services';
 export const metadata: Metadata = {
   title: 'Core Capabilities',
   description:
-    'Six capabilities — Global Crew, Consultants & Education, Exchange Readiness, Global Representation, Institutional Access and Market Execution — deployed in the combination a project actually needs.',
+    'Six capabilities (Global Crew, Consultants & Education, Exchange Readiness, Global Representation, Institutional Access and Market Execution), deployed in the combination a project actually needs.',
 };
 
 export default function ServicesPage() {
@@ -51,10 +51,10 @@ export default function ServicesPage() {
           each project&rsquo;s development stage.
         </Manifesto>
         <div className="mt-7 flex flex-wrap gap-4">
-          <Link href="/engage" className={buttonClasses('secondary', 'lg')}>
+          <Link href="/#how-we-work" className={buttonClasses('secondary', 'lg')}>
             How we work
           </Link>
-          <Link href="/start" className={buttonClasses('primary', 'lg')}>
+          <Link href="/contact" className={buttonClasses('primary', 'lg')}>
             Start a project
           </Link>
         </div>
@@ -64,7 +64,7 @@ export default function ServicesPage() {
         <Card className="max-w-[var(--measure-prose)]">
           <p className="text-secondary">
             A typical first engagement combines Global Crew, Exchange Readiness and Global
-            Representation — a credible team, the documentation to survive diligence, and someone
+            Representation: a credible team, the documentation to survive diligence, and someone
             who shows up. Tell us the stage and the markets and we will come back with a shape.
           </p>
         </Card>

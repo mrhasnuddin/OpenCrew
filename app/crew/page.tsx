@@ -47,7 +47,7 @@ export default async function CrewPage({
         </p>
         <p className="mt-5 max-w-[var(--measure-prose)] text-sm text-muted">
           Senior operators are often listed by role only. Where a profile shows initials, the name
-          and full background are shared under NDA on request — see our{' '}
+          and full background are shared under NDA on request. See our{' '}
           <TextLink href="/legal/disclosure">verification and engagement policy</TextLink>.
         </p>
       </Section>
@@ -70,14 +70,14 @@ export default async function CrewPage({
             <Card className="flex flex-col items-start gap-5">
               <h2 className="text-xl font-medium">No crew match these filters.</h2>
               <p className="max-w-[var(--measure-prose)] text-secondary">
-                If the role you need isn&rsquo;t listed, we can source it — most deployments involve
+                If the role you need isn&rsquo;t listed, we can source it; most deployments involve
                 at least one placement made specifically for the project.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link href="/crew" className={buttonClasses('secondary', 'md')}>
                   Clear filters
                 </Link>
-                <Link href="/start" className={buttonClasses('primary', 'md')}>
+                <Link href="/contact" className={buttonClasses('primary', 'md')}>
                   Tell us what you need
                 </Link>
               </div>
@@ -87,7 +87,7 @@ export default async function CrewPage({
       </Section>
 
       <Section className="border-t border-border">
-        <h2 className="max-w-[22ch] text-2xl tracking-[-0.015em] lg:text-3xl lg:tracking-[-0.02em]">
+        <h2 className="section-title max-w-[22ch]">
           The network is larger than the directory.
         </h2>
         <p className="lead-measure mt-5 text-secondary">
@@ -96,7 +96,7 @@ export default async function CrewPage({
           technology, finance and payments, market and IP, and regional representatives.
         </p>
         <div className="mt-7 flex flex-wrap gap-4">
-          <Link href="/start" className={buttonClasses('primary', 'lg')}>
+          <Link href="/contact" className={buttonClasses('primary', 'lg')}>
             Tell us the role you need
           </Link>
           <Link href="/services/global-crew" className={buttonClasses('ghost', 'lg')}>

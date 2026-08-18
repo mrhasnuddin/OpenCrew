@@ -8,9 +8,9 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: [
         '/api/',
-        '/start', // intake engine — no indexable content, and it holds form state
         '/foundation', // design-system proof, not a public page
         '/crew?', // filtered permutations; the canonical /crew is indexed
+        '/thank-you', // post-submission page — an orphan in search results
       ],
     },
     sitemap: `${SITE.url}/sitemap.xml`,

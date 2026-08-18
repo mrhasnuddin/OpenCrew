@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { useRouter } from 'next/navigation';
 import { Card } from '@/components/ui/Card';
 import { Button, buttonClasses } from '@/components/ui/Button';
 import { CONTACT, BRIEF_EMAIL, RESPONSE_TIME } from '@/content/contact';
@@ -32,6 +33,7 @@ export function BriefHandoff({
   heading: string;
   sentHeading: string;
 }) {
+  const router = useRouter();
   const [status, setStatus] = React.useState<Status>('idle');
   const [copied, setCopied] = React.useState(false);
   // Hidden honeypot. A real user never fills this; bots fill everything.
@@ -45,7 +47,14 @@ export function BriefHandoff({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ kind, subject, body, replyTo, company_url: companyUrl }),
       });
-      if (res.ok) return setStatus('sent');
+      if (res.ok) {
+        setStatus('sent');
+        // A page, not a card: it survives refresh and carries the
+        // response-time promise. replace() so Back returns to the site,
+        // not to a stale form.
+        router.replace('/thank-you');
+        return;
+      }
       setStatus(res.status === 501 ? 'fallback' : 'error');
     } catch {
       setStatus('error');
@@ -86,7 +95,7 @@ export function BriefHandoff({
         <p className="mt-3 max-w-[var(--measure-prose)] text-secondary">
           {showFallback
             ? status === 'error'
-              ? 'Sending failed. Copy the text below and send it on any channel — nothing is lost.'
+              ? 'Sending failed. Copy the text below and send it on any channel. Nothing is lost.'
               : 'Direct sending is not switched on for this deployment yet. Copy the text below and send it on any channel.'
             : `Review it, then send. ${RESPONSE_TIME}`}
         </p>

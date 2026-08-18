@@ -5,6 +5,7 @@ import { Section, GoldenSplit } from '@/components/primitives/Layout';
 import { buttonClasses } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { ListGroup, Stepper, Disclaimer, TextLink } from '@/components/marketing/Blocks';
+import { Breadcrumbs } from '@/components/ui/Breadcrumbs';
 import { SERVICES, getService } from '@/content/services';
 import { ROLES } from '@/lib/nav';
 
@@ -40,9 +41,10 @@ export default async function ServiceDetailPage({
   return (
     <>
       <Section className="pt-8 lg:pt-9">
-        <p className="eyebrow mb-6">
-          {service.index} · {service.name}
-        </p>
+        <Breadcrumbs
+          className="mb-6"
+          items={[{ label: 'Capabilities', href: '/services' }, { label: service.name }]}
+        />
         <h1 className="max-w-[20ch] text-3xl tracking-[-0.02em] lg:text-5xl lg:tracking-[-0.03em]">
           {service.title}
         </h1>
@@ -90,7 +92,7 @@ export default async function ServiceDetailPage({
           </ul>
           <p className="mt-6 text-sm text-muted">
             Members are configured per project. <TextLink href="/crew">Browse the crew</TextLink> or{' '}
-            <TextLink href="/start">tell us the seat you need to fill</TextLink>.
+            <TextLink href="/contact">tell us the seat you need to fill</TextLink>.
           </p>
         </Section>
       ) : null}
@@ -110,7 +112,7 @@ export default async function ServiceDetailPage({
           ))}
         </ul>
         <div className="mt-8 flex flex-wrap gap-4">
-          <Link href="/start" className={buttonClasses('primary', 'lg')}>
+          <Link href="/contact" className={buttonClasses('primary', 'lg')}>
             Start a project
           </Link>
           <Link href="/services" className={buttonClasses('ghost', 'lg')}>

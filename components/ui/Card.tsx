@@ -18,12 +18,11 @@ export function Card({ interactive, as: Tag = 'div', className, children, ...pro
   return (
     <Tag
       className={cn(
-        'relative rounded-lg border border-border bg-surface p-6',
+        'card-glass relative rounded-lg p-6',
         interactive && [
+          'card-glass-hover',
           'transition-[border-color,transform] duration-[var(--dur-base)] ease-out',
           '[@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-[2px]',
-          '[@media(hover:hover)_and_(pointer:fine)]:hover:border-border-strong',
-          'focus-within:border-border-strong',
         ],
         className,
       )}

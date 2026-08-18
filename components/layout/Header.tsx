@@ -3,10 +3,8 @@
 import * as React from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
-import { usePathname } from 'next/navigation';
 import { Logo } from '@/components/brand/Logo';
 import { buttonClasses } from '@/components/ui/Button';
-import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { Container } from '@/components/primitives/Layout';
 import { CAPABILITIES, PRIMARY_NAV } from '@/lib/nav';
 import { cn } from '@/lib/utils';
@@ -28,11 +26,7 @@ export function Header() {
   const [hoveredSlug, setHoveredSlug] = React.useState<string | null>(null);
   const [iconsMounted, setIconsMounted] = React.useState(false);
   const closeTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
-  const pathname = usePathname();
 
-  // Only the home page opens on an inverse band. Keyed on the route rather than
-  // measuring what's underneath — cheaper, and there is exactly one such page.
-  const overInverseHero = pathname === '/' && !scrolled && !mobileOpen;
 
   React.useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 80);
@@ -78,27 +72,22 @@ export function Header() {
       className={cn(
         'fixed inset-x-0 top-0 z-[200] h-[64px] border-b',
         'transition-[background-color,border-color,color] duration-[var(--dur-base)] ease-hover',
-        overInverseHero
-          ? // Solid ink, NOT transparent. `main` is offset by the 64px header,
-            // so the hero starts below it — behind a transparent bar sits the
-            // white body, which put `.on-inverse`'s white text on a white
-            // strip. `bg-canvas` under `.on-inverse` resolves to the same
-            // ink-950 as the hero, so the two read as one surface.
-            // `.on-inverse` also flips the logo artwork automatically.
-            'on-inverse border-transparent bg-canvas'
-          : 'bg-[color-mix(in_oklab,var(--color-canvas)_72%,transparent)] backdrop-blur-[12px]',
-        !overInverseHero && (scrolled ? 'border-border' : 'border-transparent'),
+        // Site is dark-only and the hero no longer sits behind the bar, so
+        // one treatment everywhere: canvas at rest, frosted once scrolled.
+        scrolled
+          ? 'border-border bg-[color-mix(in_oklab,var(--color-canvas)_72%,transparent)] backdrop-blur-[12px]'
+          : 'border-transparent bg-canvas',
       )}
     >
       <Container className="flex h-full items-center justify-between gap-6">
-        <Link href="/" aria-label="OPENCREW Labs — home" className="flex items-center">
+        <Link href="/" aria-label="OPENCREW Labs, home" className="flex items-center">
           <Logo variant="horizontal" height={26} className="hidden md:block" label="OPENCREW Labs" />
           <Logo variant="mark" height={22} className="md:hidden" label="OPENCREW Labs" />
         </Link>
 
         {/* ---------- desktop nav ---------- */}
         <nav aria-label="Primary" className="hidden lg:block">
-          <ul className="flex items-center gap-6">
+          <ul className="flex items-center gap-7">
             {PRIMARY_NAV.map((item) =>
               item.hasPanel ? (
                 <li key={item.href} onMouseEnter={openPanel} onMouseLeave={scheduleClose}>
@@ -142,19 +131,13 @@ export function Header() {
           </ul>
         </nav>
 
-        {/* ---------- actions ---------- */}
-        <div className="hidden items-center gap-4 lg:flex">
-          <ThemeToggle />
-          <Link href="/join" className={buttonClasses('ghost', 'sm')}>
-            Join the Crew
-          </Link>
-          {/* The single gold element in the header. */}
-          <Link href="/start" className={buttonClasses('primary', 'sm')}>
-            Start a Project
+        {/* ---------- action: one pill, the reference's shape ---------- */}
+        <div className="hidden items-center lg:flex">
+          <Link href="/contact" className={buttonClasses('primary', 'sm', 'rounded-full px-6')}>
+            Contact
           </Link>
         </div>
 
-        <ThemeToggle className="ml-auto lg:hidden" />
 
         <button
           type="button"
@@ -248,9 +231,6 @@ export function Header() {
         className="fixed inset-x-0 top-[64px] bottom-0 z-[200] overflow-y-auto border-t border-border bg-canvas lg:hidden"
       >
         <Container className="flex flex-col gap-6 py-7">
-          <Link href="/start" className={buttonClasses('primary', 'lg')} onClick={() => setMobileOpen(false)}>
-            Start a Project
-          </Link>
           <nav aria-label="Mobile">
             <ul className="flex flex-col">
               {PRIMARY_NAV.map((item) => (
@@ -258,20 +238,22 @@ export function Header() {
                   <Link
                     href={item.href}
                     onClick={() => setMobileOpen(false)}
-                    className="block py-5 text-lg text-text"
+                    className="block py-5 text-2xl font-bold text-text"
                   >
                     {item.label}
                   </Link>
                 </li>
               ))}
-              <li className="border-b border-border">
-                <Link href="/about" onClick={() => setMobileOpen(false)} className="block py-5 text-lg text-text">
-                  About
-                </Link>
-              </li>
             </ul>
           </nav>
-          <Link href="/join" className={buttonClasses('ghost', 'lg')} onClick={() => setMobileOpen(false)}>
+          <Link
+            href="/contact"
+            className={buttonClasses('primary', 'lg', 'rounded-full')}
+            onClick={() => setMobileOpen(false)}
+          >
+            Contact
+          </Link>
+          <Link href="/join" className={buttonClasses('ghost', 'md')} onClick={() => setMobileOpen(false)}>
             Join the Crew
           </Link>
         </Container>

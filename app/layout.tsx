@@ -1,14 +1,33 @@
 import type { Metadata, Viewport } from 'next';
-import { GeistSans } from 'geist/font/sans';
-import { GeistMono } from 'geist/font/mono';
-import { Instrument_Serif } from 'next/font/google';
+import { Instrument_Sans, Instrument_Serif } from 'next/font/google';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { CrewBuilderTray } from '@/components/crew/CrewBuilderTray';
+import { StickyMobileCta } from '@/components/layout/StickyMobileCta';
+import { SmoothScroll } from '@/components/motion/SmoothScroll';
+import { AnnotationToolbar } from '@/components/dev/AnnotationToolbar';
+import { GoogleAnalytics } from '@next/third-parties/google';
 import { ShortlistProvider } from '@/lib/shortlist';
 import { SITE, organizationSchema } from '@/lib/site';
 import { Analytics } from '@vercel/analytics/next';
 import './globals.css';
+
+/**
+ * Type system, third generation — a designed pair, chosen from a 214-font
+ * survey (client direction: clean, professional):
+ *  - Instrument Sans, variable: the primary face. Neo-grotesque with a hint
+ *    of warmth; bold holds a 114px headline, regular reads clean at 15px, and
+ *    the variable weight axis carries hierarchy from one file. It also takes
+ *    over every label, index and eyebrow in tracked small caps — the mono
+ *    voice is retired, so the site is a true two-font system.
+ *  - Instrument Serif: the secondary face — same designer, same foundry,
+ *    drawn to sit with the sans. Manifesto lines and editorial accents.
+ */
+const instrumentSans = Instrument_Sans({
+  subsets: ['latin'],
+  variable: '--font-instrument-sans',
+  display: 'swap',
+});
 
 const instrumentSerif = Instrument_Serif({
   subsets: ['latin'],
@@ -20,7 +39,7 @@ const instrumentSerif = Instrument_Serif({
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
-  title: { default: SITE.title, template: `%s — ${SITE.name}` },
+  title: { default: SITE.title, template: `%s · ${SITE.name}` },
   description: SITE.description,
   alternates: { canonical: '/' },
   openGraph: {
@@ -36,33 +55,18 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#FFFFFF' },
-    { media: '(prefers-color-scheme: dark)', color: '#080D12' },
-  ],
-  colorScheme: 'light dark',
+  themeColor: '#000000',
+  colorScheme: 'dark',
 };
-
-/**
- * Light is the default: the buyer is judged BY institutions, and institutions
- * are light while every Web3 protocol is dark — so light differentiates rather
- * than conforms. Dark ships as an equal alternate via the header toggle.
- *
- * We deliberately do NOT follow prefers-color-scheme; polarity is a brand
- * decision, not an OS setting. Only an explicit stored choice is applied, and
- * it is applied before paint so there is no flash.
- */
-const THEME_SCRIPT = `(function(){try{if(localStorage.getItem('oc-theme')==='dark'){document.documentElement.setAttribute('data-theme','dark')}}catch(e){}})();`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
       lang="en"
-      className={`${GeistSans.variable} ${GeistMono.variable} ${instrumentSerif.variable}`}
+      className={`${instrumentSans.variable} ${instrumentSerif.variable}`}
       suppressHydrationWarning
     >
       <head>
-        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema()) }}
@@ -75,6 +79,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Skip to content
         </a>
+        <SmoothScroll />
         <ShortlistProvider>
           <Header />
           <main id="main" className="pt-[64px]">
@@ -82,11 +87,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </main>
           <Footer />
           <CrewBuilderTray />
+          <StickyMobileCta />
         </ShortlistProvider>
+        {/* Dev-only visual annotation toolbar (Agentation); renders null in production. */}
+        <AnnotationToolbar />
         {/* Cookieless and PII-free, so no consent gate is required. Named
             explicitly in /legal/privacy — analytics you don't disclose is the
             kind of detail that undermines a page about verification. */}
         <Analytics />
+        {/* GA4 only when an ID is configured. ⚠️ GA sets cookies — before
+            going live with this, /legal/privacy must disclose it (the page
+            currently claims cookieless analytics only). */}
+        {process.env.NEXT_PUBLIC_GA_ID ? (
+          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
+        ) : null}
       </body>
     </html>
   );

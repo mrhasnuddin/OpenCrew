@@ -47,9 +47,7 @@ export function ProfileCard({ member }: { member: TeamMember }) {
       <ul className="flex flex-col gap-3 border-t border-border pt-5">
         {member.credentials.map((c) => (
           <li key={c} className="flex gap-4 text-sm text-secondary">
-            <span aria-hidden="true" className="text-disabled">
-              —
-            </span>
+            <span aria-hidden="true" className="marker-dot" />
             <span>{c}</span>
           </li>
         ))}

@@ -27,11 +27,11 @@ export const SERVICES: Service[] = [
     slug: 'global-crew',
     index: '01',
     name: 'Global Crew',
-    oneLiner: 'Global executives, advisors and regional leadership.',
+    oneLiner: 'Executives, advisors and regional leads, deployed into your project.',
     title: 'Build a credible global team around the project.',
     lead: 'Based on the project stage and target market, OPENCREW deploys core executives, strategic advisors, consultants, international spokespersons and regional leaders.',
     problem:
-      'A project can hold strong technology and capital and still present as a single-region organisation — which is the first thing an exchange or an investor notices.',
+      'A project can hold strong technology and capital and still present as a single-region organisation, which is the first thing an exchange or an investor notices.',
     groups: [
       {
         title: 'Roles deployed',
@@ -63,9 +63,9 @@ export const SERVICES: Service[] = [
     slug: 'consultants-education',
     index: '02',
     name: 'Consultants & Education',
-    oneLiner: 'Project communication, community training and ongoing education.',
+    oneLiner: 'Project communication, community training and education.',
     title: 'Make the market understand what you built.',
-    lead: 'Consultants present the project, train the community and sustain the explanation over time — so understanding compounds instead of resetting with every announcement.',
+    lead: 'Consultants present the project, train the community and sustain the explanation over time, so understanding compounds instead of resetting with every announcement.',
     problem:
       'Strong technology is rarely the constraint. The constraint is that no one is consistently explaining it in the markets that matter.',
     groups: [
@@ -124,7 +124,7 @@ export const SERVICES: Service[] = [
     title: 'Represented globally. Connected institutionally. Executed locally.',
     lead: 'When a project cannot build a full team in every target market, OPENCREW places credible, professional, long-term representatives in the ones that matter.',
     problem:
-      'Conferences, roadshows, AMAs and institutional meetings need someone credible in the room — consistently, not once.',
+      'Conferences, roadshows, AMAs and institutional meetings need someone credible in the room, consistently, not once.',
     groups: [
       {
         title: 'People',
@@ -192,7 +192,7 @@ export const SERVICES: Service[] = [
     name: 'Market Execution',
     oneLiner: 'Market launches, community engagement and regional operations.',
     title: 'From global presence to global growth.',
-    lead: 'OPENCREW can act as the long-term international operating team — brand, community, business development and events, run continuously.',
+    lead: 'OPENCREW can act as the long-term international operating team: brand, community, business development and events, run continuously.',
     problem:
       'One PR campaign, one advisor appointment or one conference appearance does not create lasting results.',
     groups: [

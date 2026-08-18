@@ -45,21 +45,10 @@ const byRole = (slug: string) =>
  * truthful value — you do not hire a co-founder off a directory listing.
  * `available` and `limited` become meaningful as the wider network is added.
  */
+// Order is presentation order everywhere crew renders (directory, featured
+// strip): Amir Leo and Dean lead, per client direction — the members most
+// relevant to the target market front the list.
 export const CREW: CrewMember[] = [
-  {
-    ...byRole('adam-gee'),
-    headline: 'Founder, ASEAN Labs · Director, ENI Singapore Foundation',
-    roleCode: 'LEAD / ECOSYSTEM',
-    roles: ['ceo-coo', 'advisor'],
-    sectors: ['Web3', 'RWA', 'Capital markets'],
-    availability: 'by_introduction',
-    deploymentScope: [
-      'Institutional meetings',
-      'Ecosystem and partnership development',
-      'Project strategy',
-      'Long-term engagement',
-    ],
-  },
   {
     ...byRole('amir-leo'),
     headline: 'CEO, PAYGO · COO, ASEAN Labs · Eight years in digital assets',
@@ -75,20 +64,6 @@ export const CREW: CrewMember[] = [
     ],
   },
   {
-    ...byRole('ak'),
-    headline: 'CMO, ENIPAY · 11+ years in finance and entrepreneurship',
-    roleCode: 'LEAD / GROWTH',
-    roles: ['cmo-growth', 'advisor'],
-    sectors: ['Capital markets', 'Digital payments', 'Web3'],
-    availability: 'by_introduction',
-    deploymentScope: [
-      'Brand positioning',
-      'Cross-border business development',
-      'Institutional meetings',
-      'Long-term engagement',
-    ],
-  },
-  {
     ...byRole('dean'),
     headline: 'CMO, ASEAN Labs · COO, PAYGO · Designer and front-end developer',
     roleCode: 'LEAD / BRAND',
@@ -99,6 +74,34 @@ export const CREW: CrewMember[] = [
       'Brand positioning and product design',
       'Community communication',
       'Public representation',
+      'Long-term engagement',
+    ],
+  },
+  {
+    ...byRole('adam-gee'),
+    headline: 'Founder, ASEAN Labs · Director, ENI Singapore Foundation',
+    roleCode: 'LEAD / ECOSYSTEM',
+    roles: ['ceo-coo', 'advisor'],
+    sectors: ['Web3', 'RWA', 'Capital markets'],
+    availability: 'by_introduction',
+    deploymentScope: [
+      'Institutional meetings',
+      'Ecosystem and partnership development',
+      'Project strategy',
+      'Long-term engagement',
+    ],
+  },
+  {
+    ...byRole('ak'),
+    headline: 'CMO, ENIPAY · 11+ years in finance and entrepreneurship',
+    roleCode: 'LEAD / GROWTH',
+    roles: ['cmo-growth', 'advisor'],
+    sectors: ['Capital markets', 'Digital payments', 'Web3'],
+    availability: 'by_introduction',
+    deploymentScope: [
+      'Brand positioning',
+      'Cross-border business development',
+      'Institutional meetings',
       'Long-term engagement',
     ],
   },

@@ -1,81 +1,141 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { getCrewMember } from '@/content/crew';
+import { getCrewMember, type CrewMember } from '@/content/crew';
+import { cn } from '@/lib/utils';
 
 /**
- * Curated crew strip for the landing page — proof, not a directory.
+ * Landing crew section, two tiers (client annotation):
  *
- * Placed directly after "Participation standards": the section states that
- * every member holds a real, verifiable seat, and this strip is the standard
- * applied to ourselves — leadership and advisors under their own names and
- * faces. Browsing, filtering and shortlisting stay on /crew, which is why this
- * card is a plain link and not the full CrewCard (no availability dot, no
- * add-to-crew — those are hiring tools, and mid-narrative nobody is hiring yet).
+ *  — LEADS: Amir Leo and Dean as two 50/50 hero cards. Landscape, portrait
+ *    on the left third, credentials on the right — the reference's expert
+ *    card at full width.
+ *  — BENCH: the other three as a minimal full-width row. Thumbnail + name
+ *    are the priority; role and one headline line are what I judged worth
+ *    keeping (the credential that answers "why is this person here").
  *
- * FEATURED is an explicit list, not `CREW.filter(has portrait)`: who fronts the
- * landing page is an editorial decision, and a data edit shouldn't change it
- * silently. Amir Leo joins the moment his portrait lands — add the slug here.
- * Every slug must resolve to a real listed member; build fails otherwise.
+ * Both lists are explicit, not derived: who leads is an editorial decision
+ * and a data edit shouldn't change it silently. Every slug must resolve to a
+ * real listed member; the build fails otherwise.
  */
-const FEATURED = ['adam-gee', 'ak', 'dean', 'arion'] as const;
+const LEADS = ['amir-leo', 'dean'] as const;
+const BENCH = ['adam-gee', 'ak', 'arion'] as const;
 
-export function FeaturedCrew() {
-  const members = FEATURED.map((slug) => {
+function resolve(slugs: readonly string[]): CrewMember[] {
+  return slugs.map((slug) => {
     const m = getCrewMember(slug);
     if (!m) throw new Error(`FeaturedCrew: unknown crew slug "${slug}"`);
     return m;
   });
+}
+
+const CARD = cn(
+  'card-glass card-glass-hover group flex h-full overflow-hidden rounded-xl',
+  'transition-[border-color,transform] duration-[var(--dur-base)] ease-out',
+  'focus-visible:outline-2 focus-visible:outline-focus focus-visible:outline-offset-2',
+  '[@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-[2px]',
+);
+
+function Portrait({ m, sizes, className }: { m: CrewMember; sizes: string; className?: string }) {
+  return (
+    <span className={cn('relative block shrink-0 overflow-hidden', className)}>
+      {m.portrait ? (
+        <Image
+          src={m.portrait}
+          alt=""
+          fill
+          sizes={sizes}
+          className="object-cover transition-transform duration-[var(--dur-slow)] ease-out [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-[1.03]"
+        />
+      ) : (
+        <span className="flex h-full w-full items-center justify-center bg-ink-800 text-3xl font-medium text-ink-300">
+          {m.initials}
+        </span>
+      )}
+    </span>
+  );
+}
+
+function Arrow() {
+  return (
+    <svg viewBox="0 0 12 12" className="size-[12px]" aria-hidden="true">
+      <path
+        d="M3 9 9 3M4.5 3H9v4.5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+export function FeaturedCrew() {
+  const leads = resolve(LEADS);
+  const bench = resolve(BENCH);
 
   return (
-    <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-      {members.map((m) => (
-        <li key={m.slug}>
-          <Link
-            href={`/crew/${m.slug}`}
-            className="group flex h-full flex-col rounded-md border border-border bg-surface p-6 transition-[border-color,transform] duration-[var(--dur-base)] ease-out focus-visible:outline-2 focus-visible:outline-focus focus-visible:outline-offset-2 [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-[2px] [@media(hover:hover)_and_(pointer:fine)]:hover:border-border-strong"
-          >
-            {/* 120px square: the 268px source crops stay ≥2× sharp. Square, not
-                circle, matching the crew card's rationale. Name sits adjacent,
-                so the image is decorative. */}
-            {m.portrait ? (
-              <Image
-                src={m.portrait}
-                alt=""
-                width={120}
-                height={120}
-                sizes="120px"
-                className="size-[120px] rounded-md border border-border object-cover"
+    <div className="flex flex-col gap-5 lg:gap-6">
+      {/* ------------------------------------------------- tier 1: the leads */}
+      <ul className="grid gap-5 lg:grid-cols-2 lg:gap-6">
+        {leads.map((m) => (
+          <li key={m.slug}>
+            <Link href={`/crew/${m.slug}`} className={cn(CARD, 'flex-col sm:flex-row')}>
+              {/* Portrait owns the left third; square on desktop, banner on mobile. */}
+              <Portrait
+                m={m}
+                sizes="(min-width: 1024px) 300px, (min-width: 640px) 40vw, 100vw"
+                className="aspect-[16/10] w-full sm:aspect-auto sm:w-[38%] sm:min-h-[300px]"
               />
-            ) : (
-              <span
-                aria-hidden="true"
-                className="flex size-[120px] items-center justify-center rounded-md border border-gold-950 bg-ink-800 text-2xl font-medium text-ink-300"
-              >
-                {m.initials}
+              <span className="flex min-w-0 flex-1 flex-col p-6 lg:p-7">
+                <span className="eyebrow text-accent-text">{m.roleCode}</span>
+                <span className="mt-3 block text-2xl font-bold text-text lg:text-3xl">
+                  {m.displayName}
+                </span>
+                <span className="mt-1 block text-secondary">{m.role}</span>
+                <span className="mt-4 block text-sm text-secondary">{m.headline}</span>
+                <span className="mt-5 flex flex-wrap gap-2">
+                  {m.capabilities.slice(0, 3).map((c) => (
+                    <span
+                      key={c}
+                      className="rounded-full border border-[color-mix(in_oklab,var(--gold-500)_45%,transparent)] bg-accent-subtle px-4 py-1.5 font-mono text-2xs tracking-[0.06em] text-accent-text uppercase"
+                    >
+                      {c}
+                    </span>
+                  ))}
+                </span>
+                <span className="mt-auto flex items-center gap-2 pt-6 text-sm font-medium text-secondary transition-colors duration-[var(--dur-fast)] ease-hover group-hover:text-text">
+                  View profile
+                  <Arrow />
+                </span>
               </span>
-            )}
-            <p className="mt-5 font-mono text-2xs tracking-[0.06em] text-muted uppercase">
-              {m.roleCode}
-            </p>
-            <h3 className="mt-2 text-lg font-medium text-text">{m.displayName}</h3>
-            <p className="mt-1 text-sm text-muted">{m.role}</p>
-            <p className="mt-3 line-clamp-2 text-sm text-secondary">{m.headline}</p>
-            <span className="mt-auto flex items-center gap-2 pt-5 text-sm font-medium text-secondary transition-colors duration-[var(--dur-fast)] ease-hover group-hover:text-text">
-              View profile
-              <svg viewBox="0 0 12 12" className="size-[12px]" aria-hidden="true">
-                <path
-                  d="M3 9 9 3M4.5 3H9v4.5"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.4"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </span>
-          </Link>
-        </li>
-      ))}
-    </ul>
+            </Link>
+          </li>
+        ))}
+      </ul>
+
+      {/* ------------------------------------------------ tier 2: the bench */}
+      <ul className="grid gap-5 sm:grid-cols-3 lg:gap-6">
+        {bench.map((m) => (
+          <li key={m.slug}>
+            <Link href={`/crew/${m.slug}`} className={cn(CARD, 'items-center gap-5 p-5')}>
+              <Portrait
+                m={m}
+                sizes="96px"
+                className="size-[96px] rounded-md"
+              />
+              <span className="flex min-w-0 flex-1 flex-col">
+                <span className="block truncate text-lg font-bold text-text">{m.displayName}</span>
+                <span className="mt-1 block truncate text-sm text-secondary">{m.role}</span>
+                <span className="mt-2 block truncate text-xs text-muted">{m.credentials[0]}</span>
+              </span>
+              <span className="shrink-0 text-muted transition-colors duration-[var(--dur-fast)] ease-hover group-hover:text-text">
+                <Arrow />
+              </span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }

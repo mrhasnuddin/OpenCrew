@@ -74,7 +74,8 @@ export const LEADERSHIP: TeamMember[] = [
     markets: null,
     languages: null,
     links: {},
-    portrait: null,
+    // 1:1 crop from the supplied conference stage photo (640×640 source).
+    portrait: '/thumbnail/amir-square.jpg',
     verified: true,
   },
   {

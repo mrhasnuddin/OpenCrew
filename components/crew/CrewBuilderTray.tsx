@@ -15,7 +15,7 @@ import { cn } from '@/lib/utils';
  * Expands from bottom-right with transform-origin at the trigger, so it grows
  * out of the pill rather than materialising over it.
  */
-const SURFACES = ['/crew', '/roles'];
+const SURFACES = ['/crew'];
 
 export function CrewBuilderTray() {
   const pathname = usePathname();
@@ -103,7 +103,7 @@ export function CrewBuilderTray() {
         ) : null}
 
         <Link
-          href="/start?from=shortlist"
+          href="/contact?from=shortlist"
           onClick={() => setOpen(false)}
           className={buttonClasses('primary', 'md', 'mt-6 w-full')}
         >

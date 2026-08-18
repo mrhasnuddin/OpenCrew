@@ -8,6 +8,7 @@ import { SocialIcons } from '@/components/ui/SocialIcons';
 import { buttonClasses } from '@/components/ui/Button';
 import { ListGroup, TextLink } from '@/components/marketing/Blocks';
 import { CrewCard } from '@/components/crew/CrewCard';
+import { Breadcrumbs } from '@/components/ui/Breadcrumbs';
 import { CREW, getCrewMember, ROLE_LABELS } from '@/content/crew';
 import { VERIFICATION_EMAIL } from '@/content/contact';
 
@@ -53,11 +54,17 @@ export default async function CrewProfilePage({
           {/* ------------------------------------------------- sticky rail */}
           <aside className="lg:sticky lg:top-[calc(64px+var(--spacing-6))] lg:self-start">
             <div className="flex flex-col gap-6">
+              <Breadcrumbs
+                items={[
+                  { label: 'The Crew', href: '/crew' },
+                  { label: isPublic ? member.displayName : 'Member' },
+                ]}
+              />
               {member.portrait ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={member.portrait}
-                  alt=""
+                  alt={`Portrait of ${member.displayName}, ${member.role}`}
                   className="size-[96px] rounded-full object-cover"
                 />
               ) : (
@@ -95,7 +102,7 @@ export default async function CrewProfilePage({
               <SocialIcons links={member.links} />
 
               <div className="flex flex-col gap-4 border-t border-border pt-6">
-                <Link href="/start" className={buttonClasses('primary', 'md')}>
+                <Link href="/contact" className={buttonClasses('primary', 'md')}>
                   {isPublic ? 'Request this member' : 'Request introduction'}
                 </Link>
                 <Link href="/crew" className={buttonClasses('ghost', 'md')}>

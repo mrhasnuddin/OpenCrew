@@ -9,7 +9,7 @@ export const SITE = {
   shortName: 'OPENCREW',
   /** 【replace at deploy: NEXT_PUBLIC_SITE_URL】 */
   url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://opencrew.example',
-  title: 'OPENCREW Labs — Your Global Team for Web3 & AI',
+  title: 'OPENCREW Labs · Your Global Team for Web3 & AI',
   description:
     'A global team and growth partner for Web3, AI and new finance. We deploy international executives, advisors and regional leadership, with institutional access and overseas market execution.',
   locale: 'en',

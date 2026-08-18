@@ -5,6 +5,8 @@ import { INDEPENDENCE_DISCLAIMER } from '@/content/site';
 
 export const metadata: Metadata = {
   title: 'Terms of Use',
+  description:
+    'The terms governing use of the OPENCREW Labs website and its crew, partner and intake surfaces. Draft pending legal review.',
   robots: { index: false, follow: true },
 };
 
@@ -30,8 +32,8 @@ const SECTIONS = [
     title: 'Accuracy',
     body: 'We keep this site current, but stages, milestones and availability change. Anything material to a decision should be confirmed with us in writing.',
   },
-  { title: 'Liability', body: '【Limitation of liability — to be set with counsel.】' },
-  { title: 'Governing law', body: '【Governing law and jurisdiction — to be set with counsel.】' },
+  { title: 'Liability', body: '【Limitation of liability: to be set with counsel.】' },
+  { title: 'Governing law', body: '【Governing law and jurisdiction: to be set with counsel.】' },
   { title: 'Contact', body: '【Contact email】' },
 ];
 

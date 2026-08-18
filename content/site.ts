@@ -11,7 +11,7 @@ export const HERO = {
   eyebrow: 'Global team & growth partner · Web3 · AI · New finance',
   title: 'Your global team for Web3 & AI.',
   lead: 'OPENCREW supports Web3, AI and new finance projects through global talent deployment, international representation, institutional access and overseas market coordination.',
-  primaryCta: { label: 'Start a project', href: '/start' },
+  primaryCta: { label: 'Start a project', href: '/contact' },
   secondaryCta: { label: 'Browse the crew', href: '/crew' },
   rhythm: 'Global Team. Global Access. Global Execution.',
   /**
@@ -106,15 +106,15 @@ export const ENGAGEMENT_MODELS = [
     index: '01',
     slug: 'project-engagement',
     title: 'Project Engagement',
-    body: 'Targeted deployment of executives, advisors, project consultants, regional leaders and specific institutional resources.',
-    bestFor: 'A defined gap — a seat to fill, an application to prepare, a market to enter.',
+    body: 'Targeted deployment of executives, advisors, regional leads or specific institutional resources.',
+    bestFor: 'A defined gap: a seat to fill, an application to prepare, a market to enter.',
     shape: 'Monthly or project-based',
   },
   {
     index: '02',
     slug: 'global-growth-mandate',
     title: 'Global Growth Mandate',
-    body: 'Continuous involvement in project strategy, branding, institutional access, international markets and operational advancement.',
+    body: 'Continuous involvement across strategy, brand, institutional access and international markets.',
     bestFor: 'Projects that need an international operating team rather than a placement.',
     shape: 'Monthly retainer plus campaign budgets',
   },
@@ -122,7 +122,7 @@ export const ENGAGEMENT_MODELS = [
     index: '03',
     slug: 'venture-co-building',
     title: 'Venture Co-Building',
-    body: 'Deployment of core team members and global resources to participate in long-term development and critical growth stages.',
+    body: 'Core team members and global resources committed to long-term development and critical growth stages.',
     bestFor: 'Selected projects where long-term incentives should be aligned.',
     shape: 'Fees plus equity or token allocation',
   },
@@ -235,6 +235,10 @@ export type WorkItem = {
   name: string;
   projectType: string;
   background?: string;
+  /** The gap OPENCREW was engaged to close, stated client-first. Derived by
+   *  restating the approved mandate/capability copy — it introduces no claim
+   *  the deck doesn't already make. */
+  problem?: string;
   mandate?: string;
   deliverables: string[];
   milestones?: string[];
@@ -267,6 +271,8 @@ export const WORK: WorkItem[] = [
     projectType: 'ENI Chain-native payment & AI agent settlement infrastructure',
     background:
       'PAYGO is a Web3 payment and AI agent settlement project built on ENI Chain. It provides request-level payment infrastructure for APIs, AI agents and digital economy applications.',
+    problem:
+      'Strong technology and mechanism design, but no international team, institutional footprint or market recognition to carry it beyond its original market.',
     mandate:
       'Take a project with strong technology and mechanism design and build it into an infrastructure brand backed by an international team, institutional resources and market recognition.',
     deliverables: [
@@ -297,6 +303,8 @@ export const WORK: WorkItem[] = [
     projectType: 'A digital payment platform for global users',
     background:
       'ENIPAY is a digital payment platform serving global users, spanning card issuance, a multi-chain wallet and mainstream top-up scenarios across Asian markets.',
+    problem:
+      'A live payment product (card issuance, multi-chain wallet, top-up scenarios) with no global brand position or bilingual communication system to carry it into Asian markets.',
     mandate:
       'Establish a global brand position and a bilingual communication system, then carry the product into Asian markets alongside its payment and partner ecosystem.',
     deliverables: [
@@ -325,8 +333,22 @@ export const WORK: WorkItem[] = [
     tier: 'supporting' as const,
     name: 'VINO LABS',
     projectType: 'Web3 × AI ecosystem',
+    problem:
+      'A Web3 × AI ecosystem whose narrative was too complex to travel across markets on its own.',
+    // ⚠️ DRAFT copy, expanded from the one-line deck deliverable at the
+    // client's request. Describes OPENCREW's own work and delivered outputs
+    // only; no third-party outcome is claimed. Client to confirm wording.
     deliverables: [
-      'Strategic positioning, ecosystem narrative, project materials, announcements and event communications',
+      'Strategic positioning and a single ecosystem narrative',
+      'Project materials: deck, one-pager and website copy',
+      'Announcement and launch communications',
+      'Event and conference communications',
+      'Cross-market messaging for English- and Chinese-speaking audiences',
+    ],
+    milestones: [
+      'Ecosystem narrative and positioning framework delivered',
+      'Bilingual project materials in use across channels',
+      'Announcement and event communications running on a cadence',
     ],
     capability: 'Complex ecosystem narratives and cross-market communication',
   },
@@ -339,7 +361,21 @@ export const WORK: WorkItem[] = [
     tier: 'supporting' as const,
     name: 'YAIB.AI',
     projectType: 'Artificial intelligence',
-    deliverables: ['Brand identity, visual system and communication guidelines'],
+    problem:
+      'An AI product starting from zero: no brand identity, no visual system, no communication guidelines.',
+    // ⚠️ DRAFT copy, expanded at the client's request. OPENCREW's own work
+    // and delivered outputs only. Client to confirm wording.
+    deliverables: [
+      'Brand identity: logomark, wordmark and lockups',
+      'Visual system: colour, type and layout rules',
+      'Communication guidelines: voice, tone and message architecture',
+      'Launch-ready brand assets and templates',
+    ],
+    milestones: [
+      'Complete brand identity delivered from zero',
+      'Visual system and guidelines adopted across product and communications',
+      'Launch assets and templates in use',
+    ],
     capability: 'Building an AI brand from zero to one',
   },
   {
@@ -351,7 +387,21 @@ export const WORK: WorkItem[] = [
     tier: 'supporting' as const,
     name: 'OMNI AI',
     projectType: 'AI computing infrastructure',
-    deliverables: ['Bilingual launches, AMA content and regional market support'],
+    problem:
+      'AI computing infrastructure without bilingual launch material or regional market support outside its home market.',
+    // ⚠️ DRAFT copy, expanded at the client's request. OPENCREW's own work
+    // and delivered outputs only. Client to confirm wording.
+    deliverables: [
+      'Bilingual launch narrative and materials (English and Chinese)',
+      'AMA programme: scripting, hosting and follow-up content',
+      'Technical storytelling for a complex compute product',
+      'Regional market and community communication support',
+    ],
+    milestones: [
+      'Bilingual launch delivered across English and Chinese channels',
+      'AMA series running with prepared content',
+      'Regional market communication established outside the home market',
+    ],
     capability: 'International communication for complex technology projects',
   },
 ];

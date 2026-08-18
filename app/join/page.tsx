@@ -21,7 +21,7 @@ export default function JoinPage() {
           Be deployed, not listed.
         </h1>
         <p className="lead-measure mt-6 text-lg text-secondary">
-          OPENCREW places senior operators into Web3, AI and new finance projects — as executives,
+          OPENCREW places senior operators into Web3, AI and new finance projects, as executives,
           advisors, consultants, regional leaders and global spokespersons, in defined roles doing
           actual work.
         </p>

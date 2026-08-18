@@ -1,125 +1,60 @@
-'use client';
-
-import * as React from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { AsciiMark } from '@/components/marketing/AsciiMark';
 import { buttonClasses } from '@/components/ui/Button';
 import { RESPONSE_TIME } from '@/content/contact';
 import { CLOSING_CTA } from '@/content/site';
 
 /**
- * Conversion panel above the footer.
+ * Conversion panel above the footer — a LIGHT card on the black canvas
+ * (client direction: it must contrast with the background; reference is a
+ * white card with a soft gradient bloom and one centred call to action).
  *
- * This now carries what used to be the home page's closing CTA. The footer
- * renders on every route, so keeping a near-identical CTA section directly
- * above it meant two stacked asks — home now closes on the sign-off line only.
+ * `.on-light` re-declares the semantic tokens for the subtree, so the copy,
+ * button and focus rings inside need no special classes. The bloom is the
+ * gold system, not the reference's lavender: a radial from the top-right
+ * corner, held faint so the white stays white.
  *
- * The reference template puts a newsletter here. We don't have a mailing list,
- * no send infrastructure, and no journal to promote, so an email box that
- * subscribes you to nothing would be the same lie as a success screen for a
- * POST that goes nowhere. The field is a shortcut INTO the intake we already
- * built: it hands the address to /start and prefills it there.
+ * One ask, centred: headline, one line, the pill CTA with its arrow chip
+ * (reference's two-part button). The email quick-field is retired — a single
+ * strong action reads cleaner, and /contact is one click away.
  */
 export function FooterCta() {
-  const router = useRouter();
-  const [email, setEmail] = React.useState('');
-
-  const submit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const q = email.trim() ? `?email=${encodeURIComponent(email.trim())}` : '';
-    router.push(`/start${q}`);
-  };
-
-  // `accent-subtle` is warm in BOTH themes — gold-50 cream on light, gold-950
-  // deep brass on dark — so the panel reads as ours rather than as a default
-  // grey card. Our ink is deliberately cool (hue 250); on a cool grey surface
-  // that reads generic-tech, and the warm ground is what makes it read as
-  // metal-on-paper instead.
   return (
-    <div className="@container relative overflow-hidden rounded-lg border border-border bg-accent-subtle">
-      <AsciiMark className="absolute -top-[10%] right-[-8%] text-accent opacity-[0.16]" />
+    <div className="on-light relative overflow-hidden rounded-xl">
+      {/* bloom — top-right, gold, faint */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            'radial-gradient(60% 80% at 88% 10%, color-mix(in oklab, var(--gold-500) 26%, transparent) 0%, transparent 62%),' +
+            'radial-gradient(40% 60% at 100% 100%, color-mix(in oklab, var(--gold-500) 12%, transparent) 0%, transparent 60%)',
+        }}
+      />
 
-      <div className="relative grid gap-8 p-7 lg:grid-cols-[1.618fr_1fr] lg:items-center lg:gap-9 lg:p-9">
-        {/* ------------------------------------------------------- left */}
-        <div>
-          <p className="eyebrow mb-6">{CLOSING_CTA.eyebrow}</p>
-          <h2 className="max-w-[14ch] text-3xl tracking-[-0.02em] text-balance lg:text-4xl lg:tracking-[-0.025em]">
-            {CLOSING_CTA.title}
-          </h2>
-          {/* What to send — the six fields, straight from V3's closing page. */}
-          <ul className="mt-7 flex flex-wrap gap-x-6 gap-y-3">
-            {CLOSING_CTA.fields.map((f) => (
-              <li key={f} className="font-mono text-2xs tracking-[0.06em] text-muted uppercase">
-                {f}
-              </li>
-            ))}
-          </ul>
-        </div>
+      <div className="relative flex flex-col items-center px-6 py-9 text-center lg:px-9 lg:py-10">
+        <p className="eyebrow mb-6">{CLOSING_CTA.eyebrow}</p>
+        <h2 className="section-title max-w-[16ch] text-balance">{CLOSING_CTA.title}</h2>
+        <p className="lead-measure mt-6 text-lg text-secondary">
+          {RESPONSE_TIME} Bring the deck, the stage, the market and the roles you need.
+        </p>
 
-        {/* --------------------------------------- ink card (.on-inverse) */}
-        <form
-          onSubmit={submit}
-          className="on-inverse flex flex-col gap-7 rounded-md border border-gold-950 p-7 shadow-[0_24px_64px_-16px_rgb(2_3_5/0.22)]"
+        {/* Two-part pill (reference): arrow chip + label, one link. */}
+        <Link
+          href="/contact"
+          className="group mt-8 inline-flex items-center gap-2 focus-visible:outline-2 focus-visible:outline-focus focus-visible:outline-offset-4 rounded-full"
         >
-          {/* Small mono label — brand tint, not a competing focal point. */}
-          <p className="eyebrow text-accent-text">Start a brief</p>
-
-          <div>
-            <div className="flex items-center gap-4 border-b border-border-strong pb-4 transition-colors duration-[var(--dur-fast)] ease-hover focus-within:border-focus">
-              <label htmlFor="cta-email" className="sr-only">
-                Your work email
-              </label>
-              <input
-                id="cta-email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Your work email"
-                className="min-w-0 flex-1 bg-transparent text-base text-text placeholder:text-muted focus:outline-none"
-              />
-              {/* THE gold element of this viewport: the primary action, filled.
-                  ink-1000 on gold-500 is 8.08:1. */}
-              <button
-                type="submit"
-                aria-label="Continue to the project brief"
-                className="flex size-[36px] shrink-0 items-center justify-center rounded-sm bg-accent text-on-accent transition-[background-color,transform] duration-[var(--dur-fast)] ease-hover hover:bg-accent-hover active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-focus focus-visible:outline-offset-2"
-              >
-                <svg viewBox="0 0 16 16" className="size-[16px]" aria-hidden="true">
-                  <path
-                    d="M2.5 8h11M9.5 4l4 4-4 4"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.6"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </button>
-            </div>
-            <p className="mt-5 text-sm text-muted">{RESPONSE_TIME}</p>
-          </div>
-
-          {/* Promoted from a quiet text link to a real target. Ghost, not gold —
-              the filled arrow above stays the single accent, so this reads as
-              the clear second option rather than a rival for the same slot. */}
-          <Link
-            href="/crew"
-            className={buttonClasses('ghost', 'md', 'w-full justify-between')}
+          <span
+            aria-hidden="true"
+            className="flex size-[52px] items-center justify-center rounded-full bg-accent text-on-accent transition-transform duration-[var(--dur-base)] ease-out group-hover:translate-x-[3px] group-hover:-translate-y-[3px]"
           >
-            Browse the crew
-            <svg viewBox="0 0 12 12" className="size-[12px]" aria-hidden="true">
-              <path
-                d="M3 9 9 3M4.5 3H9v4.5"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+            <svg viewBox="0 0 16 16" className="size-[16px]" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M4 12 12 4M6 4h6v6" />
             </svg>
-          </Link>
-        </form>
+          </span>
+          <span className={buttonClasses('primary', 'lg', 'rounded-full px-8 pointer-events-none')}>
+            Start a project
+          </span>
+        </Link>
       </div>
     </div>
   );

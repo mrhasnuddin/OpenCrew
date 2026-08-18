@@ -89,7 +89,7 @@ export function JoinForm() {
       values.length ? `${label}: ${values.join(', ')}\n` : '';
 
     setComposed(
-      `CREW APPLICATION — OPENCREW\n\n` +
+      `CREW APPLICATION · OPENCREW\n\n` +
         line('Name', form.name) +
         line('Current position', form.currentPosition) +
         list('Roles sought', form.roles.map((r) => ROLE_LABELS[r as CrewRoleSlug] ?? r)) +
@@ -107,7 +107,7 @@ export function JoinForm() {
     return (
       <BriefHandoff
         kind="application"
-        subject={`Crew application — ${form.name}`}
+        subject={`Crew application: ${form.name}`}
         body={composed}
         replyTo={form.email}
         onEdit={() => setComposed(null)}

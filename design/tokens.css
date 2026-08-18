@@ -18,21 +18,23 @@
      TIER 1 — PRIMITIVES
      --------------------------------------------------------------------- */
 
-  /* Ink — neutral, H 250° (cool cast so gold reads as metal, not yellow) */
-  --ink-1000: oklch(9.5%  0.010 250);  /* #020305 */
-  --ink-950:  oklch(15.5% 0.013 250);  /* #080D12 */
-  --ink-900:  oklch(19.6% 0.015 250);  /* #10161C */
-  --ink-850:  oklch(23.8% 0.015 250);  /* #191F26 */
-  --ink-800:  oklch(28.2% 0.015 250);  /* #242A31 */
-  --ink-700:  oklch(35.5% 0.014 250);  /* #363D43 */
-  --ink-600:  oklch(44.8% 0.012 250);  /* #50555B */
-  --ink-500:  oklch(55.2% 0.011 250);  /* #6D7378 */
-  --ink-400:  oklch(65.5% 0.010 250);  /* #8C9197 */
-  --ink-300:  oklch(75.2% 0.008 250);  /* #ABAFB3 */
-  --ink-200:  oklch(84.8% 0.006 250);  /* #CACDD1 */
-  --ink-100:  oklch(91.8% 0.004 250);  /* #E2E4E6 */
-  --ink-50:   oklch(96.3% 0.003 250);  /* #F1F3F5 */
-  --ink-0:    oklch(100%  0     250);  /* #FFFFFF */
+  /* Ink — TRUE NEUTRAL, anchored on the client's secondary #000000.
+     The old 250° blue cast retired with the light theme: on a pure-black
+     canvas a tinted grey ramp reads as a rendering error, not a mood. */
+  --ink-1000: #000000;
+  --ink-950:  #0A0A0A;
+  --ink-900:  #141414;
+  --ink-850:  #1D1D1D;
+  --ink-800:  #262626;
+  --ink-700:  #333333;
+  --ink-600:  #4A4A4A;
+  --ink-500:  #636363;
+  --ink-400:  #828282;
+  --ink-300:  #A0A0A0;
+  --ink-200:  #C4C4C4;
+  --ink-100:  #DEDEDE;
+  --ink-50:   #F2F2F2;
+  --ink-0:    #FFFFFF;
 
   /* Bullion — brand primary, H 75.29° = ANCHOR, measured from the logo.
      gold-500 IS the official logo gold, exactly. */
@@ -107,12 +109,12 @@
   --measure-prose: 68ch;
   --measure-lead:  56ch;
 
-  /* 1480, not 1320: at 1320 the content froze at 1184px, so a 1920 display
-     showed 368px of dead air per side. Reading width is protected separately
-     by --measure-prose (68ch), so a wider shell costs nothing in legibility. */
-  --container-max:     1480px;
+  /* 1600 (client direction, up from 1480): the layout breathes on wide
+     displays. Reading width is protected separately by --measure-prose, so a
+     wider shell costs nothing in legibility. */
+  --container-max:     1600px;
   /* Deliberately narrower — reading-weight surfaces (forms, legal, prose). */
-  --container-content: 1064px;
+  --container-content: 1140px;
   --header-height:     64px;
   --golden-split: 1.618fr 1fr;   /* the 61.8 / 38.2 editorial split */
 
@@ -134,51 +136,51 @@
   --radius-*: initial;
   --ease-*: initial;
 
-  /* ── LIGHT IS THE DEFAULT ──────────────────────────────────────────────
-     A white canvas carrying ink objects, not a "light theme". The industrial
-     read comes from contrast WITHIN the page (see .on-inverse below), not from
-     a global polarity setting. Dark ships as an equal alternate.
-     Rationale: docs/00-brand-identity.md §3.8. */
+  /* ── FULL DARK, NO ALTERNATE (client direction) ────────────────────────
+     Pure-black canvas (#000000, the client's secondary colour) carrying the
+     logo gold (#C19C68, the primary). There is no light theme and no toggle;
+     contrast lives WITHIN the page — raised ink surfaces, gold accents,
+     photography. */
 
   /* --- surfaces --- */
-  --color-canvas:         var(--ink-0);
-  --color-canvas-sunken:  var(--ink-50);
-  --color-surface:        var(--ink-0);
-  --color-surface-raised: var(--ink-0);
-  --color-surface-hover:  var(--ink-50);
+  --color-canvas:         var(--ink-1000);
+  --color-canvas-sunken:  var(--ink-1000);
+  --color-surface:        var(--ink-950);
+  --color-surface-raised: var(--ink-900);
+  --color-surface-hover:  var(--ink-900);
 
   /* --- borders --- */
-  --color-border:        var(--ink-100);
-  --color-border-strong: var(--ink-200);
+  --color-border:        var(--ink-800);
+  --color-border-strong: var(--ink-700);
 
   /* --- text --- (utilities: text-text / text-secondary / text-muted) */
-  --color-text:      var(--ink-1000);
-  --color-secondary: var(--ink-700);
-  --color-muted:     var(--ink-600);
-  --color-disabled:  var(--ink-400);
+  --color-text:      var(--ink-0);
+  --color-secondary: var(--ink-300);
+  --color-muted:     var(--ink-400);
+  --color-disabled:  var(--ink-600);
 
   /* --- brand --- */
   --color-accent:        var(--gold-500);
   --color-accent-hover:  var(--gold-400);
   --color-accent-active: var(--gold-600);
-  /* gold-500 on white is 2.55:1 and fails — gold TEXT goes darker */
-  --color-accent-text:   var(--gold-800);
-  --color-accent-subtle: var(--gold-50);
+  /* gold-500 on black is 7.5:1 — gold TEXT brightens a step for small sizes */
+  --color-accent-text:   var(--gold-400);
+  --color-accent-subtle: var(--gold-950);
   --color-on-accent:     var(--ink-1000);
 
   /* --- systems --- */
-  --color-link:       var(--azure-800);
-  --color-link-hover: var(--azure-900);
-  --color-focus:      var(--azure-700);
+  --color-link:       var(--azure-300);
+  --color-link-hover: var(--azure-200);
+  --color-focus:      var(--azure-400);
 
   /* --- status --- */
-  --color-success:        var(--verdant-700);
-  --color-success-subtle: var(--verdant-50);
-  --color-danger:         var(--red-700);
-  --color-danger-subtle:  var(--red-50);
-  --color-warning:        var(--gold-800);
+  --color-success:        var(--verdant-400);
+  --color-success-subtle: var(--verdant-950);
+  --color-danger:         var(--red-400);
+  --color-danger-subtle:  var(--red-950);
+  --color-warning:        var(--gold-400);
 
-  /* --- inverse band: an ink object on the white canvas --- */
+  /* --- inverse band: kept for compatibility — on black it deepens, not flips --- */
   --color-inverse:        var(--ink-950);
   --color-on-inverse:     var(--ink-0);
 
@@ -213,26 +215,33 @@
   /* --- TYPE — modular scale, ratio √φ = 1.272, base 16 --- */
   /* The var() indirection is how next/font hands us the generated family
      names. Fallbacks stay explicit so a font failure degrades, not breaks. */
-  --font-sans:  var(--font-geist-sans), "Noto Sans SC", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-sans:  var(--font-instrument-sans), "Noto Sans SC", ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-serif: var(--font-instrument-serif), "Noto Serif SC", ui-serif, Georgia, serif;
-  --font-mono:  var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, monospace;
+  /* The LABEL voice — eyebrows, indices, role codes, chips. Historically a
+     monospace; now the primary sans in tracked small caps (a two-font site).
+     The `--font-mono` name survives so every `font-mono` utility in the tree
+     re-points in one line; it is no longer literally monospaced. Real code /
+     tabular data should use `.tabular` for aligned figures. */
+  --font-label: var(--font-instrument-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono:  var(--font-label);
 
-  --text-2xs:  0.688rem;  --text-2xs--line-height:  1rem;      /*  11 / 16 */
-  --text-xs:   0.75rem;   --text-xs--line-height:   1.125rem;  /*  12 / 18 */
-  --text-sm:   0.875rem;  --text-sm--line-height:   1.375rem;  /*  14 / 22 */
-  --text-base: 1rem;      --text-base--line-height: 1.625rem;  /*  16 / 26 = 16 × φ */
-  --text-lg:   1.25rem;   --text-lg--line-height:   2rem;      /*  20 / 32 */
-  --text-xl:   1.625rem;  --text-xl--line-height:   2.125rem;  /*  26 / 34 */
-  --text-2xl:  2.063rem;  --text-2xl--line-height:  2.5rem;    /*  33 / 40 */
-  --text-3xl:  2.625rem;  --text-3xl--line-height:  3rem;      /*  42 / 48 */
-  --text-4xl:  3.313rem;  --text-4xl--line-height:  3.625rem;  /*  53 / 58 */
-  --text-5xl:  4.25rem;   --text-5xl--line-height:  4.5rem;    /*  68 / 72 */
-  --text-6xl:  5.375rem;  --text-6xl--line-height:  5.5rem;    /*  86 / 88 */
-  --text-7xl:  6.875rem;  --text-7xl--line-height:  6.75rem;   /* 110 /108 */
+  --text-2xs:  0.75rem;   --text-2xs--line-height:  1.063rem;  /*  12 / 17 */
+  --text-xs:   0.813rem;  --text-xs--line-height:   1.25rem;   /*  13 / 20 */
+  --text-sm:   0.938rem;  --text-sm--line-height:   1.5rem;    /*  15 / 24 */
+  --text-base: 1.063rem;  --text-base--line-height: 1.75rem;   /*  17 / 28 ≈ 17 × φ */
+  --text-lg:   1.313rem;  --text-lg--line-height:   2.063rem;  /*  21 / 33 */
+  --text-xl:   1.75rem;   --text-xl--line-height:   2.25rem;   /*  28 / 36 */
+  --text-2xl:  2.188rem;  --text-2xl--line-height:  2.625rem;  /*  35 / 42 */
+  --text-3xl:  2.75rem;   --text-3xl--line-height:  3.125rem;  /*  44 / 50 */
+  --text-4xl:  3.5rem;    --text-4xl--line-height:  3.813rem;  /*  56 / 61 */
+  --text-5xl:  4.438rem;  --text-5xl--line-height:  4.688rem;  /*  71 / 75 */
+  --text-6xl:  5.625rem;  --text-6xl--line-height:  5.75rem;   /*  90 / 92 */
+  --text-7xl:  7.125rem;  --text-7xl--line-height:  7rem;      /* 114 /112 */
 
   --font-weight-regular:  400;
   --font-weight-medium:   500;
   --font-weight-semibold: 600;
+  --font-weight-bold:     700;
 
   /* --- RADIUS --- */
   --radius-xs:   4px;
@@ -263,13 +272,13 @@
   --breakpoint-2xl: 96rem;  /* 1536 */
 }
 
-/* --- elevation: real shadows on light; on dark it is lightness + ring --- */
+/* --- elevation on black: lightness difference + soft deep shadows --- */
 :root {
-  --shadow-1: 0 1px 2px rgb(2 3 5 / 0.04);
-  --shadow-2: 0 8px 24px -8px rgb(2 3 5 / 0.12);
-  --shadow-3: 0 24px 64px -16px rgb(2 3 5 / 0.18);
-  --color-scrim: color-mix(in oklab, var(--ink-1000) 40%, transparent);
-  color-scheme: light;
+  --shadow-1: none;
+  --shadow-2: 0 8px 24px -8px rgb(0 0 0 / 0.5);
+  --shadow-3: 0 24px 64px -16px rgb(0 0 0 / 0.6);
+  --color-scrim: color-mix(in oklab, var(--ink-1000) 60%, transparent);
+  color-scheme: dark;
 }
 
 /* ==========================================================================
@@ -277,92 +286,18 @@
    knows which theme it is in.
    ========================================================================== */
 @layer theme {
-  :root[data-theme="dark"] {
-    color-scheme: dark;
-
-    --color-canvas:         var(--ink-950);
-    --color-canvas-sunken:  var(--ink-1000);
-    --color-surface:        var(--ink-900);
-    --color-surface-raised: var(--ink-850);
-    --color-surface-hover:  var(--ink-850);
-
-    --color-border:        var(--ink-800);
-    --color-border-strong: var(--ink-700);
-
-    --color-text:      var(--ink-0);
-    --color-secondary: var(--ink-300);
-    --color-muted:     var(--ink-400);
-    --color-disabled:  var(--ink-600);
-
-    --color-accent-text:   var(--gold-400);
-    --color-accent-subtle: var(--gold-950);
-
-    --color-link:       var(--azure-300);
-    --color-link-hover: var(--azure-200);
-    --color-focus:      var(--azure-400);
-
-    --color-success:        var(--verdant-400);
-    --color-success-subtle: var(--verdant-950);
-    --color-danger:         var(--red-400);
-    --color-danger-subtle:  var(--red-950);
-    --color-warning:        var(--gold-400);
-
-    --color-inverse:    var(--ink-1000);
-    --color-on-inverse: var(--ink-0);
-
-    --shadow-1: none;
-    --shadow-2: 0 8px 24px -8px rgb(0 0 0 / 0.5);
-    --shadow-3: 0 24px 64px -16px rgb(0 0 0 / 0.6);
-    --color-scrim: color-mix(in oklab, var(--ink-1000) 60%, transparent);
-  }
-
   /* ------------------------------------------------------------------------
-     .on-inverse — an ink band on the white canvas (hero, footer, media wells).
-     It re-declares the semantic layer to its dark values for the whole subtree,
-     so every nested component renders correctly with ZERO component changes.
-     That is the entire payoff of the tier-2 token architecture.
-     In dark theme it deepens to ink-1000 rather than inverting to white —
-     flipping to a white band mid-page would read as a broken section.
+     .on-inverse — historically "an ink band on the white canvas". With the
+     light theme retired the semantic layer IS dark, so this class no longer
+     re-declares tokens; it survives as a marker that pins a subtree to the
+     deepest black (hero, footer, media wells) and keeps native form controls
+     rendering dark. Removing it from markup is optional cleanup, not required.
      ------------------------------------------------------------------------ */
   .on-inverse {
     color-scheme: dark;
-
-    --color-canvas:         var(--ink-950);
-    --color-canvas-sunken:  var(--ink-1000);
-    --color-surface:        var(--ink-900);
-    --color-surface-raised: var(--ink-850);
-    --color-surface-hover:  var(--ink-850);
-
-    --color-border:        var(--ink-800);
-    --color-border-strong: var(--ink-700);
-
-    --color-text:      var(--ink-0);
-    --color-secondary: var(--ink-300);
-    --color-muted:     var(--ink-400);
-    --color-disabled:  var(--ink-600);
-
-    --color-accent-text:   var(--gold-400);
-    --color-accent-subtle: var(--gold-950);
-
-    --color-link:       var(--azure-300);
-    --color-link-hover: var(--azure-200);
-    --color-focus:      var(--azure-400);
-
-    --color-success:        var(--verdant-400);
-    --color-success-subtle: var(--verdant-950);
-    --color-danger:         var(--red-400);
-    --color-danger-subtle:  var(--red-950);
-
-    --shadow-1: none;
-    --shadow-2: 0 8px 24px -8px rgb(0 0 0 / 0.5);
-    --shadow-3: 0 24px 64px -16px rgb(0 0 0 / 0.6);
-
+    --color-canvas: var(--ink-1000);
     background-color: var(--color-canvas);
     color: var(--color-text);
-  }
-
-  :root[data-theme="dark"] .on-inverse {
-    --color-canvas: var(--ink-1000);
   }
 }
 
@@ -394,7 +329,14 @@
     border-radius: var(--radius-xs);
   }
 
-  :where(h1, h2, h3, h4) {
+  :where(h1, h2) {
+    margin: 0;
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--tracking-tighter);
+    text-wrap: balance;
+  }
+
+  :where(h3, h4) {
     margin: 0;
     font-weight: var(--font-weight-semibold);
     letter-spacing: var(--tracking-tighter);
@@ -407,13 +349,35 @@
 }
 
 @layer components {
+  /* One size, one weight, every section — applied by the Section primitive
+     and any hand-rolled section header. Change it here, it changes everywhere. */
+  .section-title {
+    font-size: var(--text-3xl);
+    line-height: var(--text-3xl--line-height);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--tracking-tighter);
+    text-wrap: balance;
+  }
+  @media (min-width: 64rem) {
+    .section-title {
+      font-size: var(--text-4xl);
+      line-height: var(--text-4xl--line-height);
+      letter-spacing: var(--tracking-display);
+    }
+  }
+
+  /* Eyebrow — the section label. Sized and coloured for legibility on black
+     at a glance (client annotation: the 13px/500/muted version read faint):
+     one step up in size, semibold, and the SECONDARY text tone (7.5:1) rather
+     than muted (5.2:1). Tracked caps in the primary sans. */
   .eyebrow {
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    line-height: var(--text-xs--line-height);
-    letter-spacing: var(--tracking-label);
+    font-family: var(--font-label);
+    font-size: var(--text-sm);
+    line-height: var(--text-sm--line-height);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--tracking-micro);
     text-transform: uppercase;
-    color: var(--color-muted);
+    color: var(--color-secondary);
   }
 
   .manifesto {
@@ -456,15 +420,272 @@
   .lead-measure  { max-width: var(--measure-lead); }
   .tabular       { font-variant-numeric: tabular-nums; }
 
-  /* Theme-paired logo artwork. Two tiny SVGs, zero JS, no hydration flash.
-     Class names describe the SURFACE the artwork sits on, not the artwork. */
-  .logo-on-dark  { display: none; }
-  .logo-on-light { display: block; }
-  :root[data-theme="dark"] .logo-on-dark  { display: block; }
-  :root[data-theme="dark"] .logo-on-light { display: none; }
-  /* An inverse band is a dark surface whichever theme is active. */
-  .on-inverse .logo-on-dark  { display: block; }
-  .on-inverse .logo-on-light { display: none; }
+  /* Theme-paired logo artwork. The site is dark-only now, so the on-dark
+     variant always shows; the class pair stays so artwork keeps carrying both
+     files and no component needs editing. */
+  .logo-on-dark  { display: block; }
+  .logo-on-light { display: none; }
+
+  /* ------------------------------------------------------------- glass cards
+     The site-wide card surface, ported from Kokonut UI's liquid-glass /
+     tweet-card recipes and re-expressed in tokens (their source uses
+     Tailwind's default palette, which this theme deliberately clears).
+     Two deliberate departures from the source:
+       — no backdrop-filter: over flat black it is visually a no-op but costs
+         GPU per card, and this class sits on ~40 cards per page;
+       — the hover wash is GOLD, not white — the accent system stays ours.
+     Layers: gradient body + hairline border, ::before top sheen,
+     ::after gold hover wash (only with .card-glass-hover). */
+  .card-glass {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border: 1px solid rgb(255 255 255 / 0.08);
+    background: linear-gradient(
+      135deg,
+      rgb(255 255 255 / 0.055) 0%,
+      rgb(255 255 255 / 0.015) 100%
+    );
+    box-shadow: var(--shadow-2);
+  }
+  .card-glass::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    background: linear-gradient(180deg, rgb(255 255 255 / 0.055), transparent 30%);
+  }
+
+  /* Gold-register variant — the one accent cell in a composition. */
+  .card-glass-gold {
+    border-color: color-mix(in oklab, var(--gold-500) 32%, transparent);
+    background: linear-gradient(
+      135deg,
+      color-mix(in oklab, var(--gold-500) 13%, transparent) 0%,
+      color-mix(in oklab, var(--gold-500) 4%, transparent) 100%
+    );
+  }
+  .card-glass-gold::before {
+    background: linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--gold-500) 10%, transparent),
+      transparent 32%
+    );
+  }
+
+  /* Open/active register — the one expanded card in a stack. Deepest black
+     with the gold sheen pinned on, so "open" reads as lit, not just larger. */
+  .card-glass-open {
+    border-color: color-mix(in oklab, var(--gold-500) 30%, transparent);
+    /* Active glow anchored LOWER-LEFT (client direction) — the artwork holds
+       the lower-right, so the two gold sources bracket the card. */
+    background:
+      radial-gradient(70% 90% at 0% 100%, color-mix(in oklab, var(--gold-500) 22%, transparent), transparent 62%),
+      radial-gradient(60% 50% at 100% 0%, color-mix(in oklab, var(--gold-500) 6%, transparent), transparent 70%),
+      var(--ink-1000);
+  }
+  .card-glass-open::before {
+    background: linear-gradient(180deg, color-mix(in oklab, var(--gold-500) 8%, transparent), transparent 40%);
+  }
+
+  /* Hover wash for cards that are links. Opacity-only, compositor-friendly. */
+  .card-glass-hover::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    opacity: 0;
+    background: radial-gradient(
+      90% 75% at 50% 0%,
+      color-mix(in oklab, var(--gold-500) 13%, transparent),
+      transparent 72%
+    );
+    transition: opacity var(--dur-base) var(--ease-hover);
+  }
+  /* Active/hover state, made unmistakable (client annotation): the border
+     turns gold, the wash brightens, and a soft gold ring lifts the card. */
+  @media (hover: hover) and (pointer: fine) {
+    .card-glass-hover:hover {
+      border-color: color-mix(in oklab, var(--gold-500) 55%, transparent);
+      box-shadow:
+        var(--shadow-2),
+        0 0 0 1px color-mix(in oklab, var(--gold-500) 25%, transparent),
+        0 18px 48px -18px color-mix(in oklab, var(--gold-500) 45%, transparent);
+    }
+    .card-glass-hover:hover::after { opacity: 1; }
+  }
+  .card-glass-hover::after {
+    background: radial-gradient(
+      90% 75% at 50% 0%,
+      color-mix(in oklab, var(--gold-500) 20%, transparent),
+      transparent 72%
+    );
+  }
+  .card-glass-hover:focus-visible,
+  .card-glass-hover:focus-within {
+    border-color: color-mix(in oklab, var(--gold-500) 55%, transparent);
+  }
+  .card-glass-hover:focus-visible::after,
+  .card-glass-hover:focus-within::after { opacity: 1; }
+
+  /* ------------------------------------------------------------- .on-light
+     A LIGHT object on the black canvas (the footer CTA card). Re-declares
+     the semantic layer to light values for its subtree, so nothing inside
+     needs theme-aware classes — the same trick the old .on-inverse used in
+     the other direction. Gold TEXT darkens two steps (gold-500 on white is
+     2.55:1 and fails); the gold BUTTON keeps its ink-on-gold pairing. */
+  .on-light {
+    color-scheme: light;
+    --color-canvas:         var(--ink-0);
+    --color-canvas-sunken:  var(--ink-50);
+    --color-surface:        var(--ink-0);
+    --color-surface-raised: var(--ink-0);
+    --color-surface-hover:  var(--ink-50);
+    --color-border:         var(--ink-100);
+    --color-border-strong:  var(--ink-200);
+    --color-text:      var(--ink-1000);
+    --color-secondary: var(--ink-700);
+    --color-muted:     var(--ink-600);
+    --color-disabled:  var(--ink-400);
+    --color-accent-text:   var(--gold-800);
+    --color-accent-subtle: var(--gold-50);
+    --color-link:       var(--azure-800);
+    --color-link-hover: var(--azure-900);
+    --color-focus:      var(--azure-700);
+    background-color: var(--color-canvas);
+    color: var(--color-text);
+  }
+
+  /* ---------------------------------------------------------- .marker-dot
+     The list marker. Em dashes are retired site-wide (client direction):
+     every "—" bullet is a 6px gold dot, optically centred on the first line
+     of a 15–17px item. Use as an empty <span aria-hidden> before the text. */
+  .marker-dot {
+    display: inline-block;
+    flex-shrink: 0;
+    width: 6px;
+    height: 6px;
+    margin-top: 0.6em;
+    border-radius: 9999px;
+    background: var(--color-accent);
+  }
+
+  /* ------------------------------------------------------------- reveals
+     Driven by components/motion/Reveal.tsx. Pre-reveal state is authored
+     here so SSR paints it (no flash), and `data-shown` flips it. Durations
+     lean long (620ms) with the ease-out token — arrival, not a pop.
+     `--reveal-delay` staggers siblings. Reduced-motion is handled by the
+     global rule below (durations → 0.01ms), so nothing extra is needed. */
+  .reveal {
+    --reveal-delay: 0ms;
+    transition-delay: var(--reveal-delay);
+    will-change: opacity, transform;
+  }
+  .reveal[data-reveal='up'] {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 620ms var(--ease-out) var(--reveal-delay),
+      transform 620ms var(--ease-out) var(--reveal-delay);
+  }
+  .reveal[data-reveal='fade'] {
+    opacity: 0;
+    transition: opacity 720ms var(--ease-hover) var(--reveal-delay);
+  }
+  .reveal[data-reveal='mask'] {
+    clip-path: inset(0 0 100% 0);
+    transform: translateY(14px);
+    transition:
+      clip-path 760ms var(--ease-in-out) var(--reveal-delay),
+      transform 760ms var(--ease-out) var(--reveal-delay);
+  }
+  .reveal[data-shown] {
+    opacity: 1;
+    transform: none;
+    clip-path: inset(0 0 0 0);
+  }
+  /* Once revealed, release the compositor hint. */
+  .reveal[data-shown] { will-change: auto; }
+
+  /* ------------------------------------------------------- flow timeline
+     Track + fill + nodes for the execution-flow ladder. Fill is a scaleX
+     over 3s; node i lights at i×600ms (5 nodes → last at 2.4s, inside the
+     3s budget) and stays lit. Everything keys off the Reveal wrapper's
+     data-shown, so it starts when the block is actually on screen. */
+  .flow-track, .flow-fill {
+    position: absolute; top: 7px; left: 0; height: 2px; border-radius: 1px;
+  }
+  .flow-track { right: 0; background: var(--color-border); }
+  .flow-fill  {
+    /* nodes sit at the left edge of each of 5 cells → the last is at 80%.
+       The fill runs to that node and no further. */
+    width: 80%; transform-origin: left; transform: scaleX(0);
+    background: linear-gradient(90deg, var(--gold-600), var(--gold-400));
+  }
+  .flow-node {
+    position: absolute; top: 0; left: 0;
+    width: 16px; height: 16px; border-radius: 9999px;
+    border: 2px solid var(--color-border-strong);
+    background: var(--color-canvas);
+    box-shadow: 0 0 0 0 transparent;
+  }
+  /* Auto-loop, 3s cycle (client direction). Fill and every node share ONE
+     3000ms timeline so they stay in step forever: fill 0→80% over 2.4s
+     (reaching the last node), hold, fade; node i lights at i×20% and stays
+     lit until the fade. Per-node keyframes because keyframe offsets can't
+     read a custom property; nodes are addressed by data-i. */
+  .flow-loop .flow-fill { animation: oc-flow-fill-loop 3000ms linear infinite; }
+  .flow-loop .flow-node { animation-duration: 3000ms; animation-timing-function: var(--ease-out); animation-iteration-count: infinite; }
+  .flow-loop .flow-node[data-i="0"] { animation-name: oc-fn-0; }
+  .flow-loop .flow-node[data-i="1"] { animation-name: oc-fn-1; }
+  .flow-loop .flow-node[data-i="2"] { animation-name: oc-fn-2; }
+  .flow-loop .flow-node[data-i="3"] { animation-name: oc-fn-3; }
+  .flow-loop .flow-node[data-i="4"] { animation-name: oc-fn-4; }
+
+  @keyframes oc-flow-fill-loop {
+    0%   { transform: scaleX(0); opacity: 1; }
+    80%  { transform: scaleX(1); opacity: 1; }
+    92%  { transform: scaleX(1); opacity: 1; }
+    100% { transform: scaleX(1); opacity: 0; }
+  }
+  @keyframes oc-fn-0 { 0%,0.1%{border-color:var(--color-border-strong);background:var(--color-canvas);box-shadow:none;transform:scale(1)} 6%{transform:scale(1.4);border-color:var(--gold-300);background:var(--gold-400);box-shadow:0 0 0 10px color-mix(in oklab,var(--gold-500) 30%,transparent),0 0 28px color-mix(in oklab,var(--gold-500) 70%,transparent)} 12%,92%{transform:scale(1);border-color:var(--gold-400);background:var(--gold-500);box-shadow:0 0 0 6px color-mix(in oklab,var(--gold-500) 22%,transparent),0 0 18px color-mix(in oklab,var(--gold-500) 45%,transparent)} 100%{border-color:var(--color-border-strong);background:var(--color-canvas);box-shadow:none;transform:scale(1)} }
+  @keyframes oc-fn-1 { 0%,20%{border-color:var(--color-border-strong);background:var(--color-canvas);box-shadow:none;transform:scale(1)} 26%{transform:scale(1.4);border-color:var(--gold-300);background:var(--gold-400);box-shadow:0 0 0 10px color-mix(in oklab,var(--gold-500) 30%,transparent),0 0 28px color-mix(in oklab,var(--gold-500) 70%,transparent)} 32%,92%{transform:scale(1);border-color:var(--gold-400);background:var(--gold-500);box-shadow:0 0 0 6px color-mix(in oklab,var(--gold-500) 22%,transparent),0 0 18px color-mix(in oklab,var(--gold-500) 45%,transparent)} 100%{border-color:var(--color-border-strong);background:var(--color-canvas);box-shadow:none;transform:scale(1)} }
+  @keyframes oc-fn-2 { 0%,40%{border-color:var(--color-border-strong);background:var(--color-canvas);box-shadow:none;transform:scale(1)} 46%{transform:scale(1.4);border-color:var(--gold-300);background:var(--gold-400);box-shadow:0 0 0 10px color-mix(in oklab,var(--gold-500) 30%,transparent),0 0 28px color-mix(in oklab,var(--gold-500) 70%,transparent)} 52%,92%{transform:scale(1);border-color:var(--gold-400);background:var(--gold-500);box-shadow:0 0 0 6px color-mix(in oklab,var(--gold-500) 22%,transparent),0 0 18px color-mix(in oklab,var(--gold-500) 45%,transparent)} 100%{border-color:var(--color-border-strong);background:var(--color-canvas);box-shadow:none;transform:scale(1)} }
+  @keyframes oc-fn-3 { 0%,60%{border-color:var(--color-border-strong);background:var(--color-canvas);box-shadow:none;transform:scale(1)} 66%{transform:scale(1.4);border-color:var(--gold-300);background:var(--gold-400);box-shadow:0 0 0 10px color-mix(in oklab,var(--gold-500) 30%,transparent),0 0 28px color-mix(in oklab,var(--gold-500) 70%,transparent)} 72%,92%{transform:scale(1);border-color:var(--gold-400);background:var(--gold-500);box-shadow:0 0 0 6px color-mix(in oklab,var(--gold-500) 22%,transparent),0 0 18px color-mix(in oklab,var(--gold-500) 45%,transparent)} 100%{border-color:var(--color-border-strong);background:var(--color-canvas);box-shadow:none;transform:scale(1)} }
+  @keyframes oc-fn-4 { 0%,80%{border-color:var(--color-border-strong);background:var(--color-canvas);box-shadow:none;transform:scale(1)} 86%{transform:scale(1.4);border-color:var(--gold-300);background:var(--gold-400);box-shadow:0 0 0 10px color-mix(in oklab,var(--gold-500) 30%,transparent),0 0 28px color-mix(in oklab,var(--gold-500) 70%,transparent)} 92%,92%{transform:scale(1);border-color:var(--gold-400);background:var(--gold-500);box-shadow:0 0 0 6px color-mix(in oklab,var(--gold-500) 22%,transparent),0 0 18px color-mix(in oklab,var(--gold-500) 45%,transparent)} 100%{border-color:var(--color-border-strong);background:var(--color-canvas);box-shadow:none;transform:scale(1)} }
+  @keyframes oc-flow-fill { to { transform: scaleX(1); } }
+
+  /* orbit illustration (CrewOrbit): rings turn, nodes counter-turn upright */
+  @keyframes oc-orbit         { to { transform: rotate(360deg); } }
+  @keyframes oc-orbit-counter { from { transform: translate(-50%, -50%) rotate(0deg); }
+                                to   { transform: translate(-50%, -50%) rotate(-360deg); } }
+  @keyframes oc-breathe       { 0%, 100% { transform: scale(1);    opacity: 0.55; }
+                                50%      { transform: scale(1.12); opacity: 0.85; } }
+  @keyframes oc-flow-node {
+    0%   { transform: scale(1); }
+    55%  { transform: scale(1.45);
+           border-color: var(--gold-300);
+           background: var(--gold-400);
+           box-shadow: 0 0 0 10px color-mix(in oklab, var(--gold-500) 30%, transparent),
+                       0 0 28px color-mix(in oklab, var(--gold-500) 70%, transparent); }
+    100% { transform: scale(1);
+           border-color: var(--gold-400);
+           background: var(--gold-500);
+           box-shadow: 0 0 0 6px color-mix(in oklab, var(--gold-500) 22%, transparent),
+                       0 0 18px color-mix(in oklab, var(--gold-500) 45%, transparent); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .flow-fill { transform: scaleX(1); }
+    .flow-node { border-color: var(--gold-400); background: var(--gold-500); }
+  }
+
+  /* Lenis: it owns the scroll; the browser's own smoothing would double-ease. */
+  html.lenis, html.lenis body { height: auto; }
+  .lenis.lenis-smooth { scroll-behavior: auto !important; }
+  .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+  .lenis.lenis-stopped { overflow: hidden; }
 }
 
 /* ==========================================================================

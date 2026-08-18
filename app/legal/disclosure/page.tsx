@@ -35,7 +35,7 @@ const CLAUSES = [
   {
     n: '04',
     title: 'Engagement outcomes',
-    body: `Milestones and outcomes are published only in wording the client has approved. We describe what was done — an application supported, an engagement initiated, an audit engagement begun — and we do not describe outcomes that belong to a third party as though they were ours. ${INDEPENDENCE_DISCLAIMER}`,
+    body: `Milestones and outcomes are published only in wording the client has approved. We describe what was done (an application supported, an engagement initiated, an audit engagement begun) and we do not describe outcomes that belong to a third party as though they were ours. ${INDEPENDENCE_DISCLAIMER}`,
   },
   {
     n: '05',
@@ -73,7 +73,7 @@ export default function DisclosurePage() {
       </Section>
 
       <Section className="border-t border-border">
-        <h2 className="max-w-[22ch] text-2xl tracking-[-0.015em] lg:text-3xl lg:tracking-[-0.02em]">
+        <h2 className="section-title max-w-[22ch]">
           Conducting diligence on a project that lists an OPENCREW member?
         </h2>
         <p className="lead-measure mt-5 text-secondary">
@@ -81,7 +81,7 @@ export default function DisclosurePage() {
           writing.
         </p>
         <div className="mt-7 flex flex-wrap gap-4">
-          <Link href="/start" className={buttonClasses('primary', 'lg')}>
+          <Link href="/contact" className={buttonClasses('primary', 'lg')}>
             Request verification
           </Link>
           <Link href="/about" className={buttonClasses('ghost', 'lg')}>

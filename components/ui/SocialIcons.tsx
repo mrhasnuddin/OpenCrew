@@ -26,26 +26,43 @@ const PATHS: Record<Platform, { label: string; d: string; viewBox: string }> = {
   },
 };
 
-function Glyph({ platform }: { platform: Platform }) {
+function Glyph({ platform, size }: { platform: Platform; size: 'sm' | 'lg' }) {
   const { d, viewBox } = PATHS[platform];
   return (
-    <svg viewBox={viewBox} className="size-[15px]" fill="currentColor" aria-hidden="true">
+    <svg
+      viewBox={viewBox}
+      className={size === 'lg' ? 'size-[22px]' : 'size-[15px]'}
+      fill="currentColor"
+      aria-hidden="true"
+    >
       <path d={d} />
     </svg>
   );
 }
 
+/**
+ * `size`: 'sm' (15px, profile cards) | 'lg' (22px, footer).
+ * `tone`: 'muted' (default) | 'accent' — the footer's marks are gold; the
+ * placeholder state stays gold at reduced opacity so the brand mark holds
+ * even before the handles land.
+ */
 export function SocialIcons({
   links,
   className,
+  size = 'sm',
+  tone = 'muted',
 }: {
   links?: { x?: string; linkedin?: string };
   className?: string;
+  size?: 'sm' | 'lg';
+  tone?: 'muted' | 'accent';
 }) {
   const platforms: Platform[] = ['x', 'linkedin'];
+  const rest = tone === 'accent' ? 'text-accent hover:text-accent-hover' : 'text-muted hover:text-text';
+  const idle = tone === 'accent' ? 'text-accent opacity-70' : 'text-disabled';
 
   return (
-    <ul className={cn('flex items-center gap-4', className)}>
+    <ul className={cn('flex items-center', size === 'lg' ? 'gap-5' : 'gap-4', className)}>
       {platforms.map((platform) => {
         const href = links?.[platform];
         return (
@@ -56,13 +73,13 @@ export function SocialIcons({
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={PATHS[platform].label}
-                className="block text-muted transition-colors duration-[var(--dur-fast)] ease-hover hover:text-text"
+                className={cn('block transition-colors duration-[var(--dur-fast)] ease-hover', rest)}
               >
-                <Glyph platform={platform} />
+                <Glyph platform={platform} size={size} />
               </a>
             ) : (
-              <span className="block text-disabled" aria-hidden="true">
-                <Glyph platform={platform} />
+              <span className={cn('block', idle)} aria-hidden="true">
+                <Glyph platform={platform} size={size} />
               </span>
             )}
           </li>

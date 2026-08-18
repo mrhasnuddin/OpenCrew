@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
  *
  * Odd-numbered files carry dark artwork (for light surfaces); even-numbered
  * carry light artwork (for dark surfaces). Both are rendered and toggled by
- * CSS on [data-theme] — two tiny requests, zero JS, no hydration flash.
+ * CSS class pair (site is dark-only) — two tiny requests, zero JS, no flash.
  */
 
 type Variant = 'mark' | 'horizontal' | 'combine';

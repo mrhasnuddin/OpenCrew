@@ -59,7 +59,7 @@ export function InstitutionPlate({ item, className }: { item: Institution; class
   );
 
   const shared = cn(
-    'group flex flex-col items-center justify-center gap-4 rounded-md border border-border bg-surface',
+    'card-glass group flex flex-col items-center justify-center gap-4 rounded-md',
     'p-5 text-center',
     'transition-[border-color,transform] duration-[var(--dur-base)] ease-out',
     '[@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-[2px]',
@@ -72,7 +72,7 @@ export function InstitutionPlate({ item, className }: { item: Institution; class
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      title={`${item.name} — ${item.blurb}`}
+      title={`${item.name}: ${item.blurb}`}
       className={cn(shared, 'focus-visible:outline-2 focus-visible:outline-focus focus-visible:outline-offset-2')}
     >
       {body}

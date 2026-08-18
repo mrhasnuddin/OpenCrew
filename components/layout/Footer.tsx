@@ -20,9 +20,9 @@ const COLUMNS = [
     title: 'Pages',
     links: [
       { label: 'The Crew', href: '/crew' },
-      { label: 'Work', href: '/work' },
-      { label: 'Network', href: '/network' },
+      { label: 'Partners', href: '/partners' },
       { label: 'About', href: '/about' },
+      { label: 'Contact', href: '/contact' },
     ],
   },
   {
@@ -30,11 +30,11 @@ const COLUMNS = [
     links: CAPABILITIES.map((c) => ({ label: c.name, href: `/services/${c.slug}` })),
   },
   {
-    title: 'Engage',
+    title: 'Home',
     links: [
-      { label: 'How We Work', href: '/engage' },
-      { label: 'Deploy by Role', href: '/roles' },
-      { label: 'Start a Project', href: '/start' },
+      { label: 'Selected engagements', href: '/#work' },
+      { label: 'How we work', href: '/#how-we-work' },
+      { label: 'Why OPENCREW', href: '/#why' },
       { label: 'Join the Crew', href: '/join' },
     ],
   },
@@ -50,17 +50,22 @@ const COLUMNS = [
 
 export function Footer() {
   return (
-    <footer className="border-t border-border pt-7 pb-6 lg:pt-8">
-      <Container>
-        <FooterCta />
+    // Full viewport (reference): the CTA panel takes the upper block and
+    // centres in it; wayfinding, the wordmark and the base bar sit at the
+    // bottom. min-h-svh not h-svh — content wins if the viewport is short.
+    <footer className="flex min-h-svh flex-col border-t border-border pt-7 pb-6 lg:pt-8">
+      <Container className="flex flex-1 items-center py-6">
+        <div className="w-full">
+          <FooterCta />
+        </div>
       </Container>
 
       {/* ───────────────────────────────── wayfinding */}
-      <Container className="mt-8 lg:mt-9">
+      <Container className="mt-7">
         <div className="grid grid-cols-2 gap-7 border-t border-border pt-7 sm:grid-cols-3 lg:grid-cols-6">
           <div>
             <p className="eyebrow mb-5">Our social</p>
-            <SocialIcons links={{}} />
+            <SocialIcons links={{}} size="lg" tone="accent" />
           </div>
 
           {COLUMNS.map((col) => (
@@ -84,29 +89,35 @@ export function Footer() {
           <div>
             <p className="eyebrow mb-5">Contact us</p>
             <ul className="flex flex-col gap-3">
-              {CONTACT.map((c) =>
-                c.href ? (
+              {/* Same anatomy as the wayfinding links. A placeholder value
+                  renders as the channel LABEL — no bracketed tokens on a
+                  public page; once a value lands in content/contact.ts the
+                  value shows instead. */}
+              {CONTACT.map((c) => {
+                const placeholder = c.value.startsWith('\u3010');
+                const text = placeholder ? c.label : c.value;
+                return (
                   <li key={c.key}>
-                    <a
-                      href={c.href}
-                      className="text-sm text-muted transition-colors duration-[var(--dur-fast)] ease-hover hover:text-text"
-                    >
-                      {c.value}
-                    </a>
+                    {c.href ? (
+                      <a
+                        href={c.href}
+                        className="text-sm text-muted transition-colors duration-[var(--dur-fast)] ease-hover hover:text-text"
+                      >
+                        {text}
+                      </a>
+                    ) : (
+                      <span className="text-sm text-muted">{text}</span>
+                    )}
                   </li>
-                ) : (
-                  <li key={c.key} className="text-sm text-muted">
-                    {c.value}
-                  </li>
-                ),
-              )}
+                );
+              })}
             </ul>
           </div>
         </div>
       </Container>
 
-      {/* ───────────────────────────────── brand */}
-      <Container className="mt-9">
+      {/* ───────────────────────────────── brand — the OPENCREW wordmark, oversized */}
+      <Container className="mt-8">
         <Logo variant="horizontal" fluid label="OPENCREW Labs" />
       </Container>
 

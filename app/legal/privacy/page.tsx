@@ -4,6 +4,8 @@ import { Disclaimer } from '@/components/marketing/Blocks';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
+  description:
+    'How OPENCREW Labs handles personal data across this site, the crew directory and project intake. Draft pending legal review.',
   robots: { index: false, follow: true },
 };
 
@@ -24,11 +26,11 @@ const SECTIONS = [
   },
   {
     title: 'What we collect',
-    body: 'Information you send us directly when you contact us about a project or about joining the network — your name, role, organisation, email address, messaging handle, and anything you choose to include in your message or attachments. We do not collect payment information through this website.',
+    body: 'Information you send us directly when you contact us about a project or about joining the network: your name, role, organisation, email address, messaging handle, and anything you choose to include in your message or attachments. We do not collect payment information through this website.',
   },
   {
     title: 'Analytics',
-    body: 'We use Vercel Web Analytics to count page views and understand which pages are useful. It is cookieless, sets no persistent identifier, and does not collect personal data or build a profile of you — which is why this site shows no cookie banner. If we ever adopt a provider that sets cookies, we will add a consent gate before it loads and update this page first.',
+    body: 'We use Vercel Web Analytics to count page views and understand which pages are useful. It is cookieless, sets no persistent identifier, and does not collect personal data or build a profile of you, which is why this site shows no cookie banner. If we ever adopt a provider that sets cookies, we will add a consent gate before it loads and update this page first.',
   },
   {
     title: 'Why we use it',
@@ -40,11 +42,11 @@ const SECTIONS = [
   },
   {
     title: 'How long we keep it',
-    body: '【Retention periods — to be set with counsel.】',
+    body: '【Retention periods: to be set with counsel.】',
   },
   {
     title: 'Your rights',
-    body: '【Statutory rights and how to exercise them, per the governing jurisdiction — to be set with counsel. Note that the audience spans Malaysia, Singapore, Hong Kong, the EU and the US, so more than one regime may apply.】',
+    body: '【Statutory rights and how to exercise them, per the governing jurisdiction: to be set with counsel. Note that the audience spans Malaysia, Singapore, Hong Kong, the EU and the US, so more than one regime may apply.】',
   },
 ];
 
