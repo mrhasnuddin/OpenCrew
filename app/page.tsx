@@ -5,7 +5,7 @@ import { CapabilityStack } from '@/components/marketing/CapabilityStack';
 import { PartnerMarquee } from '@/components/marketing/PartnerMarquee';
 import { ClientStories } from '@/components/marketing/ClientStories';
 import { FeaturedCrew } from '@/components/marketing/FeaturedCrew';
-import { CrewOrbit } from '@/components/marketing/CrewOrbit';
+import { CrewMosaic } from '@/components/marketing/CrewMosaic';
 import { ModelsBento } from '@/components/marketing/ModelsBento';
 import { Reveal } from '@/components/motion/Reveal';
 import { buttonClasses } from '@/components/ui/Button';
@@ -128,8 +128,9 @@ export default function HomePage() {
 
       {/* ------------------------------------------------------------- 05 why us
           The reference's "Why Cuberto" slot. Ours is the claim the whole
-          business rests on — deployed, not introduced — beside the five real
-          faces that prove it, then the crew cards themselves. */}
+          business rests on — deployed, not introduced — beside a static
+          portrait mosaic of the five real people (no motion, client
+          direction), then the crew cards themselves. */}
       <Section id="why">
         <Reveal>
           <div className="on-inverse relative overflow-hidden rounded-xl bg-ink-1000">
@@ -141,7 +142,7 @@ export default function HomePage() {
                   'radial-gradient(80% 90% at 82% 20%, color-mix(in oklab, var(--gold-500) 8%, transparent) 0%, transparent 62%)',
               }}
             />
-            <div className="relative grid gap-9 p-7 lg:grid-cols-[1.1fr_1fr] lg:items-center lg:p-9">
+            <div className="relative grid gap-8 p-6 sm:p-7 lg:grid-cols-[1.1fr_1fr] lg:items-center lg:gap-9 lg:p-9">
               <div>
                 <p className="eyebrow mb-6">Why OPENCREW</p>
                 <h2 className="section-title max-w-[16ch]">Deployed, not introduced.</h2>
@@ -174,7 +175,7 @@ export default function HomePage() {
                 </div>
               </div>
 
-              <CrewOrbit className="max-lg:mt-4" />
+              <CrewMosaic className="max-lg:mt-4" />
             </div>
           </div>
         </Reveal>

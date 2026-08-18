@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 /**
  * "How we work" as a bento — the three engagement models as cells with a big
  * numeral and their commercial shape, plus a wide cell carrying the five-step
- * execution flow as a horizontal ladder. Replaces the old /engage page in
+ * execution flow as a static numbered rail. Replaces the old /engage page in
  * full: everything that page said is here, at a glance, with the intake CTA
  * one cell away.
  *
@@ -53,28 +53,25 @@ export function ModelsBento() {
             Start a project
           </Link>
         </div>
-        {/* Timeline (client annotation): a track across the top with one node
-            per step. The sequence AUTO-LOOPS on a 3s cycle — fill runs left to
-            right, nodes light in turn (0 / 0.6 / 1.2 / 1.8 / 2.4s), a short
-            fade, repeat. Pure CSS (tokens.css .flow-*), no scroll trigger.
-            Reduced motion: static, all lit. */}
+        {/* Execution flow, static (client direction: the looping animation was
+            not suitable). Direction is carried by the rail itself: numbered
+            nodes 01→05, the first filled (the start), a chevron on every
+            segment pointing forward, and the rail brightening as it goes.
+            Horizontal across five columns at lg; a left-hand vertical rail
+            below. Styles: tokens.css `.flow-rail / .flow-step / .flow-node`;
+            --flow-gap mirrors the grid gap so segments meet the next node. */}
         <Reveal className="mt-7 border-t border-border pt-7">
-          <div className="relative flow-loop">
-            <span aria-hidden="true" className="flow-track" />
-            <span aria-hidden="true" className="flow-fill" />
-            <ol className="grid gap-6 lg:grid-cols-5">
-              {EXECUTION_FLOW.map((step, i) => (
-                <li key={step.index} className="relative pt-7">
-                  <span aria-hidden="true" className="flow-node" data-i={i} />
-                  <span className="font-mono text-2xs tracking-[0.06em] text-accent-text">
-                    {step.index}
-                  </span>
-                  <span className="mt-3 block font-medium text-text">{step.title}</span>
-                  <span className="mt-2 block text-sm text-muted">{step.body}</span>
-                </li>
-              ))}
-            </ol>
-          </div>
+          <ol className="flow-rail grid gap-6 [--flow-gap:26px] lg:grid-cols-5 lg:gap-7 lg:[--flow-gap:42px]">
+            {EXECUTION_FLOW.map((step) => (
+              <li key={step.index} className="flow-step">
+                <span aria-hidden="true" className="flow-node">
+                  {step.index}
+                </span>
+                <span className="block font-medium text-text">{step.title}</span>
+                <span className="mt-2 block text-sm text-muted">{step.body}</span>
+              </li>
+            ))}
+          </ol>
         </Reveal>
       </div>
     </div>

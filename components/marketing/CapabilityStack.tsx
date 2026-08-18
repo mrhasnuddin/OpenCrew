@@ -15,8 +15,8 @@ import { cn } from '@/lib/utils';
  *
  * Each open card carries the client-supplied artwork for that capability
  * (public/What/{index}.svg — gold line illustrations, one per capability),
- * anchored lower-right and bleeding slightly past the card edge, with the
- * open-state glow at the lower-left (`.card-glass-open`).
+ * centred in the right column inside one fixed-ratio box shared by every card,
+ * with the open-state glow at the lower-left (`.card-glass-open`).
  *
  * Kokonut's `card-stack` does the same thing structurally, but its styling is
  * written against Tailwind's default palette (cleared in this theme) so it
@@ -31,6 +31,18 @@ import { cn } from '@/lib/utils';
 const CapabilityIcon = dynamic(() => import('./CapabilityIcon'), {
   loading: () => <span className="block size-[26px]" aria-hidden="true" />,
 });
+
+/**
+ * The six artwork files are not drawn to the same fill: 1–5 carry a 50px
+ * transparent margin inside their viewBox (the drawn figure is ~70% of the
+ * file, the rest is room for the glow), 6 fills its viewBox edge to edge. In
+ * one shared box that made Market Execution's art ~1.4× the others (client
+ * annotation). Scaling 1–5 up by the inverse of their fill puts every DRAWN
+ * figure at the same size; the box (and so the row height) is unchanged, and
+ * the scaled-out margin is transparent glow, so nothing is clipped that
+ * matters. Measured, not guessed: getBBox over each file's shapes.
+ */
+const ART_SCALE = [1.4, 1.4, 1.4, 1.4, 1.4, 1] as const;
 
 export function CapabilityStack() {
   const [open, setOpen] = React.useState(0);
@@ -88,7 +100,9 @@ export function CapabilityStack() {
                   </span>
                   <span
                     className={cn(
-                      'block truncate text-xl font-bold tracking-[-0.015em] lg:text-2xl',
+                      // Wraps below sm (a 343px card truncated "Global Repre…");
+                      // single line with an ellipsis once there is room.
+                      'block text-lg leading-tight font-bold tracking-[-0.015em] sm:truncate sm:text-xl lg:text-2xl',
                       isOpen ? 'text-text' : 'text-secondary',
                     )}
                   >
@@ -115,11 +129,17 @@ export function CapabilityStack() {
               }}
             >
               <div className="overflow-hidden">
-                {/* Copy left; the capability's artwork sits in the lower-right of
-                    the card, bleeding just past the edge — visible, not cut off
-                    (client sample 1). Column min-height gives the art room even
-                    when the copy is short. */}
-                <div className="relative grid gap-7 px-6 pb-7 lg:min-h-[380px] lg:grid-cols-[1.2fr_1fr] lg:px-8 lg:pb-8">
+                {/* Copy left, artwork right. The art is ONE square box, the
+                    same on every card, sized from the column width (so it
+                    scales with the container and steps at the breakpoints)
+                    and capped at 400px on lg. Every SVG is object-contain
+                    inside that box, so all six render at the same visual size
+                    regardless of the copy length or the SVG's own viewBox
+                    (client annotation: earlier the art was sized from the row
+                    height, so the card with the longest lead had the biggest
+                    art). Row height therefore follows the art, not the copy;
+                    the copy sits centred against it. */}
+                <div className="grid gap-7 px-6 pb-7 lg:grid-cols-[1.2fr_1fr] lg:items-center lg:px-8 lg:pb-8">
                   <div className="relative z-10">
                     <p className="max-w-[var(--measure-lead)] text-lg text-secondary">{s.lead}</p>
                     <Link
@@ -130,20 +150,19 @@ export function CapabilityStack() {
                       Explore {s.name}
                     </Link>
                   </div>
-                  {/* Art column: the illustration centred both ways inside it
-                      and sized to fill (client annotation: middle-align, larger,
-                      clearer). `relative` here so the art centres in the column,
-                      not the padded panel. */}
-                  <div className="relative min-h-[260px] lg:min-h-0">
+                  <div className="flex items-center justify-center">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={`/What/${i + 1}.svg`}
                       alt=""
                       aria-hidden="true"
+                      // ART_SCALE compensates for the files' own margins so the
+                      // DRAWN figure is the same size on every card (see const).
+                      style={{ scale: String(ART_SCALE[i] ?? 1) }}
                       className={cn(
-                        'pointer-events-none absolute inset-0 m-auto w-auto max-w-full select-none object-contain',
-                        'h-[260px] lg:h-[min(100%,380px)]',
-                        'transition-[opacity,transform] duration-[560ms] ease-out',
+                        'pointer-events-none block aspect-square h-auto w-full select-none object-contain',
+                        'max-w-[280px] sm:max-w-[340px] lg:max-w-[400px]',
+                        'transition-[opacity,translate] duration-[560ms] ease-out',
                         isOpen ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0',
                       )}
                     />

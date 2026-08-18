@@ -307,7 +307,14 @@
 @layer base {
   *, *::before, *::after { box-sizing: border-box; }
 
-  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+  /* overflow-x: clip on the root propagates to the viewport as hidden: the
+     page can never scroll sideways, and a mobile browser never zooms out to
+     fit a stray wide element (which shows as "everything shifted left with a
+     dead strip on the right"). Root causes are still fixed at the source —
+     grid items get min-w-0, marquees are clipped by their section — this is
+     the belt. `clip`, not `hidden`, so the root does not become a scroll
+     container (sticky, Lenis and scroll-behavior are unaffected). */
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; overflow-x: clip; }
 
   body {
     margin: 0;
@@ -609,76 +616,71 @@
   /* Once revealed, release the compositor hint. */
   .reveal[data-shown] { will-change: auto; }
 
-  /* ------------------------------------------------------- flow timeline
-     Track + fill + nodes for the execution-flow ladder. Fill is a scaleX
-     over 3s; node i lights at i×600ms (5 nodes → last at 2.4s, inside the
-     3s budget) and stays lit. Everything keys off the Reveal wrapper's
-     data-shown, so it starts when the block is actually on screen. */
-  .flow-track, .flow-fill {
-    position: absolute; top: 7px; left: 0; height: 2px; border-radius: 1px;
-  }
-  .flow-track { right: 0; background: var(--color-border); }
-  .flow-fill  {
-    /* nodes sit at the left edge of each of 5 cells → the last is at 80%.
-       The fill runs to that node and no further. */
-    width: 80%; transform-origin: left; transform: scaleX(0);
-    background: linear-gradient(90deg, var(--gold-600), var(--gold-400));
-  }
+  /* ------------------------------------------------------- flow rail
+     Execution flow, static (client direction: no animation). A rail runs
+     through numbered nodes 01→05; every segment carries a chevron pointing
+     forward, and the rail brightens as it goes, so the direction reads at a
+     glance without motion. Horizontal at lg (five columns), vertical below
+     (a left rail with the steps stacked). Everything is a pseudo-element on
+     the step, so the markup is one <ol>. */
+  .flow-rail { position: relative; }
+  .flow-step { position: relative; }
+  /* the node: numbered ring, gold, on the canvas so the rail passes behind */
   .flow-node {
-    position: absolute; top: 0; left: 0;
-    width: 16px; height: 16px; border-radius: 9999px;
-    border: 2px solid var(--color-border-strong);
+    position: relative; z-index: 1;
+    display: flex; align-items: center; justify-content: center;
+    width: 40px; height: 40px; border-radius: 9999px;
+    border: 1.5px solid color-mix(in oklab, var(--gold-500) 55%, transparent);
     background: var(--color-canvas);
-    box-shadow: 0 0 0 0 transparent;
+    color: var(--color-accent-text);
+    font-family: var(--font-label); font-size: var(--text-xs); font-weight: 600;
+    letter-spacing: 0.04em; font-variant-numeric: tabular-nums;
+    box-shadow: 0 0 0 4px color-mix(in oklab, var(--gold-500) 8%, transparent);
   }
-  /* Auto-loop, 3s cycle (client direction). Fill and every node share ONE
-     3000ms timeline so they stay in step forever: fill 0→80% over 2.4s
-     (reaching the last node), hold, fade; node i lights at i×20% and stays
-     lit until the fade. Per-node keyframes because keyframe offsets can't
-     read a custom property; nodes are addressed by data-i. */
-  .flow-loop .flow-fill { animation: oc-flow-fill-loop 3000ms linear infinite; }
-  .flow-loop .flow-node { animation-duration: 3000ms; animation-timing-function: var(--ease-out); animation-iteration-count: infinite; }
-  .flow-loop .flow-node[data-i="0"] { animation-name: oc-fn-0; }
-  .flow-loop .flow-node[data-i="1"] { animation-name: oc-fn-1; }
-  .flow-loop .flow-node[data-i="2"] { animation-name: oc-fn-2; }
-  .flow-loop .flow-node[data-i="3"] { animation-name: oc-fn-3; }
-  .flow-loop .flow-node[data-i="4"] { animation-name: oc-fn-4; }
+  /* first node is filled: the flow starts here. Last node wears a dashed
+     outer ring: review and expansion is the stage that keeps going. */
+  .flow-step:first-child .flow-node {
+    background: var(--gold-500); color: var(--ink-1000); border-color: var(--gold-400);
+    box-shadow: 0 0 0 4px color-mix(in oklab, var(--gold-500) 18%, transparent),
+                0 0 24px color-mix(in oklab, var(--gold-500) 35%, transparent);
+  }
+  .flow-step:last-child .flow-node {
+    outline: 1px dashed color-mix(in oklab, var(--gold-500) 55%, transparent);
+    outline-offset: 5px;
+  }
+  /* the segment: from this node to the next; hidden on the last step */
+  .flow-step::before {
+    content: ''; position: absolute;
+    background: linear-gradient(90deg,
+      color-mix(in oklab, var(--gold-500) 40%, transparent),
+      color-mix(in oklab, var(--gold-500) 70%, transparent));
+  }
+  /* the chevron, mid-segment, pointing forward */
+  .flow-step::after {
+    content: ''; position: absolute; width: 7px; height: 7px;
+    border-right: 1.5px solid var(--gold-400); border-bottom: 1.5px solid var(--gold-400);
+    opacity: 0.9;
+  }
+  .flow-step:last-child::before, .flow-step:last-child::after { display: none; }
 
-  @keyframes oc-flow-fill-loop {
-    0%   { transform: scaleX(0); opacity: 1; }
-    80%  { transform: scaleX(1); opacity: 1; }
-    92%  { transform: scaleX(1); opacity: 1; }
-    100% { transform: scaleX(1); opacity: 0; }
-  }
-  @keyframes oc-fn-0 { 0%,0.1%{border-color:var(--color-border-strong);background:var(--color-canvas);box-shadow:none;transform:scale(1)} 6%{transform:scale(1.4);border-color:var(--gold-300);background:var(--gold-400);box-shadow:0 0 0 10px color-mix(in oklab,var(--gold-500) 30%,transparent),0 0 28px color-mix(in oklab,var(--gold-500) 70%,transparent)} 12%,92%{transform:scale(1);border-color:var(--gold-400);background:var(--gold-500);box-shadow:0 0 0 6px color-mix(in oklab,var(--gold-500) 22%,transparent),0 0 18px color-mix(in oklab,var(--gold-500) 45%,transparent)} 100%{border-color:var(--color-border-strong);background:var(--color-canvas);box-shadow:none;transform:scale(1)} }
-  @keyframes oc-fn-1 { 0%,20%{border-color:var(--color-border-strong);background:var(--color-canvas);box-shadow:none;transform:scale(1)} 26%{transform:scale(1.4);border-color:var(--gold-300);background:var(--gold-400);box-shadow:0 0 0 10px color-mix(in oklab,var(--gold-500) 30%,transparent),0 0 28px color-mix(in oklab,var(--gold-500) 70%,transparent)} 32%,92%{transform:scale(1);border-color:var(--gold-400);background:var(--gold-500);box-shadow:0 0 0 6px color-mix(in oklab,var(--gold-500) 22%,transparent),0 0 18px color-mix(in oklab,var(--gold-500) 45%,transparent)} 100%{border-color:var(--color-border-strong);background:var(--color-canvas);box-shadow:none;transform:scale(1)} }
-  @keyframes oc-fn-2 { 0%,40%{border-color:var(--color-border-strong);background:var(--color-canvas);box-shadow:none;transform:scale(1)} 46%{transform:scale(1.4);border-color:var(--gold-300);background:var(--gold-400);box-shadow:0 0 0 10px color-mix(in oklab,var(--gold-500) 30%,transparent),0 0 28px color-mix(in oklab,var(--gold-500) 70%,transparent)} 52%,92%{transform:scale(1);border-color:var(--gold-400);background:var(--gold-500);box-shadow:0 0 0 6px color-mix(in oklab,var(--gold-500) 22%,transparent),0 0 18px color-mix(in oklab,var(--gold-500) 45%,transparent)} 100%{border-color:var(--color-border-strong);background:var(--color-canvas);box-shadow:none;transform:scale(1)} }
-  @keyframes oc-fn-3 { 0%,60%{border-color:var(--color-border-strong);background:var(--color-canvas);box-shadow:none;transform:scale(1)} 66%{transform:scale(1.4);border-color:var(--gold-300);background:var(--gold-400);box-shadow:0 0 0 10px color-mix(in oklab,var(--gold-500) 30%,transparent),0 0 28px color-mix(in oklab,var(--gold-500) 70%,transparent)} 72%,92%{transform:scale(1);border-color:var(--gold-400);background:var(--gold-500);box-shadow:0 0 0 6px color-mix(in oklab,var(--gold-500) 22%,transparent),0 0 18px color-mix(in oklab,var(--gold-500) 45%,transparent)} 100%{border-color:var(--color-border-strong);background:var(--color-canvas);box-shadow:none;transform:scale(1)} }
-  @keyframes oc-fn-4 { 0%,80%{border-color:var(--color-border-strong);background:var(--color-canvas);box-shadow:none;transform:scale(1)} 86%{transform:scale(1.4);border-color:var(--gold-300);background:var(--gold-400);box-shadow:0 0 0 10px color-mix(in oklab,var(--gold-500) 30%,transparent),0 0 28px color-mix(in oklab,var(--gold-500) 70%,transparent)} 92%,92%{transform:scale(1);border-color:var(--gold-400);background:var(--gold-500);box-shadow:0 0 0 6px color-mix(in oklab,var(--gold-500) 22%,transparent),0 0 18px color-mix(in oklab,var(--gold-500) 45%,transparent)} 100%{border-color:var(--color-border-strong);background:var(--color-canvas);box-shadow:none;transform:scale(1)} }
-  @keyframes oc-flow-fill { to { transform: scaleX(1); } }
+  /* vertical rail (default, below lg): rail down the left, steps indented */
+  .flow-step { padding-left: 60px; }
+  .flow-step .flow-node { position: absolute; left: 0; top: 0; }
+  .flow-step::before { left: 19px; top: 40px; bottom: calc(-1 * var(--flow-gap, 26px)); width: 1.5px;
+    background: linear-gradient(180deg,
+      color-mix(in oklab, var(--gold-500) 40%, transparent),
+      color-mix(in oklab, var(--gold-500) 70%, transparent)); }
+  .flow-step::after { left: 16px; top: calc(50% + 12px); transform: rotate(45deg); }
 
-  /* orbit illustration (CrewOrbit): rings turn, nodes counter-turn upright */
-  @keyframes oc-orbit         { to { transform: rotate(360deg); } }
-  @keyframes oc-orbit-counter { from { transform: translate(-50%, -50%) rotate(0deg); }
-                                to   { transform: translate(-50%, -50%) rotate(-360deg); } }
-  @keyframes oc-breathe       { 0%, 100% { transform: scale(1);    opacity: 0.55; }
-                                50%      { transform: scale(1.12); opacity: 0.85; } }
-  @keyframes oc-flow-node {
-    0%   { transform: scale(1); }
-    55%  { transform: scale(1.45);
-           border-color: var(--gold-300);
-           background: var(--gold-400);
-           box-shadow: 0 0 0 10px color-mix(in oklab, var(--gold-500) 30%, transparent),
-                       0 0 28px color-mix(in oklab, var(--gold-500) 70%, transparent); }
-    100% { transform: scale(1);
-           border-color: var(--gold-400);
-           background: var(--gold-500);
-           box-shadow: 0 0 0 6px color-mix(in oklab, var(--gold-500) 22%, transparent),
-                       0 0 18px color-mix(in oklab, var(--gold-500) 45%, transparent); }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .flow-fill { transform: scaleX(1); }
-    .flow-node { border-color: var(--gold-400); background: var(--gold-500); }
+  /* horizontal rail (lg+): node on top, segment runs to the next column */
+  @media (min-width: 64rem) {
+    .flow-step { padding-left: 0; padding-top: 60px; }
+    .flow-step .flow-node { position: absolute; left: 0; top: 0; }
+    .flow-step::before { left: 40px; right: calc(-1 * var(--flow-gap, 26px)); top: 19px; bottom: auto; height: 1.5px; width: auto;
+      background: linear-gradient(90deg,
+        color-mix(in oklab, var(--gold-500) 40%, transparent),
+        color-mix(in oklab, var(--gold-500) 70%, transparent)); }
+    .flow-step::after { left: auto; right: calc(-0.5 * var(--flow-gap, 26px) - 3px); top: 16px; transform: rotate(-45deg); }
   }
 
   /* Lenis: it owns the scroll; the browser's own smoothing would double-ease. */

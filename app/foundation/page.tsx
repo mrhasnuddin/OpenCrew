@@ -83,12 +83,12 @@ export default function FoundationPage() {
               <p className="mb-3 font-mono text-2xs tracking-[0.06em] text-muted uppercase">{label}</p>
               <div className="flex gap-1">
                 {swatches.map((hex) => (
-                  <div key={hex} className="flex-1">
+                  <div key={hex} className="min-w-0 flex-1">
                     <div
                       className="h-[42px] rounded-xs border border-[rgb(255_255_255/0.07)]"
                       style={{ backgroundColor: hex }}
                     />
-                    <p className="mt-2 text-center font-mono text-[8.5px] text-muted">
+                    <p className="mt-2 truncate text-center font-mono text-[8.5px] text-muted">
                       {hex.slice(1)}
                     </p>
                   </div>
