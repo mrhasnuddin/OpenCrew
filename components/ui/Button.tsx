@@ -24,10 +24,13 @@ const VARIANTS: Record<ButtonVariant, string> = {
   danger: 'bg-danger text-ink-0 hover:opacity-90',
 };
 
+/* Pill everywhere (client direction: one CTA design across the site). The
+   header's Contact, the hero pair, the footer CTA and every subpage CTA were
+   already pills by hand; making it the default removes the drift. */
 const SIZES: Record<ButtonSize, string> = {
-  sm: 'h-[32px] px-5 text-sm gap-3 rounded-sm',
-  md: 'h-[40px] px-6 text-sm gap-3 rounded-md',
-  lg: 'h-[48px] px-6 text-base gap-4 rounded-md',
+  sm: 'h-[32px] px-5 text-sm gap-3 rounded-full',
+  md: 'h-[40px] px-6 text-sm gap-3 rounded-full',
+  lg: 'h-[48px] px-7 text-base gap-4 rounded-full',
 };
 
 export function buttonClasses(

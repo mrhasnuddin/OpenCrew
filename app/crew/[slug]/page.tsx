@@ -105,7 +105,7 @@ export default async function CrewProfilePage({
                 <Link href="/contact" className={buttonClasses('primary', 'md')}>
                   {isPublic ? 'Request this member' : 'Request introduction'}
                 </Link>
-                <Link href="/crew" className={buttonClasses('ghost', 'md')}>
+                <Link href="/crew" className={buttonClasses('secondary', 'md')}>
                   Back to the crew
                 </Link>
               </div>

@@ -65,3 +65,6 @@ Thumbs.db
 /public/showcase/*.JPG
 /public/showcase/*.jpeg
 /public/showcase/*.png
+
+# One-off local tooling (partner-logo fetch scripts carry a hard-coded Brandfetch API key)
+/scripts/

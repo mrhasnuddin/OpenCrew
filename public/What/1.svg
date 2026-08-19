@@ -1,4 +1,4 @@
-<svg width="348" height="337" viewBox="0 0 348 337" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="444" height="433" viewBox="-48 -48 444 433" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g filter="url(#filter0_d_64_10)">
 <g filter="url(#filter1_i_64_10)">
 <circle cx="183" cy="172" r="115" fill="black"/>
@@ -39,7 +39,7 @@
 </g>
 </g>
 <defs>
-<filter id="filter0_d_64_10" x="0" y="0" width="348" height="337" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<filter id="filter0_d_64_10" x="-48" y="-48" width="444" height="433" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
 <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
 <feOffset/>

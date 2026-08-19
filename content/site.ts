@@ -137,91 +137,83 @@ export const EXECUTION_FLOW = [
   { index: '05', title: 'Review & Expansion', body: 'Configuration adjusts with the market, over years rather than weeks.' },
 ];
 
-/** V3 p10 — 27 institutions in five categories. Text use is authorised;
- *  LOGO display is a separate permission, so this renders typographically. */
-export const NETWORK = {
-  eyebrow: 'Our institutional network',
-  title: 'Institutional landscape',
-  lead: 'Across capital, payments, RWA, professional services and global industries.',
-  qualifier:
-    'This institutional landscape reflects the cooperation, business engagements, ecosystem relationships and professional experience of the OPENCREW network.',
-  /**
-   * `domain` is the key a logo provider (Brandfetch et al.) resolves against.
-   * `logo` stays null until a file exists AND that party has given written
-   * permission to display its mark — naming an institution in text and using
-   * its trademark are different permissions. See docs/00-brand-identity.md
-   * §7.2(d); the card falls back to a wordmark plate, which is why the layout
-   * works either way.
-   */
-  /**
-   * `industry` and `blurb` feed the wheel tooltips. Blurbs are deliberately
-   * neutral, one-line, third-party descriptions — they describe what the
-   * institution IS, never the relationship (the section qualifier carries
-   * that). ⚠️ Blurbs and domains are best-effort and MUST be verified before
-   * launch — a link to the wrong company is worse than no link.
-   */
-  categories: [
-    {
-      title: 'Capital Markets & Exchanges',
-      items: [
-        { name: 'OKX', domain: 'okx.com', logo: null, industry: 'Digital asset exchange', blurb: 'Global digital asset exchange and Web3 technology company.' },
-        { name: 'UOB Venture Management', domain: 'uobvm.com.sg', logo: null, industry: 'Private equity', blurb: 'Private equity arm of United Overseas Bank, investing across Southeast Asia.' },
-        { name: 'Signum Capital', domain: 'signum.capital', logo: null, industry: 'Venture capital', blurb: 'Singapore-based venture firm focused on blockchain and digital assets.' },
-        { name: 'Ledger Capital', domain: 'ledgercap.com', logo: null, industry: 'Investment firm', blurb: 'Investment firm focused on Web3 infrastructure and digital assets.' },
-        { name: 'Republic Crypto', domain: 'republic.com', logo: null, industry: 'Advisory & investment', blurb: 'Digital asset advisory and investment arm of the Republic group.' },
-        { name: 'HKEX', domain: 'hkex.com.hk', logo: null, industry: 'Securities exchange', blurb: "Operator of Hong Kong's securities and derivatives markets." },
-        { name: 'OSL', domain: 'osl.com', logo: null, industry: 'Digital asset platform', blurb: 'Licensed digital asset trading platform headquartered in Hong Kong.' },
-      ],
-    },
-    {
-      title: 'Payments & Fintech',
-      items: [
-        { name: 'Visa', domain: 'visa.com', logo: null, industry: 'Payment network', blurb: 'Global payments technology company connecting consumers, businesses and banks.' },
-        { name: 'Stripe', domain: 'stripe.com', logo: null, industry: 'Payment infrastructure', blurb: 'Payments infrastructure for internet businesses.' },
-        { name: 'Wise', domain: 'wise.com', logo: null, industry: 'Cross-border payments', blurb: 'International transfers and multi-currency accounts.' },
-        { name: 'Airwallex', domain: 'airwallex.com', logo: null, industry: 'Business payments', blurb: 'Global payments and financial platform for modern businesses.' },
-        { name: 'Alipay', domain: 'alipay.com', logo: null, industry: 'Digital payments', blurb: 'Digital payment platform operated by Ant Group.' },
-        { name: 'WeChat Pay', domain: 'wechat.com', logo: null, industry: 'Digital payments', blurb: 'Mobile payment service built into WeChat.' },
-      ],
-    },
-    {
-      title: 'RWA & Institutional Finance',
-      items: [
-        { name: 'OpenEden', domain: 'openeden.com', logo: null, industry: 'Tokenised RWA', blurb: 'Platform for tokenised real-world assets and treasury products.' },
-        { name: 'BNY', domain: 'bny.com', logo: null, industry: 'Global custody bank', blurb: 'Global custody bank and financial services group.' },
-        { name: 'Eddid Financial', domain: 'eddid.com.hk', logo: null, industry: 'Financial services', blurb: 'Hong Kong financial services group spanning securities, futures and fintech.' },
-        { name: 'INK Finance', domain: 'ink.finance', logo: null, industry: 'On-chain finance', blurb: 'Decentralised finance and governance infrastructure.' },
-      ],
-    },
-    {
-      title: 'Audit, Data & Professional Services',
-      items: [
-        { name: 'CertiK', domain: 'certik.com', logo: null, industry: 'Security auditing', blurb: 'Blockchain security firm known for smart-contract audits.' },
-        { name: 'RootData', domain: 'rootdata.com', logo: null, industry: 'Data & research', blurb: 'Web3 asset data platform covering projects, funds and fundraising.' },
-        { name: 'Dun & Bradstreet', domain: 'dnb.com', logo: null, industry: 'Business intelligence', blurb: 'Business data and analytics for credit, risk and compliance.' },
-        { name: 'SafeEdges', domain: 'safeedges.io', logo: null, industry: 'Security', blurb: 'Security assessment and audit services for Web3 systems.' },
-        { name: 'ALLO Lawyers', domain: 'allolawyers.com', logo: null, industry: 'Legal', blurb: 'Legal practice advising on corporate and digital asset matters.' },
-      ],
-    },
-    {
-      title: 'Web3 & Global Industry Ecosystem',
-      items: [
-        { name: 'NTT Digital', domain: 'nttdigital.io', logo: null, industry: 'Web3 infrastructure', blurb: 'Web3 company of the NTT Group building wallet and chain infrastructure.' },
-        { name: 'BitTrade', domain: 'bittrade.co.jp', logo: null, industry: 'Exchange · Japan', blurb: 'Licensed cryptocurrency exchange operating in Japan.' },
-        { name: 'Malaysia Blockchain Institution', domain: null, logo: null, industry: 'Industry body', blurb: 'Malaysian institution connecting blockchain ventures, talent and partners.' },
-        { name: 'Malaysia Digital Asset Community', domain: null, logo: null, industry: 'Community body', blurb: 'Community organisation for digital asset education and adoption in Malaysia.' },
-        { name: 'InfraSingularity', domain: 'infrasingularity.com', logo: null, industry: 'Web3 infrastructure', blurb: 'Web3 infrastructure investor and node operations firm.' },
-      ],
-    },
-  ],
-};
-
 export type Institution = {
   name: string;
   domain: string | null;
   logo: string | null;
   industry: string;
   blurb: string;
+  logoTheme?: 'dark' | 'color';
+};
+
+/** V3 p10 — 27 institutions in five categories. Text use is authorised;
+ *  LOGO display is a separate permission, so this renders typographically. */
+export const NETWORK: {
+  eyebrow: string;
+  title: string;
+  lead: string;
+  qualifier: string;
+  categories: Array<{ title: string; items: Institution[] }>;
+} = {
+  eyebrow: 'Our institutional network',
+  title: 'Institutional landscape',
+  lead: 'Across capital, payments, RWA, professional services and global industries.',
+  qualifier:
+    'This institutional landscape reflects the cooperation, business engagements, ecosystem relationships and professional experience of the OPENCREW network.',
+  categories: [
+    {
+      title: 'Capital Markets & Exchanges',
+      items: [
+        { name: 'OKX', domain: 'okx.com', logo: '/partners/okx.svg', logoTheme: 'dark', industry: 'Digital asset exchange', blurb: 'Global digital asset exchange and Web3 technology company.' },
+        { name: 'UOB Venture Management', domain: 'uobvm.com.sg', logo: '/partners/uobvm.svg', logoTheme: 'color', industry: 'Private equity', blurb: 'Private equity arm of United Overseas Bank, investing across Southeast Asia.' },
+        { name: 'Signum Capital', domain: 'signum.capital', logo: '/partners/signum-capital.png', logoTheme: 'color', industry: 'Venture capital', blurb: 'Singapore-based venture firm focused on blockchain and digital assets.' },
+        { name: 'Ledger Capital', domain: 'ledgercap.com', logo: null, industry: 'Investment firm', blurb: 'Investment firm focused on Web3 infrastructure and digital assets.' },
+        { name: 'Republic Crypto', domain: 'republic.com', logo: '/partners/republic.svg', logoTheme: 'color', industry: 'Advisory & investment', blurb: 'Digital asset advisory and investment arm of the Republic group.' },
+        { name: 'HKEX', domain: 'hkex.com.hk', logo: '/partners/hkex.svg', logoTheme: 'color', industry: 'Securities exchange', blurb: "Operator of Hong Kong's securities and derivatives markets." },
+        { name: 'OSL', domain: 'osl.com', logo: '/partners/osl.png', logoTheme: 'color', industry: 'Digital asset platform', blurb: 'Licensed digital asset trading platform headquartered in Hong Kong.' },
+      ],
+    },
+    {
+      title: 'Payments & Fintech',
+      items: [
+        { name: 'Visa', domain: 'visa.com', logo: '/partners/visa.svg', logoTheme: 'color', industry: 'Payment network', blurb: 'Global payments technology company connecting consumers, businesses and banks.' },
+        { name: 'Stripe', domain: 'stripe.com', logo: '/partners/stripe.svg', logoTheme: 'color', industry: 'Payment infrastructure', blurb: 'Payments infrastructure for internet businesses.' },
+        { name: 'Wise', domain: 'wise.com', logo: '/partners/wise.svg', logoTheme: 'color', industry: 'Cross-border payments', blurb: 'International transfers and multi-currency accounts.' },
+        { name: 'Airwallex', domain: 'airwallex.com', logo: '/partners/airwallex.svg', logoTheme: 'color', industry: 'Business payments', blurb: 'Global payments and financial platform for modern businesses.' },
+        { name: 'Alipay', domain: 'alipay.com', logo: '/partners/alipay.svg', logoTheme: 'color', industry: 'Digital payments', blurb: 'Digital payment platform operated by Ant Group.' },
+        { name: 'WeChat Pay', domain: 'wechat.com', logo: '/partners/wechat.svg', logoTheme: 'color', industry: 'Digital payments', blurb: 'Mobile payment service built into WeChat.' },
+      ],
+    },
+    {
+      title: 'RWA & Institutional Finance',
+      items: [
+        { name: 'OpenEden', domain: 'openeden.com', logo: '/partners/openeden.jpeg', logoTheme: 'color', industry: 'Tokenised RWA', blurb: 'Platform for tokenised real-world assets and treasury products.' },
+        { name: 'BNY', domain: 'bny.com', logo: '/partners/bny.svg', logoTheme: 'dark', industry: 'Global custody bank', blurb: 'Global custody bank and financial services group.' },
+        { name: 'Eddid Financial', domain: 'eddid.com.hk', logo: '/partners/eddid.png', logoTheme: 'color', industry: 'Financial services', blurb: 'Hong Kong financial services group spanning securities, futures and fintech.' },
+        { name: 'INK Finance', domain: 'ink.finance', logo: null, industry: 'On-chain finance', blurb: 'Decentralised finance and governance infrastructure.' },
+      ],
+    },
+    {
+      title: 'Audit, Data & Professional Services',
+      items: [
+        { name: 'CertiK', domain: 'certik.com', logo: '/partners/certik.svg', logoTheme: 'dark', industry: 'Security auditing', blurb: 'Blockchain security firm known for smart-contract audits.' },
+        { name: 'RootData', domain: 'rootdata.com', logo: '/partners/rootdata.png', logoTheme: 'color', industry: 'Data & research', blurb: 'Web3 asset data platform covering projects, funds and fundraising.' },
+        { name: 'Dun & Bradstreet', domain: 'dnb.com', logo: '/partners/dnb.svg', logoTheme: 'dark', industry: 'Business intelligence', blurb: 'Business data and analytics for credit, risk and compliance.' },
+        { name: 'SafeEdges', domain: 'safeedges.io', logo: null, industry: 'Security', blurb: 'Security assessment and audit services for Web3 systems.' },
+        { name: 'ALLO Lawyers', domain: 'allolawyers.com', logo: '/partners/allolawyers.png', logoTheme: 'color', industry: 'Legal', blurb: 'Legal practice advising on corporate and digital asset matters.' },
+      ],
+    },
+    {
+      title: 'Web3 & Global Industry Ecosystem',
+      items: [
+        { name: 'NTT Digital', domain: 'nttdigital.io', logo: '/partners/nttdigital.svg', logoTheme: 'dark', industry: 'Web3 infrastructure', blurb: 'Web3 company of the NTT Group building wallet and chain infrastructure.' },
+        { name: 'BitTrade', domain: 'bittrade.co.jp', logo: '/partners/bittrade.svg', logoTheme: 'color', industry: 'Exchange · Japan', blurb: 'Licensed cryptocurrency exchange operating in Japan.' },
+        { name: 'Malaysia Blockchain Institution', domain: 'malaysiablockchain.my', logo: '/partners/mbi2.png', logoTheme: 'color', industry: 'Industry body', blurb: 'Malaysian institution connecting blockchain ventures, talent and partners.' },
+        { name: 'Malaysia Digital Asset Community', domain: 'mydac.org.my', logo: '/partners/mydac.png', logoTheme: 'color', industry: 'Community body', blurb: 'Community organisation for digital asset education and adoption in Malaysia.' },
+        { name: 'InfraSingularity', domain: 'infrasingularity.com', logo: '/partners/infrasingularity.png', logoTheme: 'color', industry: 'Web3 infrastructure', blurb: 'Web3 infrastructure investor and node operations firm.' },
+      ],
+    },
+  ],
 };
 
 /**

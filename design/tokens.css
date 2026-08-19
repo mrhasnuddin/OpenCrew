@@ -537,34 +537,6 @@
   .card-glass-hover:focus-visible::after,
   .card-glass-hover:focus-within::after { opacity: 1; }
 
-  /* ------------------------------------------------------------- .on-light
-     A LIGHT object on the black canvas (the footer CTA card). Re-declares
-     the semantic layer to light values for its subtree, so nothing inside
-     needs theme-aware classes — the same trick the old .on-inverse used in
-     the other direction. Gold TEXT darkens two steps (gold-500 on white is
-     2.55:1 and fails); the gold BUTTON keeps its ink-on-gold pairing. */
-  .on-light {
-    color-scheme: light;
-    --color-canvas:         var(--ink-0);
-    --color-canvas-sunken:  var(--ink-50);
-    --color-surface:        var(--ink-0);
-    --color-surface-raised: var(--ink-0);
-    --color-surface-hover:  var(--ink-50);
-    --color-border:         var(--ink-100);
-    --color-border-strong:  var(--ink-200);
-    --color-text:      var(--ink-1000);
-    --color-secondary: var(--ink-700);
-    --color-muted:     var(--ink-600);
-    --color-disabled:  var(--ink-400);
-    --color-accent-text:   var(--gold-800);
-    --color-accent-subtle: var(--gold-50);
-    --color-link:       var(--azure-800);
-    --color-link-hover: var(--azure-900);
-    --color-focus:      var(--azure-700);
-    background-color: var(--color-canvas);
-    color: var(--color-text);
-  }
-
   /* ---------------------------------------------------------- .marker-dot
      The list marker. Em dashes are retired site-wide (client direction):
      every "—" bullet is a 6px gold dot, optically centred on the first line
@@ -681,6 +653,13 @@
         color-mix(in oklab, var(--gold-500) 40%, transparent),
         color-mix(in oklab, var(--gold-500) 70%, transparent)); }
     .flow-step::after { left: auto; right: calc(-0.5 * var(--flow-gap, 26px) - 3px); top: 16px; transform: rotate(-45deg); }
+  }
+
+  /* capability artwork, active card: a slow float (client direction — simple).
+     transform only; the enter transition on the parent uses translate. */
+  @keyframes oc-art-float {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50%      { transform: translateY(-10px) scale(1.015); }
   }
 
   /* Lenis: it owns the scroll; the browser's own smoothing would double-ease. */

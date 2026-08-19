@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import { Section, GoldenSplit } from '@/components/primitives/Layout';
 import { buttonClasses } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
-import { ListGroup, Stepper, Disclaimer, TextLink } from '@/components/marketing/Blocks';
+import { ListGroup, Stepper, Disclaimer } from '@/components/marketing/Blocks';
 import { Breadcrumbs } from '@/components/ui/Breadcrumbs';
 import { SERVICES, getService } from '@/content/services';
 import { ROLES } from '@/lib/nav';
@@ -90,10 +90,19 @@ export default async function ServiceDetailPage({
               </li>
             ))}
           </ul>
-          <p className="mt-6 text-sm text-muted">
-            Members are configured per project. <TextLink href="/crew">Browse the crew</TextLink> or{' '}
-            <TextLink href="/contact">tell us the seat you need to fill</TextLink>.
+          {/* House CTAs, not inline text links (client direction): one primary,
+              one secondary. */}
+          <p className="mt-6 max-w-[var(--measure-prose)] text-sm text-muted">
+            Members are configured per project.
           </p>
+          <div className="mt-6 flex flex-wrap gap-4">
+            <Link href="/contact" className={buttonClasses('primary', 'md')}>
+              Tell us the role you need
+            </Link>
+            <Link href="/crew" className={buttonClasses('secondary', 'md')}>
+              Browse the crew
+            </Link>
+          </div>
         </Section>
       ) : null}
 
@@ -115,7 +124,7 @@ export default async function ServiceDetailPage({
           <Link href="/contact" className={buttonClasses('primary', 'lg')}>
             Start a project
           </Link>
-          <Link href="/services" className={buttonClasses('ghost', 'lg')}>
+          <Link href="/services" className={buttonClasses('secondary', 'lg')}>
             All capabilities
           </Link>
         </div>

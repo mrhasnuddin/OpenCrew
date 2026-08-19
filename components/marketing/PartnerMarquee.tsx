@@ -3,11 +3,13 @@ import { BrandMark } from './BrandMark';
 import { cn } from '@/lib/utils';
 
 /**
- * Partner marquee in the ENI reference's manner: five continuous rows of
- * uniform logo plates on black, alternating direction, edges faded into the
- * canvas so the strip reads as passing beneath a mask. All 27 institutions
- * lumped together (client direction — no category split), dealt round-robin
- * across rows so no row is "the exchanges row".
+ * Partner marquee in the ENI reference's manner: three continuous rows of
+ * uniform logo plates on black (client direction: three is enough),
+ * alternating direction, edges faded into the canvas so the strip reads as
+ * passing beneath a mask. All institutions lumped together (no category
+ * split), dealt round-robin across rows so no row is "the exchanges row" and
+ * NO institution appears in more than one row — each row is its own set,
+ * repeated only for the loop.
  *
  * Every plate is the SAME box — 168×64 — regardless of what's inside. That's
  * the rule that makes a wall of mixed-ratio logos read as one system, and it
@@ -26,21 +28,28 @@ import { cn } from '@/lib/utils';
  * CTA carry the accessible content.
  */
 
-const ROWS = 5;
-const DURATIONS = [52, 64, 48, 70, 56]; // seconds — never in step
+const ROWS = 3;
+const DURATIONS = [58, 72, 50]; // seconds — never in step
+// A row must cover the 1600px container before it loops (plate 168 + gap 16
+// = 184px → 9 plates). Short rows repeat THEIR OWN items, never borrow from
+// another row, so the three rows stay distinct.
+const MIN_PER_ROW = 9;
 
 function deal(): Institution[][] {
   const all = NETWORK.categories.flatMap((c) => c.items);
   const rows: Institution[][] = Array.from({ length: ROWS }, () => []);
   all.forEach((item, i) => rows[i % ROWS].push(item));
-  // Rows with fewer plates get padded from the front of the list so every
-  // row is long enough to loop without a visible gap at 1600px.
-  return rows.map((row) => (row.length < 8 ? [...row, ...all.slice(0, 8 - row.length)] : row));
+  return rows.map((row) => {
+    if (!row.length) return row;
+    const out = [...row];
+    while (out.length < MIN_PER_ROW) out.push(row[out.length % row.length]);
+    return out;
+  });
 }
 
 function Plate({ item }: { item: Institution }) {
   return (
-    <li className="card-glass flex h-[64px] w-[168px] shrink-0 items-center justify-center gap-3 rounded-md px-5">
+    <li className="card-glass group flex h-[64px] w-[168px] shrink-0 items-center justify-center gap-3 rounded-md px-5 transition-transform duration-[var(--dur-base)] ease-out [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-[2px]">
       {/* Local file → Brandfetch by domain (if configured) → monogram + name.
           Marks sit greyscale at slightly reduced opacity: 27 brand palettes
           at full strength would fight a system built on one gold. */}
@@ -48,7 +57,7 @@ function Plate({ item }: { item: Institution }) {
         item={item}
         type="logo"
         h={56}
-        className="max-h-[28px] max-w-[128px] opacity-80 grayscale"
+        className="max-h-[28px] max-w-[128px]"
         monogramClassName="size-[28px]"
       >
         <span className="truncate text-xs font-medium text-secondary">{item.name}</span>

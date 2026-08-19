@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Container, Section } from '@/components/primitives/Layout';
 import { HeroSlideshow } from '@/components/marketing/HeroSlideshow';
+import { HeroBackdrop } from '@/components/marketing/HeroBackdrop';
 import { CapabilityStack } from '@/components/marketing/CapabilityStack';
 import { PartnerMarquee } from '@/components/marketing/PartnerMarquee';
 import { ClientStories } from '@/components/marketing/ClientStories';
@@ -34,7 +35,10 @@ export default function HomePage() {
           ~62% and ~80% and always runs past the fold — the scroll cue is the
           card itself. No scrim anywhere: nothing sits on the photography. */}
       <section className="relative">
-        <Container>
+        {/* Two-colour wave field behind the first viewport (client direction),
+            fading out at the fold — see HeroBackdrop. */}
+        <HeroBackdrop />
+        <Container className="relative z-10">
           <div className="flex min-h-[calc(62svh-64px)] flex-col items-center justify-center py-7 text-center lg:py-8">
             <Reveal variant="fade">
               <p className="eyebrow mb-6">{HERO.eyebrow}</p>
@@ -49,10 +53,10 @@ export default function HomePage() {
             </Reveal>
             <Reveal delay={300}>
               <div className="mt-7 flex flex-wrap justify-center gap-4">
-                <Link href={HERO.primaryCta.href} className={buttonClasses('primary', 'lg', 'rounded-full')}>
+                <Link href={HERO.primaryCta.href} className={buttonClasses('primary', 'lg')}>
                   {HERO.primaryCta.label}
                 </Link>
-                <Link href={HERO.secondaryCta.href} className={buttonClasses('ghost', 'lg', 'rounded-full')}>
+                <Link href={HERO.secondaryCta.href} className={buttonClasses('secondary', 'lg')}>
                   {HERO.secondaryCta.label}
                 </Link>
               </div>
@@ -91,7 +95,7 @@ export default function HomePage() {
       </Section>
 
       {/* ---------------------------------------------------------- 03 trusted by
-          The reference's logo strip, at the ENI reference's scale: five
+          The reference's logo strip, at the ENI reference's scale: three
           marquee rows, all partners lumped, uniform plates. */}
       <Section id="partners" className="overflow-hidden">
         <Reveal>
@@ -105,7 +109,7 @@ export default function HomePage() {
         </Reveal>
         <Reveal delay={160}>
           <div className="mt-7 flex justify-center">
-            <Link href="/partners" className={buttonClasses('secondary', 'md', 'rounded-full')}>
+            <Link href="/partners" className={buttonClasses('secondary', 'md')}>
               View all partners
             </Link>
           </div>
@@ -169,7 +173,7 @@ export default function HomePage() {
                 </ul>
 
                 <div className="mt-8">
-                  <Link href="/crew" className={buttonClasses('primary', 'lg', 'rounded-full')}>
+                  <Link href="/crew" className={buttonClasses('primary', 'lg')}>
                     Browse the crew
                   </Link>
                 </div>

@@ -42,7 +42,7 @@ export default function ThankYouPage() {
         <Link href="/" className={buttonClasses('primary', 'lg')}>
           Back to home
         </Link>
-        <Link href="/#work" className={buttonClasses('ghost', 'lg')}>
+        <Link href="/#work" className={buttonClasses('secondary', 'lg')}>
           See our engagements
         </Link>
       </div>

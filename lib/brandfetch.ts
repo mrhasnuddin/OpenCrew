@@ -31,7 +31,10 @@ export function brandfetchLogoUrl(
   }: { type?: BrandfetchType; theme?: 'light' | 'dark'; h?: number; w?: number } = {},
 ): string | null {
   if (!brandfetchEnabled() || !domain) return null;
-  const parts = [`https://cdn.brandfetch.io/domain/${encodeURIComponent(domain)}`];
+  // Short form (`/{domain}`), not the docs' explicit `/domain/{domain}`
+  // routing: probed 2026-08-18, the explicit prefix 302s to the usage
+  // guidelines on this account while the short form serves the mark.
+  const parts = [`https://cdn.brandfetch.io/${encodeURIComponent(domain)}`];
   if (w) parts.push(`w/${w}`);
   if (h) parts.push(`h/${h}`);
   parts.push(`theme/${theme}`, 'fallback/404', `type/${type}`);

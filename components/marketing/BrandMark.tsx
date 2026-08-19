@@ -38,19 +38,25 @@ export function BrandMark({
   const src = item.logo ?? cdn;
   const [failed, setFailed] = React.useState(false);
 
+  const isDarkThemed = item.logoTheme === 'dark';
+
+  // Dark-themed logos (pure black/dark artwork) get masked/inverted to crisp white on dark background.
+  // Color logos sit in clean grayscale at rest and smoothly reveal full brand color on hover.
+  const themeFilter = isDarkThemed
+    ? 'brightness-0 invert opacity-70 transition-[opacity] duration-[var(--dur-base)] ease-hover group-hover:opacity-100 group-hover:brightness-0 group-hover:invert'
+    : 'grayscale opacity-75 brightness-110 transition-[filter,opacity] duration-[var(--dur-base)] ease-hover group-hover:grayscale-0 group-hover:brightness-100 group-hover:invert-0 group-hover:opacity-100';
+
   if (src && !failed) {
     return (
       // eslint-disable-next-line @next/next/no-img-element
       <img
         src={src}
-        alt=""
+        alt={item.name}
         loading="lazy"
         decoding="async"
-        // Brandfetch requires a Referer on hotlinked requests; the default
-        // policy sends origin for cross-origin, which is enough.
         referrerPolicy="strict-origin-when-cross-origin"
         onError={() => setFailed(true)}
-        className={cn('object-contain select-none', className)}
+        className={cn('object-contain select-none', themeFilter, className)}
       />
     );
   }

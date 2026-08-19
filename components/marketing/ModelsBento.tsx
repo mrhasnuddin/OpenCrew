@@ -49,7 +49,7 @@ export function ModelsBento() {
               From project assessment to expansion.
             </p>
           </div>
-          <Link href="/contact" className={buttonClasses('primary', 'md', 'rounded-full')}>
+          <Link href="/contact" className={buttonClasses('primary', 'md')}>
             Start a project
           </Link>
         </div>

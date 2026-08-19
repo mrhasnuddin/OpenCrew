@@ -38,7 +38,7 @@ function PartnerCard({ item }: { item: Institution }) {
           item={item}
           type="logo"
           h={72}
-          className="max-h-[32px] max-w-[160px] opacity-80 grayscale transition-[filter,opacity] duration-[var(--dur-base)] ease-hover group-hover:opacity-100 group-hover:grayscale-0"
+          className="max-h-[32px] max-w-[160px]"
           monogramClassName="size-[36px] text-muted"
         />
         {href ? (
@@ -114,7 +114,7 @@ export default function PartnersPage() {
           <Link href="/contact" className={buttonClasses('primary', 'lg')}>
             Start a project
           </Link>
-          <Link href="/services/institutional-access" className={buttonClasses('ghost', 'lg')}>
+          <Link href="/services/institutional-access" className={buttonClasses('secondary', 'lg')}>
             How institutional access works
           </Link>
         </div>

@@ -1,4 +1,4 @@
-<svg width="336" height="320" viewBox="0 0 336 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="432" height="416" viewBox="-48 -48 432 416" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g filter="url(#filter0_d_64_181)">
 <g filter="url(#filter1_i_64_181)">
 <path d="M166.914 50L283.827 252.5H50.0001L166.914 50Z" fill="black"/>
@@ -34,7 +34,7 @@
 </g>
 </g>
 <defs>
-<filter id="filter0_d_64_181" x="0" y="0" width="335.914" height="302.5" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<filter id="filter0_d_64_181" x="-48" y="-48" width="432" height="416" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
 <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
 <feOffset/>

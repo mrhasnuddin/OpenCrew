@@ -84,7 +84,7 @@ export default function DisclosurePage() {
           <Link href="/contact" className={buttonClasses('primary', 'lg')}>
             Request verification
           </Link>
-          <Link href="/about" className={buttonClasses('ghost', 'lg')}>
+          <Link href="/about" className={buttonClasses('secondary', 'lg')}>
             See the team
           </Link>
         </div>

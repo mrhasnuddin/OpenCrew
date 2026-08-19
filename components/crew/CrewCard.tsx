@@ -57,8 +57,10 @@ export function CrewCard({ member }: { member: CrewMember }) {
       <div className="flex items-start gap-5 p-6">
         <Thumbnail member={member} />
         <div className="min-w-0 flex-1">
-          <div className="flex items-start justify-between gap-4">
-            <p className="font-mono text-2xs tracking-[0.06em] text-muted uppercase">
+          {/* Wraps: on a narrow card the role code and the availability label
+              no longer fight for one line (the second used to be clipped). */}
+          <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
+            <p className="min-w-0 font-mono text-2xs tracking-[0.06em] text-muted uppercase">
               {member.roleCode}
             </p>
             <AvailabilityDot state={member.availability} />
@@ -71,7 +73,7 @@ export function CrewCard({ member }: { member: CrewMember }) {
               {isPublic ? member.displayName : 'Named on request'}
             </Link>
           </h3>
-          <p className="mt-1 truncate text-sm text-muted">{member.role}</p>
+          <p className="mt-1 text-sm text-muted">{member.role}</p>
           {/* Relative + z so the icons stay clickable above the card overlay. */}
           <SocialIcons links={member.links} className="relative z-10 mt-4" />
         </div>

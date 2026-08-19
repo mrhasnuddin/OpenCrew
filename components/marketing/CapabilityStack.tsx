@@ -33,20 +33,31 @@ const CapabilityIcon = dynamic(() => import('./CapabilityIcon'), {
 });
 
 /**
- * The six artwork files are not drawn to the same fill: 1–5 carry a 50px
- * transparent margin inside their viewBox (the drawn figure is ~70% of the
- * file, the rest is room for the glow), 6 fills its viewBox edge to edge. In
- * one shared box that made Market Execution's art ~1.4× the others (client
- * annotation). Scaling 1–5 up by the inverse of their fill puts every DRAWN
- * figure at the same size; the box (and so the row height) is unchanged, and
- * the scaled-out margin is transparent glow, so nothing is clipped that
- * matters. Measured, not guessed: getBBox over each file's shapes.
+ * The six artwork files are not drawn to the same fill. Files 1–5 carry a
+ * transparent margin inside their viewBox for the outer glow (the drawn
+ * figure is ~55% of the file now that the canvas has been widened so the
+ * glow is no longer cut at the edge — see public/What/*.svg, filter0_d);
+ * file 6 has no outer glow and fills its viewBox edge to edge. Rendering 1–5
+ * at 180% of the box puts every DRAWN figure at the same size as 6's. The box
+ * (and so the row height) is the same on every card; the overflow is glow.
+ * Measured with getBBox over each file's shapes, not guessed.
  */
-const ART_SCALE = [1.4, 1.4, 1.4, 1.4, 1.4, 1] as const;
+const ART_SCALE = [1.8, 1.8, 1.8, 1.8, 1.8, 1] as const;
 
 export function CapabilityStack() {
   const [open, setOpen] = React.useState(0);
+  // Which card's panel has FINISHED opening. While a panel animates its
+  // wrapper clips (the grid-rows trick needs it); once settled, the open
+  // panel's wrapper releases the clip so the artwork's outer glow can run up
+  // behind the title row instead of ending in a hard line at the panel top.
+  // The card itself (the li) still clips at its rounded edge.
+  const [settled, setSettled] = React.useState(0);
   const btnRefs = React.useRef<(HTMLButtonElement | null)[]>([]);
+  const select = (i: number) => {
+    if (i === open) return;
+    setSettled(-1);
+    setOpen(i);
+  };
 
   const onKeyDown = (e: React.KeyboardEvent, i: number) => {
     const last = SERVICES.length - 1;
@@ -57,7 +68,7 @@ export function CapabilityStack() {
     if (e.key === 'End') next = last;
     if (next === null) return;
     e.preventDefault();
-    setOpen(next);
+    select(next);
     btnRefs.current[next]?.focus();
   };
 
@@ -81,7 +92,7 @@ export function CapabilityStack() {
                 type="button"
                 aria-expanded={isOpen}
                 aria-controls={`cap-stack-${s.slug}`}
-                onClick={() => setOpen(i)}
+                onClick={() => select(i)}
                 onKeyDown={(e) => onKeyDown(e, i)}
                 className={cn(
                   'flex w-full items-center justify-between gap-6 px-6 py-6 text-left lg:px-8 lg:py-7',
@@ -127,8 +138,11 @@ export function CapabilityStack() {
                 gridTemplateRows: isOpen ? '1fr' : '0fr',
                 transition: 'grid-template-rows 480ms var(--ease-in-out)',
               }}
+              onTransitionEnd={(e) => {
+                if (e.propertyName === 'grid-template-rows' && isOpen) setSettled(i);
+              }}
             >
-              <div className="overflow-hidden">
+              <div className={isOpen && settled === i ? 'overflow-visible' : 'overflow-hidden'}>
                 {/* Copy left, artwork right. The art is ONE square box, the
                     same on every card, sized from the column width (so it
                     scales with the container and steps at the breakpoints)
@@ -145,27 +159,43 @@ export function CapabilityStack() {
                     <Link
                       href={`/services/${s.slug}`}
                       tabIndex={isOpen ? 0 : -1}
-                      className={buttonClasses('secondary', 'md', 'mt-6 rounded-full')}
+                      className={buttonClasses('secondary', 'md', 'mt-6')}
                     >
                       Explore {s.name}
                     </Link>
                   </div>
                   <div className="flex items-center justify-center">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={`/What/${i + 1}.svg`}
-                      alt=""
-                      aria-hidden="true"
-                      // ART_SCALE compensates for the files' own margins so the
-                      // DRAWN figure is the same size on every card (see const).
-                      style={{ scale: String(ART_SCALE[i] ?? 1) }}
+                    {/* The box: one square per card, sized from the column. The
+                        art is positioned absolutely inside it at ART_SCALE so the
+                        figure matches across cards WITHOUT a CSS transform scale
+                        (which would rasterise the SVG soft). Enter: fade + rise.
+                        Active: a slow float (client direction — simple). */}
+                    <div
                       className={cn(
-                        'pointer-events-none block aspect-square h-auto w-full select-none object-contain',
-                        'max-w-[280px] sm:max-w-[340px] lg:max-w-[400px]',
+                        'relative aspect-square w-full max-w-[280px] sm:max-w-[340px] lg:max-w-[400px]',
                         'transition-[opacity,translate] duration-[560ms] ease-out',
                         isOpen ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0',
                       )}
-                    />
+                    >
+                      <div
+                        className={cn(
+                          'absolute inset-0',
+                          isOpen && 'motion-safe:animate-[oc-art-float_7s_ease-in-out_infinite]',
+                        )}
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={`/What/${i + 1}.svg`}
+                          alt=""
+                          aria-hidden="true"
+                          className="pointer-events-none absolute top-1/2 left-1/2 max-w-none -translate-x-1/2 -translate-y-1/2 object-contain select-none"
+                          style={{
+                            width: `${ART_SCALE[i] * 100}%`,
+                            height: `${ART_SCALE[i] * 100}%`,
+                          }}
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

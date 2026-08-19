@@ -72,11 +72,12 @@ export function Header() {
       className={cn(
         'fixed inset-x-0 top-0 z-[200] h-[64px] border-b',
         'transition-[background-color,border-color,color] duration-[var(--dur-base)] ease-hover',
-        // Site is dark-only and the hero no longer sits behind the bar, so
-        // one treatment everywhere: canvas at rest, frosted once scrolled.
+        // Transparent at rest so the hero's wave field runs up behind the bar
+        // (on every other page the canvas is black anyway); frosted once
+        // scrolled so content passing beneath stays legible.
         scrolled
           ? 'border-border bg-[color-mix(in_oklab,var(--color-canvas)_72%,transparent)] backdrop-blur-[12px]'
-          : 'border-transparent bg-canvas',
+          : 'border-transparent bg-transparent',
       )}
     >
       <Container className="flex h-full items-center justify-between gap-6">
@@ -133,7 +134,7 @@ export function Header() {
 
         {/* ---------- action: one pill, the reference's shape ---------- */}
         <div className="hidden items-center lg:flex">
-          <Link href="/contact" className={buttonClasses('primary', 'sm', 'rounded-full px-6')}>
+          <Link href="/contact" className={buttonClasses('primary', 'sm', 'px-6')}>
             Contact
           </Link>
         </div>
@@ -248,7 +249,7 @@ export function Header() {
           </nav>
           <Link
             href="/contact"
-            className={buttonClasses('primary', 'lg', 'rounded-full')}
+            className={buttonClasses('primary', 'lg')}
             onClick={() => setMobileOpen(false)}
           >
             Contact

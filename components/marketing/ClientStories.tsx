@@ -157,7 +157,7 @@ export function ClientStories() {
                     <span className={cn('block truncate font-bold', isShown ? 'text-text' : 'text-secondary')}>
                       {w.name}
                     </span>
-                    <span className="mt-0.5 block truncate text-xs text-muted">{w.projectType}</span>
+                    <span className="mt-1 block truncate text-xs text-muted lg:line-clamp-2 lg:whitespace-normal">{w.projectType}</span>
                   </span>
                 </button>
               </li>

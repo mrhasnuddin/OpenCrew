@@ -91,7 +91,7 @@ export function AvailabilityDot({ state }: { state: 'available' | 'limited' | 'b
   const { color, label, pulse } = map[state];
 
   return (
-    <span className="inline-flex items-center gap-3 font-mono text-2xs uppercase tracking-[0.06em] text-muted">
+    <span className="inline-flex shrink-0 items-center gap-3 font-mono text-2xs tracking-[0.06em] whitespace-nowrap text-muted uppercase">
       <span
         aria-hidden="true"
         className={cn(

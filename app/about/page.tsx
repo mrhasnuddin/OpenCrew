@@ -1,7 +1,5 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { Section } from '@/components/primitives/Layout';
-import { buttonClasses } from '@/components/ui/Button';
 import { ProfileCard } from '@/components/marketing/ProfileCard';
 import { PillarBento } from '@/components/marketing/PillarBento';
 import { Manifesto, TextLink } from '@/components/marketing/Blocks';
@@ -119,19 +117,8 @@ export default function AboutPage() {
         </Reveal>
       </Section>
 
-      <Section className="border-t border-border">
-        <Reveal>
-          <h2 className="section-title max-w-[18ch]">Work with us, or join the crew.</h2>
-          <div className="mt-7 flex flex-wrap gap-4">
-            <Link href="/contact" className={buttonClasses('primary', 'lg', 'rounded-full')}>
-              Start a project
-            </Link>
-            <Link href="/join" className={buttonClasses('ghost', 'lg', 'rounded-full')}>
-              Join the crew
-            </Link>
-          </div>
-        </Reveal>
-      </Section>
+      {/* The closing ask (work with us / join the crew) is the footer CTA panel,
+          shared by every route — no page-level duplicate. */}
     </>
   );
 }

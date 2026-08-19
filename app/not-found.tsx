@@ -18,7 +18,7 @@ export default function NotFound() {
         <Link href="/" className={buttonClasses('primary', 'lg')}>
           Back to home
         </Link>
-        <Link href="/crew" className={buttonClasses('ghost', 'lg')}>
+        <Link href="/crew" className={buttonClasses('secondary', 'lg')}>
           Browse the crew
         </Link>
       </div>
