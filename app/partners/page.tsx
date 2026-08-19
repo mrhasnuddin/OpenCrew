@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Section } from '@/components/primitives/Layout';
 import { buttonClasses } from '@/components/ui/Button';
 import { Disclaimer } from '@/components/marketing/Blocks';
-import { initialsOf } from '@/components/marketing/InstitutionPlate';
+import { BrandMark } from '@/components/marketing/BrandMark';
 import { NETWORK, INDEPENDENCE_DISCLAIMER, type Institution } from '@/content/site';
 
 export const metadata: Metadata = {
@@ -19,10 +19,11 @@ export const metadata: Metadata = {
  * direction the flat grid replaced the by-industry sections, and the industry
  * survives as a label on each card instead.
  *
- * Marks stay monograms until artwork exists AND that institution has given
- * written permission — naming a partner in text and displaying its trademark
- * are different permissions (brand doc §7.2d). A card without a domain renders
- * without a link; a dead anchor is worse than no anchor.
+ * Marks: local file, else Brandfetch CDN by domain when the client ID env is
+ * set, else monogram (components/marketing/BrandMark). Naming a partner in
+ * text and displaying its trademark are different permissions (brand doc
+ * §7.2d) — confirm before launch. A card without a domain renders without a
+ * link; a dead anchor is worse than no anchor.
  */
 
 function PartnerCard({ item }: { item: Institution }) {
@@ -31,14 +32,15 @@ function PartnerCard({ item }: { item: Institution }) {
   const body = (
     <>
       <span className="flex items-center justify-between gap-4">
-        {item.logo ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={item.logo} alt="" className="max-h-[32px] w-auto object-contain" />
-        ) : (
-          <span className="flex size-[36px] shrink-0 items-center justify-center rounded-sm border border-border-strong font-mono text-2xs text-muted">
-            {initialsOf(item.name)}
-          </span>
-        )}
+        {/* Local file → Brandfetch by domain (if configured) → monogram.
+            Greyscale at rest, colour on hover (the card is the `group`). */}
+        <BrandMark
+          item={item}
+          type="logo"
+          h={72}
+          className="max-h-[32px] max-w-[160px] opacity-80 grayscale transition-[filter,opacity] duration-[var(--dur-base)] ease-hover group-hover:opacity-100 group-hover:grayscale-0"
+          monogramClassName="size-[36px] text-muted"
+        />
         {href ? (
           <svg viewBox="0 0 12 12" className="size-[12px] shrink-0 text-muted" aria-hidden="true">
             <path
@@ -61,7 +63,7 @@ function PartnerCard({ item }: { item: Institution }) {
   );
 
   const shell =
-    'card-glass flex h-full flex-col rounded-md p-6 ' +
+    'card-glass group flex h-full flex-col rounded-md p-6 ' +
     'transition-transform duration-[var(--dur-base)] ease-out';
 
   return href ? (

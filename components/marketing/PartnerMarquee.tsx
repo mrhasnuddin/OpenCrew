@@ -1,5 +1,5 @@
 import { NETWORK, type Institution } from '@/content/site';
-import { initialsOf } from './InstitutionPlate';
+import { BrandMark } from './BrandMark';
 import { cn } from '@/lib/utils';
 
 /**
@@ -13,8 +13,10 @@ import { cn } from '@/lib/utils';
  * the rule that makes a wall of mixed-ratio logos read as one system, and it
  * holds when the monograms are swapped for artwork: the mark is object-contain
  * inside a fixed frame, so a wide wordmark and a square icon occupy identical
- * real estate. Marks stay monograms until artwork exists AND written
- * permission to display it (brand §7.2d).
+ * real estate. Marks come from a local file, else Brandfetch's CDN by domain
+ * when NEXT_PUBLIC_BRANDFETCH_CLIENT_ID is set (see lib/brandfetch.ts), else
+ * the monogram. Either way, displaying a third party's mark needs that
+ * party's permission before launch (brand §7.2d).
  *
  * Motion is the CSS marquee from tokens.css — runs on the compositor, pauses
  * on hover, and under reduced-motion becomes a hand-scrollable strip. Each
@@ -39,17 +41,18 @@ function deal(): Institution[][] {
 function Plate({ item }: { item: Institution }) {
   return (
     <li className="card-glass flex h-[64px] w-[168px] shrink-0 items-center justify-center gap-3 rounded-md px-5">
-      {item.logo ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={item.logo} alt="" className="max-h-[28px] max-w-[128px] object-contain" />
-      ) : (
-        <>
-          <span className="flex size-[28px] shrink-0 items-center justify-center rounded-sm border border-border-strong font-mono text-2xs text-secondary">
-            {initialsOf(item.name)}
-          </span>
-          <span className="truncate text-xs font-medium text-secondary">{item.name}</span>
-        </>
-      )}
+      {/* Local file → Brandfetch by domain (if configured) → monogram + name.
+          Marks sit greyscale at slightly reduced opacity: 27 brand palettes
+          at full strength would fight a system built on one gold. */}
+      <BrandMark
+        item={item}
+        type="logo"
+        h={56}
+        className="max-h-[28px] max-w-[128px] opacity-80 grayscale"
+        monogramClassName="size-[28px]"
+      >
+        <span className="truncate text-xs font-medium text-secondary">{item.name}</span>
+      </BrandMark>
     </li>
   );
 }
