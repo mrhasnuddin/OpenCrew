@@ -4,6 +4,7 @@ import * as React from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { SERVICES } from '@/content/services';
+import { CapabilityArt } from './CapabilityArt';
 import { buttonClasses } from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
 
@@ -11,7 +12,14 @@ import { cn } from '@/lib/utils';
  * "What we do" as a stacked accordion — the reference's exact pattern: one
  * card open (dark, tall, full description), the rest collapsed to a title row
  * with its numeral at the far right. Click a row to open it; the previously
- * open card collapses. Every card also links to its capability page.
+ * open card collapses.
+ *
+ * The capability SUBPAGES are retired (client direction): each open card now
+ * carries the capability's full approved content — lead, the V3 groups, the
+ * process where one exists, and the independence disclaimer where required —
+ * so this stack IS the capability documentation. Cards are deep-linkable as
+ * /#cap-<slug> (header panel, footer and internal CTAs point there); the
+ * component listens for the hash, opens the right card and scrolls to it.
  *
  * Each open card carries the client-supplied artwork for that capability
  * (public/What/{index}.svg — gold line illustrations, one per capability),
@@ -59,6 +67,29 @@ export function CapabilityStack() {
     setOpen(i);
   };
 
+  // /#cap-<slug> deep links (header panel, footer, other pages): open the
+  // card and bring it under the header. Runs on mount for full loads and on
+  // hashchange for same-page navigation.
+  React.useEffect(() => {
+    const apply = () => {
+      const m = window.location.hash.match(/^#cap-(.+)$/);
+      if (!m) return;
+      const i = SERVICES.findIndex((sv) => sv.slug === m[1]);
+      if (i < 0) return;
+      setSettled(-1);
+      setOpen(i);
+      // Scroll AFTER the accordion settles (480ms grid-rows transition):
+      // opening this card collapses whichever was open above it, and a
+      // scroll started before that shift lands hundreds of px off target.
+      window.setTimeout(() => {
+        document.getElementById(`cap-${m[1]}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 520);
+    };
+    apply();
+    window.addEventListener('hashchange', apply);
+    return () => window.removeEventListener('hashchange', apply);
+  }, []);
+
   const onKeyDown = (e: React.KeyboardEvent, i: number) => {
     const last = SERVICES.length - 1;
     let next: number | null = null;
@@ -79,8 +110,9 @@ export function CapabilityStack() {
         return (
           <li
             key={s.slug}
+            id={`cap-${s.slug}`}
             className={cn(
-              'card-glass overflow-hidden rounded-xl transition-[border-color] duration-[var(--dur-base)] ease-hover',
+              'scroll-mt-[84px] card-glass overflow-hidden rounded-xl transition-[border-color] duration-[var(--dur-base)] ease-hover',
               isOpen && 'card-glass-open',
             )}
           >
@@ -143,60 +175,83 @@ export function CapabilityStack() {
               }}
             >
               <div className={isOpen && settled === i ? 'overflow-visible' : 'overflow-hidden'}>
-                {/* Copy left, artwork right. The art is ONE square box, the
-                    same on every card, sized from the column width (so it
-                    scales with the container and steps at the breakpoints)
-                    and capped at 400px on lg. Every SVG is object-contain
-                    inside that box, so all six render at the same visual size
-                    regardless of the copy length or the SVG's own viewBox
-                    (client annotation: earlier the art was sized from the row
-                    height, so the card with the longest lead had the biggest
-                    art). Row height therefore follows the art, not the copy;
-                    the copy sits centred against it. */}
-                <div className="grid gap-7 px-6 pb-7 lg:grid-cols-[1.2fr_1fr] lg:items-center lg:px-8 lg:pb-8">
-                  <div className="relative z-10">
-                    <p className="max-w-[var(--measure-lead)] text-lg text-secondary">{s.lead}</p>
-                    <Link
-                      href={`/services/${s.slug}`}
-                      tabIndex={isOpen ? 0 : -1}
-                      className={buttonClasses('secondary', 'md', 'mt-6')}
-                    >
-                      Explore {s.name}
-                    </Link>
-                  </div>
-                  <div className="flex items-center justify-center">
-                    {/* The box: one square per card, sized from the column. The
-                        art is positioned absolutely inside it at ART_SCALE so the
-                        figure matches across cards WITHOUT a CSS transform scale
-                        (which would rasterise the SVG soft). Enter: fade + rise.
-                        Active: a slow float (client direction — simple). */}
-                    <div
-                      className={cn(
-                        'relative aspect-square w-full max-w-[280px] sm:max-w-[340px] lg:max-w-[400px]',
-                        'transition-[opacity,translate] duration-[560ms] ease-out',
-                        isOpen ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0',
-                      )}
-                    >
+                {/* Row 1 — lead left, artwork right (one shared square box
+                    per card, see CapabilityArt / ART_SCALE). Row 2 — the
+                    capability's V3 groups, full width, compact columns; the
+                    process joins them as a numbered column where one exists.
+                    This replaces the retired subpage in full. */}
+                <div className="grid gap-7 px-6 pb-7 lg:px-8 lg:pb-8">
+                  <div className="grid gap-7 lg:grid-cols-[1.2fr_1fr] lg:items-center">
+                    <div className="relative z-10">
+                      <p className="text-lg font-medium text-text">{s.title}</p>
+                      <p className="mt-4 max-w-[var(--measure-lead)] text-secondary">{s.lead}</p>
+                      <Link
+                        href="/contact"
+                        tabIndex={isOpen ? 0 : -1}
+                        className={buttonClasses('secondary', 'md', 'mt-6')}
+                      >
+                        Start a project
+                      </Link>
+                    </div>
+                    <div className="flex items-center justify-center">
                       <div
                         className={cn(
-                          'absolute inset-0',
-                          isOpen && 'motion-safe:animate-[oc-art-float_7s_ease-in-out_infinite]',
+                          'relative aspect-square w-full max-w-[280px] sm:max-w-[340px] lg:max-w-[400px]',
+                          'transition-opacity duration-[560ms] ease-out',
+                          isOpen ? 'opacity-100' : 'opacity-0',
                         )}
                       >
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={`/What/${i + 1}.svg`}
-                          alt=""
-                          aria-hidden="true"
-                          className="pointer-events-none absolute top-1/2 left-1/2 max-w-none -translate-x-1/2 -translate-y-1/2 object-contain select-none"
+                        {/* ART_SCALE compensates for the files' glow margins
+                            so the DRAWN figure matches across all six cards. */}
+                        <CapabilityArt
+                          index={i + 1}
+                          active={isOpen}
+                          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
                           style={{
-                            width: `${ART_SCALE[i] * 100}%`,
-                            height: `${ART_SCALE[i] * 100}%`,
+                            width: `${(ART_SCALE[i] ?? 1) * 100}%`,
+                            height: `${(ART_SCALE[i] ?? 1) * 100}%`,
                           }}
                         />
                       </div>
                     </div>
                   </div>
+
+                  <div className="grid gap-6 border-t border-border pt-6 sm:grid-cols-2 lg:grid-cols-4">
+                    {s.groups.map((g) => (
+                      <div key={g.title}>
+                        <h4 className="eyebrow mb-4">{g.title}</h4>
+                        <ul className="flex flex-col gap-2">
+                          {g.items.map((item) => (
+                            <li key={item} className="flex gap-3 text-sm text-secondary">
+                              <span aria-hidden="true" className="marker-dot" />
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                    {s.process ? (
+                      <div>
+                        <h4 className="eyebrow mb-4">How it runs</h4>
+                        <ol className="flex flex-col gap-2">
+                          {s.process.map((step) => (
+                            <li key={step.index} className="flex gap-3 text-sm text-secondary">
+                              <span className="font-mono text-2xs tracking-[0.06em] text-accent-text">
+                                {step.index}
+                              </span>
+                              <span>{step.title}</span>
+                            </li>
+                          ))}
+                        </ol>
+                      </div>
+                    ) : null}
+                  </div>
+
+                  {s.disclaimer ? (
+                    <p className="max-w-[var(--measure-prose)] rounded-md border border-border bg-surface p-5 text-sm text-muted">
+                      {s.disclaimer}
+                    </p>
+                  ) : null}
                 </div>
               </div>
             </div>

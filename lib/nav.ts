@@ -63,9 +63,12 @@ export const ROLES = [
 
 export type NavItem = { label: string; href: string; hasPanel?: boolean };
 
-/** Four items + a contact pill — the reference's header shape. */
+/** Four items + a contact pill — the reference's header shape.
+ *  Capabilities points at the home page's #what-we-do stack — the capability
+ *  subpages are retired (client direction); the cards ARE the capability
+ *  pages now, deep-linkable as /#cap-<slug>. */
 export const PRIMARY_NAV: NavItem[] = [
-  { label: 'Capabilities', href: '/services', hasPanel: true },
+  { label: 'Capabilities', href: '/#what-we-do', hasPanel: true },
   { label: 'Crew', href: '/crew' },
   { label: 'Partners', href: '/partners' },
   { label: 'About', href: '/about' },

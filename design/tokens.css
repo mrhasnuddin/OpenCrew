@@ -655,12 +655,58 @@
     .flow-step::after { left: auto; right: calc(-0.5 * var(--flow-gap, 26px) - 3px); top: 16px; transform: rotate(-45deg); }
   }
 
-  /* capability artwork, active card: a slow float (client direction — simple).
-     transform only; the enter transition on the parent uses translate. */
-  @keyframes oc-art-float {
-    0%, 100% { transform: translateY(0) scale(1); }
-    50%      { transform: translateY(-10px) scale(1.015); }
+  /* ------------------------------------------------------ capability art
+     Inline SVG illustrations (CapabilityArt). Each direct layer of the
+     drawing is tagged .cap-layer with --i by the component; when the card is
+     active the layers rise in staggered, then drift on slow out-of-phase
+     floats (per-layer duration offsets so no two move in step). Reduced
+     motion: the global rule flattens all of it. */
+  .cap-art { display: block; }
+  .cap-art svg { display: block; width: 100%; height: 100%; overflow: visible; }
+  .cap-art .cap-layer {
+    transform-box: fill-box;
+    transform-origin: center;
   }
+  .cap-art[data-active] .cap-layer {
+    animation:
+      oc-layer-in 620ms var(--ease-out) both,
+      oc-layer-float calc(5600ms + var(--i, 0) * 420ms) ease-in-out infinite;
+    animation-delay:
+      calc(var(--i, 0) * 70ms),
+      calc(620ms + var(--i, 0) * 70ms);
+  }
+  @keyframes oc-layer-in {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes oc-layer-float {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-5px); }
+  }
+
+  /* ------------------------------------------------------------ skeleton
+     Ghost-loading surface (client direction): a raised block with a slow
+     sheen passing through. Used by route loading states and any client
+     component with content in flight. Reduced motion: static block. */
+  .skeleton {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--ink-900);
+  }
+  .skeleton::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      100deg,
+      transparent 20%,
+      color-mix(in oklab, var(--ink-0) 5%, transparent) 50%,
+      transparent 80%
+    );
+    transform: translateX(-100%);
+    animation: oc-shimmer 1600ms ease-in-out infinite;
+  }
+  @keyframes oc-shimmer { to { transform: translateX(100%); } }
 
   /* Lenis: it owns the scroll; the browser's own smoothing would double-ease. */
   html.lenis, html.lenis body { height: auto; }

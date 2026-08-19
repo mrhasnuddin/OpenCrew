@@ -25,10 +25,10 @@ import { cn } from "@/lib/utils";
  */
 
 const PILLAR_LINKS = [
-  "/crew",
-  "/services/global-representation",
-  "/services/institutional-access",
-  "/services/market-execution",
+  '/crew',
+  '/#cap-global-representation',
+  '/#cap-institutional-access',
+  '/#cap-market-execution',
 ];
 
 function ArrowChip({ inverse = false }: { inverse?: boolean }) {

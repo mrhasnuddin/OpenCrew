@@ -4,40 +4,63 @@ import * as React from 'react';
 import { cn } from '@/lib/utils';
 
 /**
- * Wave canvas background — adapted from the 21st.dev "dynamic wave canvas"
- * (client direction) and re-tuned for this system:
+ * Wave canvas background — brand-tuned adaptation of the 21st.dev "dynamic
+ * wave canvas". TWO colours only: the logo gold (#C19C68) over a black one
+ * step lighter than the canvas, capped so copy on top stays readable.
  *
- *  - TWO colours only: the brand gold (#C19C68, `--logo-gold`) over a black a
- *    step lighter than the canvas. No blue/purple accents.
- *  - Held back: the gold never exceeds ~STRENGTH of the pixel, so white copy
- *    and the gold CTA stay readable on top of it.
- *  - Sized to its CONTAINER, not the window, so it works both as the hero's
- *    first-viewport backdrop and inside the closing CTA card.
- *  - Cheap: rendered at 1/4 resolution and upscaled with smoothing (it is a
- *    soft field, so this reads as intentional blur), capped at 30fps, paused
- *    while off-screen or when the tab is hidden. Reduced motion: one static
- *    frame.
+ * v2 — WEBGL. The original component computed every pixel in JavaScript
+ * (putImageData) each frame; at 1440×900 that is ~80k pixels × 8 trig calls
+ * on the main thread 30× a second, which is what tanked site performance.
+ * The same math now runs as a fragment shader on the GPU: the main thread
+ * does one draw call per frame and nothing else.
  *
- * Decorative only (aria-hidden); it carries no content.
+ *  - Renders at half resolution (it's a soft field; upscaling reads as blur)
+ *    and is capped at 30fps.
+ *  - Pauses when off-screen (IntersectionObserver) or when the tab is hidden.
+ *  - prefers-reduced-motion: renders one static frame and stops.
+ *  - No WebGL → the canvas stays transparent and the parent's black shows;
+ *    nothing breaks.
+ *
+ * Sized to its CONTAINER (not the window) so it serves both the hero
+ * backdrop and the closing CTA card. Decorative only (aria-hidden).
  */
 
-const SCALE = 4;          // render at 1/4 res, upscale
-const FPS = 30;           // frame cap
-const STRENGTH = 0.5;     // max gold share of a pixel (0..1); keeps copy readable
-const DARK = [13, 13, 13];       // #0D0D0D — a step lighter than the #000 canvas
-const GOLD = [0xc1, 0x9c, 0x68]; // #C19C68 — the logo gold, exactly
+const SCALE = 2;      // backing store = clientSize / SCALE
+const FPS = 30;
+const STRENGTH = 0.5; // max gold share of a pixel
 
-const TABLE = 1024;
-const SIN = new Float32Array(TABLE);
-const COS = new Float32Array(TABLE);
-for (let i = 0; i < TABLE; i++) {
-  const a = (i / TABLE) * Math.PI * 2;
-  SIN[i] = Math.sin(a);
-  COS[i] = Math.cos(a);
+const FRAG = `
+precision mediump float;
+uniform vec2 u_res;
+uniform float u_time;
+
+void main() {
+  vec2 p = gl_FragCoord.xy;
+  float ux = (2.0 * p.x - u_res.x) / u_res.y;
+  float uy = (2.0 * (u_res.y - p.y) - u_res.y) / u_res.y;
+
+  float a = 0.0;
+  float d = 0.0;
+  for (int i = 0; i < 4; i++) {
+    float fi = float(i);
+    a += cos(fi - d + u_time * 0.5 - a * ux);
+    d += sin(fi * uy + a);
+  }
+
+  float wave = (sin(a) + cos(d)) * 0.5;
+  float k = 0.5 + 0.5 * wave;
+  float m = k * k * ${STRENGTH.toFixed(2)};
+
+  vec3 dark = vec3(0.051, 0.051, 0.051);          /* #0D0D0D */
+  vec3 gold = vec3(0.757, 0.612, 0.408);          /* #C19C68 */
+  gl_FragColor = vec4(mix(dark, gold, m), 1.0);
 }
-const TWO_PI = Math.PI * 2;
-const fastSin = (x: number) => SIN[Math.floor(((((x % TWO_PI) + TWO_PI) % TWO_PI) / TWO_PI) * TABLE) & (TABLE - 1)];
-const fastCos = (x: number) => COS[Math.floor(((((x % TWO_PI) + TWO_PI) % TWO_PI) / TWO_PI) * TABLE) & (TABLE - 1)];
+`;
+
+const VERT = `
+attribute vec2 a_pos;
+void main() { gl_Position = vec4(a_pos, 0.0, 1.0); }
+`;
 
 export function HeroWave({ className }: { className?: string }) {
   const ref = React.useRef<HTMLCanvasElement>(null);
@@ -45,61 +68,57 @@ export function HeroWave({ className }: { className?: string }) {
   React.useEffect(() => {
     const canvas = ref.current;
     if (!canvas) return;
-    const ctx = canvas.getContext('2d', { alpha: false });
-    if (!ctx) return;
+    const gl =
+      canvas.getContext('webgl', { alpha: false, antialias: false, depth: false, stencil: false }) ||
+      (canvas.getContext('experimental-webgl') as WebGLRenderingContext | null);
+    if (!gl) return; // graceful: parent is black anyway
+
+    const compile = (type: number, src: string) => {
+      const sh = gl.createShader(type)!;
+      gl.shaderSource(sh, src);
+      gl.compileShader(sh);
+      return sh;
+    };
+    const prog = gl.createProgram()!;
+    gl.attachShader(prog, compile(gl.VERTEX_SHADER, VERT));
+    gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, FRAG));
+    gl.linkProgram(prog);
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return;
+    gl.useProgram(prog);
+
+    // one full-screen triangle
+    const buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+    const loc = gl.getAttribLocation(prog, 'a_pos');
+    gl.enableVertexAttribArray(loc);
+    gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+
+    const uRes = gl.getUniformLocation(prog, 'u_res');
+    const uTime = gl.getUniformLocation(prog, 'u_time');
 
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    let width = 0, height = 0;
-    let imageData: ImageData | null = null;
-    let data: Uint8ClampedArray | null = null;
     let raf = 0;
     let visible = true;
     let last = 0;
     const start = performance.now();
 
-    const resize = () => {
-      const host = canvas.parentElement ?? canvas;
-      const w = Math.max(1, Math.floor(host.clientWidth));
-      const h = Math.max(1, Math.floor(host.clientHeight));
-      canvas.width = w;
-      canvas.height = h;
-      width = Math.max(1, Math.floor(w / SCALE));
-      height = Math.max(1, Math.floor(h / SCALE));
-      imageData = ctx.createImageData(width, height);
-      data = imageData.data;
-      draw(performance.now());
+    const draw = (now: number) => {
+      gl.uniform1f(uTime, (now - start) * 0.001);
+      gl.drawArrays(gl.TRIANGLES, 0, 3);
     };
 
-    const draw = (now: number) => {
-      if (!imageData || !data) return;
-      const t = (now - start) * 0.001;
-      const dr = DARK[0], dg = DARK[1], db = DARK[2];
-      const gr = GOLD[0] - dr, gg = GOLD[1] - dg, gb = GOLD[2] - db;
-      for (let y = 0; y < height; y++) {
-        const uy = (2 * y - height) / height;
-        for (let x = 0; x < width; x++) {
-          const ux = (2 * x - width) / height;
-          let a = 0, d = 0;
-          for (let i = 0; i < 4; i++) {
-            a += fastCos(i - d + t * 0.5 - a * ux);
-            d += fastSin(i * uy + a);
-          }
-          // wave in [-1, 1] → t in [0, 1]; squared so most of the field
-          // stays dark and the gold shows as ridges rather than a wash
-          const wave = (fastSin(a) + fastCos(d)) * 0.5;
-          const k = 0.5 + 0.5 * wave;
-          const m = k * k * STRENGTH;
-          const idx = (y * width + x) * 4;
-          data[idx] = dr + gr * m;
-          data[idx + 1] = dg + gg * m;
-          data[idx + 2] = db + gb * m;
-          data[idx + 3] = 255;
-        }
+    const resize = () => {
+      const host = canvas.parentElement ?? canvas;
+      const w = Math.max(1, Math.floor(host.clientWidth / SCALE));
+      const h = Math.max(1, Math.floor(host.clientHeight / SCALE));
+      if (canvas.width !== w || canvas.height !== h) {
+        canvas.width = w;
+        canvas.height = h;
+        gl.viewport(0, 0, w, h);
+        gl.uniform2f(uRes, w, h);
+        draw(performance.now());
       }
-      ctx.putImageData(imageData, 0, 0);
-      ctx.imageSmoothingEnabled = true;
-      ctx.drawImage(canvas, 0, 0, width, height, 0, 0, canvas.width, canvas.height);
     };
 
     const loop = (now: number) => {
@@ -123,6 +142,7 @@ export function HeroWave({ className }: { className?: string }) {
       cancelAnimationFrame(raf);
       ro.disconnect();
       io.disconnect();
+      gl.getExtension('WEBGL_lose_context')?.loseContext();
     };
   }, []);
 

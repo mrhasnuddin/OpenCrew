@@ -1,6 +1,5 @@
 import type { MetadataRoute } from 'next';
 import { SITE } from '@/lib/site';
-import { SERVICES } from '@/content/services';
 import { CREW } from '@/content/crew';
 
 /**
@@ -20,13 +19,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     entry('', 1, 'weekly'),
     entry('/crew', 0.9, 'weekly'),
-    entry('/services', 0.8, 'monthly'),
     entry('/partners', 0.7, 'monthly'),
     entry('/about', 0.7, 'monthly'),
     entry('/contact', 0.7, 'monthly'),
     entry('/join', 0.6, 'monthly'),
     entry('/legal/disclosure', 0.5, 'monthly'),
-    ...SERVICES.map((s) => entry(`/services/${s.slug}`, 0.8, 'monthly')),
     ...CREW.filter((m) => m.tier === 'public').map((m) => entry(`/crew/${m.slug}`, 0.6, 'monthly')),
   ];
 }

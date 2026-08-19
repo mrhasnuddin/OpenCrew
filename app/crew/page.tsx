@@ -99,7 +99,7 @@ export default async function CrewPage({
           <Link href="/contact" className={buttonClasses('primary', 'lg')}>
             Tell us the role you need
           </Link>
-          <Link href="/services/global-crew" className={buttonClasses('secondary', 'lg')}>
+          <Link href="/#cap-global-crew" className={buttonClasses('secondary', 'lg')}>
             How deployment works
           </Link>
         </div>

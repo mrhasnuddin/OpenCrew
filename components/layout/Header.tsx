@@ -193,7 +193,7 @@ export function Header() {
                   onBlur={() => setHoveredSlug(null)}
                 >
                   <Link
-                    href={`/services/${c.slug}`}
+                    href={`/#cap-${c.slug}`}
                     onClick={() => setPanelOpen(false)}
                     className="group flex gap-5 rounded-md p-4 transition-colors duration-[var(--dur-fast)] ease-hover hover:bg-surface-hover"
                   >

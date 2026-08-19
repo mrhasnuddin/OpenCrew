@@ -27,7 +27,7 @@ const COLUMNS = [
   },
   {
     title: 'Capabilities',
-    links: CAPABILITIES.map((c) => ({ label: c.name, href: `/services/${c.slug}` })),
+    links: CAPABILITIES.map((c) => ({ label: c.name, href: `/#cap-${c.slug}` })),
   },
   {
     title: 'Home',

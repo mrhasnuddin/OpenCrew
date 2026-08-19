@@ -9,9 +9,10 @@ import { cn } from '@/lib/utils';
  * Client stories — the reference's layout (logo selector left, one wide
  * story panel right) in our system.
  *
- * LEFT: five selector tiles, one per engagement — logomark + name. Hover
- * previews, click locks; keyboard arrows move between them. Active tile is
- * the lit `.card-glass-open` register.
+ * LEFT: five selector tiles, one per engagement — logomark + name. CLICK
+ * switches the story (client direction: hover no longer changes the panel —
+ * hover is feedback only, the gold ring); keyboard arrows move between them.
+ * Active tile is the lit `.card-glass-open` register.
  *
  * RIGHT: the panel. The reference leads with a client quote in an italic
  * serif; we don't have quotes, so the PROBLEM line takes that slot in
@@ -80,11 +81,9 @@ function siteLabel(url: string) {
 
 export function ClientStories() {
   const [active, setActive] = React.useState(0);
-  const [hover, setHover] = React.useState<number | null>(null);
   const [visible, setVisible] = React.useState(true);
   const tileRefs = React.useRef<(HTMLButtonElement | null)[]>([]);
-  const shown = hover ?? active;
-  const item = WORK[shown];
+  const item = WORK[active];
 
   // Cross-fade: fade out, swap, fade in.
   const [rendered, setRendered] = React.useState(item);
@@ -124,11 +123,10 @@ export function ClientStories() {
           aria-label="Client stories"
           aria-orientation="vertical"
           className="flex gap-3 overflow-x-auto pb-1 lg:h-[clamp(520px,calc(100svh-180px),720px)] lg:flex-col lg:overflow-visible lg:pb-0 [@media(max-height:820px)]:lg:h-auto"
-          onMouseLeave={() => setHover(null)}
         >
           {WORK.map((w, i) => {
             const isActive = i === active;
-            const isShown = i === shown;
+            const isShown = isActive;
             return (
               <li key={w.slug} className="shrink-0 lg:min-h-0 lg:flex-1">
                 <button
@@ -142,11 +140,11 @@ export function ClientStories() {
                   aria-controls="story-panel"
                   tabIndex={isActive ? 0 : -1}
                   onClick={() => setActive(i)}
-                  onMouseEnter={() => setHover(i)}
-                  onFocus={() => setHover(null)}
                   onKeyDown={(e) => onKeyDown(e, i)}
                   className={cn(
-                    'card-glass flex h-[76px] w-[200px] items-center gap-4 rounded-lg px-5 text-left lg:h-full lg:w-full lg:py-6',
+                    // card-glass-hover: hover keeps its gold-ring feedback,
+                    // but only a CLICK switches the story.
+                    'card-glass card-glass-hover flex h-[76px] w-[200px] items-center gap-4 rounded-lg px-5 text-left lg:h-full lg:w-full lg:py-6',
                     'transition-[border-color,background-color] duration-[var(--dur-base)] ease-hover',
                     'focus-visible:outline-2 focus-visible:outline-focus focus-visible:-outline-offset-2',
                     isShown && 'card-glass-open',

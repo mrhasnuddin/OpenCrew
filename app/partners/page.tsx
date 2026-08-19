@@ -114,7 +114,7 @@ export default function PartnersPage() {
           <Link href="/contact" className={buttonClasses('primary', 'lg')}>
             Start a project
           </Link>
-          <Link href="/services/institutional-access" className={buttonClasses('secondary', 'lg')}>
+          <Link href="/#cap-institutional-access" className={buttonClasses('secondary', 'lg')}>
             How institutional access works
           </Link>
         </div>
