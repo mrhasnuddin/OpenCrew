@@ -4,7 +4,6 @@ import * as React from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { SERVICES } from '@/content/services';
-import { CapabilityArt } from './CapabilityArt';
 import { buttonClasses } from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
 
@@ -41,16 +40,14 @@ const CapabilityIcon = dynamic(() => import('./CapabilityIcon'), {
 });
 
 /**
- * The six artwork files are not drawn to the same fill. Files 1–5 carry a
- * transparent margin inside their viewBox for the outer glow (the drawn
- * figure is ~55% of the file now that the canvas has been widened so the
- * glow is no longer cut at the edge — see public/What/*.svg, filter0_d);
- * file 6 has no outer glow and fills its viewBox edge to edge. Rendering 1–5
- * at 180% of the box puts every DRAWN figure at the same size as 6's. The box
- * (and so the row height) is the same on every card; the overflow is glow.
- * Measured with getBBox over each file's shapes, not guessed.
+ * All six artwork files now share the same anatomy: the drawn figure plus a
+ * widened transparent canvas holding the gold outer glow (files 1–5 shipped
+ * that way after the filter-region fix; 6 had no glow until one was added —
+ * same feGaussianBlur-25 gold recipe, public/What/6.svg). The drawn figure
+ * is ~56% of every file, so ONE scale renders all six figures at the same
+ * size inside the shared square box; the overflow is glow, never linework.
  */
-const ART_SCALE = [1.8, 1.8, 1.8, 1.8, 1.8, 1] as const;
+const ART_SCALE = 1.8;
 
 export function CapabilityStack() {
   const [open, setOpen] = React.useState(0);
@@ -194,6 +191,11 @@ export function CapabilityStack() {
                       </Link>
                     </div>
                     <div className="flex items-center justify-center">
+                      {/* Static artwork (client direction: no animation) — a
+                          fade on open, the baked-in glow does the rest. One
+                          shared square box; the file is positioned at
+                          ART_SCALE so the drawn figure matches across cards
+                          and the glow breathes past the box edges. */}
                       <div
                         className={cn(
                           'relative aspect-square w-full max-w-[280px] sm:max-w-[340px] lg:max-w-[400px]',
@@ -201,16 +203,13 @@ export function CapabilityStack() {
                           isOpen ? 'opacity-100' : 'opacity-0',
                         )}
                       >
-                        {/* ART_SCALE compensates for the files' glow margins
-                            so the DRAWN figure matches across all six cards. */}
-                        <CapabilityArt
-                          index={i + 1}
-                          active={isOpen}
-                          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-                          style={{
-                            width: `${(ART_SCALE[i] ?? 1) * 100}%`,
-                            height: `${(ART_SCALE[i] ?? 1) * 100}%`,
-                          }}
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={`/What/${i + 1}.svg`}
+                          alt=""
+                          aria-hidden="true"
+                          className="pointer-events-none absolute top-1/2 left-1/2 max-w-none -translate-x-1/2 -translate-y-1/2 object-contain select-none"
+                          style={{ width: `${ART_SCALE * 100}%`, height: `${ART_SCALE * 100}%` }}
                         />
                       </div>
                     </div>

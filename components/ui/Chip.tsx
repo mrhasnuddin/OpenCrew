@@ -47,7 +47,10 @@ export function FilterChip({
       type="button"
       aria-pressed={selected}
       className={cn(
-        'inline-flex min-h-[32px] items-center gap-3 rounded-xs border px-4',
+        // No gap: the check manages its own margin, so an UNSELECTED chip
+        // reserves no icon space and hugs its label (client annotation —
+        // every chip used to carry 24px of phantom check width).
+        'inline-flex min-h-[32px] items-center rounded-xs border px-4',
         'font-mono text-2xs uppercase tracking-[0.06em] whitespace-nowrap',
         'transition-[background-color,border-color,color,transform] duration-[var(--dur-fast)] ease-hover',
         'active:scale-[0.97] active:duration-[var(--dur-instant)]',
@@ -63,8 +66,8 @@ export function FilterChip({
         viewBox="0 0 12 12"
         aria-hidden="true"
         className={cn(
-          'size-[12px] transition-opacity duration-[var(--dur-fast)] ease-hover',
-          selected ? 'opacity-100' : 'opacity-0',
+          'h-[12px] transition-[width,margin,opacity] duration-[var(--dur-fast)] ease-hover',
+          selected ? 'mr-3 w-[12px] opacity-100' : 'mr-0 w-0 opacity-0',
         )}
       >
         <path

@@ -6,7 +6,6 @@ import { Card } from '@/components/ui/Card';
 import { buttonClasses } from '@/components/ui/Button';
 import { CrewCard } from '@/components/crew/CrewCard';
 import { CrewFilters } from '@/components/crew/CrewFilters';
-import { TextLink } from '@/components/marketing/Blocks';
 import { CREW, buildFacets, filterCrew, type CrewQuery, type FacetKey } from '@/content/crew';
 
 export const metadata: Metadata = {
@@ -47,8 +46,7 @@ export default async function CrewPage({
         </p>
         <p className="mt-5 max-w-[var(--measure-prose)] text-sm text-muted">
           Senior operators are often listed by role only. Where a profile shows initials, the name
-          and full background are shared under NDA on request. See our{' '}
-          <TextLink href="/legal/disclosure">verification and engagement policy</TextLink>.
+          and full background are shared under NDA on request.
         </p>
       </Section>
 
