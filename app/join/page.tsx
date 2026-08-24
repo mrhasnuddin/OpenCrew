@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Section } from '@/components/primitives/Layout';
+import { PageBanner } from '@/components/ui/PageBanner';
 import { Card } from '@/components/ui/Card';
 import { JoinForm } from '@/components/join/JoinForm';
 import { ListGroup, Manifesto, TextLink } from '@/components/marketing/Blocks';
@@ -15,16 +16,15 @@ export const metadata: Metadata = {
 export default function JoinPage() {
   return (
     <>
-      <Section className="pt-8 lg:pt-9">
-        <p className="eyebrow mb-6">Join the crew</p>
-        <h1 className="max-w-[16ch] text-4xl tracking-[-0.025em] lg:text-5xl lg:tracking-[-0.03em]">
-          Be deployed, not listed.
-        </h1>
-        <p className="lead-measure mt-6 text-lg text-secondary">
-          OPENCREW places senior operators into Web3, AI and new finance projects, as executives,
-          advisors, consultants, regional leaders and global spokespersons, in defined roles doing
-          actual work.
-        </p>
+      <Section className="pt-7 lg:pt-8">
+        <PageBanner
+          motif="join"
+          eyebrow="Join the crew"
+          title="Be deployed, not listed."
+          subtitle="OPENCREW places senior operators into Web3, AI and new finance projects, as executives, advisors, consultants, regional leaders and global spokespersons, in defined roles doing actual work."
+          actionLabel="See the crew"
+          actionHref="/crew"
+        />
       </Section>
 
       <Section className="border-t border-border">

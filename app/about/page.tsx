@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Section } from '@/components/primitives/Layout';
+import { PageBanner } from '@/components/ui/PageBanner';
 import { ProfileCard } from '@/components/marketing/ProfileCard';
 import { PillarBento } from '@/components/marketing/PillarBento';
 import { Manifesto, TextLink } from '@/components/marketing/Blocks';
@@ -24,20 +25,16 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <>
-      <Section className="pt-8 lg:pt-9">
+      <Section className="pt-7 lg:pt-8">
         <Reveal variant="fade">
-          <p className="eyebrow mb-6">Who we are</p>
-        </Reveal>
-        <Reveal variant="mask" delay={80}>
-          <h1 className="max-w-[18ch] text-4xl tracking-[-0.025em] lg:text-5xl lg:tracking-[-0.03em]">
-            Global team. Global access. Global execution.
-          </h1>
-        </Reveal>
-        <Reveal delay={200}>
-          <p className="lead-measure mt-6 text-lg text-secondary">
-            OPENCREW supports Web3, AI and new finance projects through global talent deployment,
-            international representation, institutional access and overseas market coordination.
-          </p>
+          <PageBanner
+            motif="about"
+            eyebrow="Who we are"
+            title="Global team. Global access. Global execution."
+            subtitle="OPENCREW supports Web3, AI and new finance projects through global talent deployment, international representation, institutional access and overseas market coordination."
+            actionLabel="See the capabilities"
+            actionHref="/#what-we-do"
+          />
         </Reveal>
       </Section>
 

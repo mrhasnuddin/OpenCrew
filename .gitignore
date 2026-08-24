@@ -68,3 +68,7 @@ Thumbs.db
 
 # One-off local tooling (partner-logo fetch scripts carry a hard-coded Brandfetch API key)
 /scripts/
+
+# Applicant intake file: names, photos, nationality and contact details of real
+# people. The site publishes what they agreed to publish; the raw file is not it.
+/crews.docx

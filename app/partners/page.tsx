@@ -5,6 +5,7 @@ import { buttonClasses } from '@/components/ui/Button';
 import { Disclaimer } from '@/components/marketing/Blocks';
 import { BrandMark } from '@/components/marketing/BrandMark';
 import { NETWORK, INDEPENDENCE_DISCLAIMER, type Institution } from '@/content/site';
+import { PageBanner } from '@/components/ui/PageBanner';
 
 export const metadata: Metadata = {
   title: 'Partners',
@@ -85,12 +86,15 @@ export default function PartnersPage() {
 
   return (
     <>
-      <Section className="pt-8 lg:pt-9">
-        <p className="eyebrow mb-6">{NETWORK.eyebrow}</p>
-        <h1 className="max-w-[18ch] text-4xl tracking-[-0.025em] lg:text-5xl lg:tracking-[-0.03em]">
-          Partners
-        </h1>
-        <p className="lead-measure mt-6 text-lg text-secondary">{NETWORK.lead}</p>
+      <Section className="pt-7 lg:pt-8">
+        <PageBanner
+          motif="partners"
+          eyebrow={NETWORK.eyebrow}
+          title="The institutional landscape we work across."
+          subtitle={NETWORK.lead}
+          actionLabel="How institutional access works"
+          actionHref="/#cap-institutional-access"
+        />
       </Section>
 
       <Section className="border-t border-border">
