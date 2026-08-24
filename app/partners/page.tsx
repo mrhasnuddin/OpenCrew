@@ -1,7 +1,5 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { Section } from '@/components/primitives/Layout';
-import { buttonClasses } from '@/components/ui/Button';
 import { BrandMark } from '@/components/marketing/BrandMark';
 import { logoPlateClass } from '@/components/marketing/logoPlate';
 import { cn } from '@/lib/utils';
@@ -113,19 +111,8 @@ export default function PartnersPage() {
 
       </Section>
 
-      <Section className="border-t border-border">
-        <h2 className="section-title max-w-[20ch]">
-          Access is matched to your stage, not sprayed at every contact.
-        </h2>
-        <div className="mt-7 flex flex-wrap gap-4">
-          <Link href="/contact" className={buttonClasses('primary', 'lg')}>
-            Start a project
-          </Link>
-          <Link href="/#cap-institutional-access" className={buttonClasses('secondary', 'lg')}>
-            How institutional access works
-          </Link>
-        </div>
-      </Section>
+      {/* No page-level closing section (client direction): the shared footer
+          CTA panel is the page's ask. */}
     </>
   );
 }

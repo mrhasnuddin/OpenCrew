@@ -5,7 +5,7 @@ import { SocialIcons } from '@/components/ui/SocialIcons';
 import { FooterCta } from '@/components/layout/FooterCta';
 import { BackToTop } from '@/components/layout/BackToTop';
 import { CAPABILITIES } from '@/lib/nav';
-import { CONTACT } from '@/content/contact';
+import { CONTACT, isPlaceholder } from '@/content/contact';
 
 /**
  * Footer — conversion panel, five-column wayfinding, oversized wordmark, base bar.
@@ -15,6 +15,17 @@ import { CONTACT } from '@/content/contact';
  * wordmark in a display face; we can't, and shouldn't — ours is artwork.
  */
 
+/**
+ * Wayfinding, kept in step with the CURRENT IA — the columns are the site's
+ * map, and a map that shows retired roads is worse than none:
+ *  — Pages: the five real routes. Join the Crew is a page, so it lives here,
+ *    not under a home-section column.
+ *  — Capabilities: the six cards on the home stack (the subpages are
+ *    retired; /#cap-<slug> deep-links open the right card).
+ *  — Explore: the home page's sections by their actual anchors, in page
+ *    order — what we do, partners, client stories, why us, how we work.
+ *  — Legal: unchanged.
+ */
 const COLUMNS = [
   {
     title: 'Pages',
@@ -23,6 +34,7 @@ const COLUMNS = [
       { label: 'Partners', href: '/partners' },
       { label: 'About', href: '/about' },
       { label: 'Contact', href: '/contact' },
+      { label: 'Join the Crew', href: '/join' },
     ],
   },
   {
@@ -30,12 +42,13 @@ const COLUMNS = [
     links: CAPABILITIES.map((c) => ({ label: c.name, href: `/#cap-${c.slug}` })),
   },
   {
-    title: 'Home',
+    title: 'Explore',
     links: [
-      { label: 'Selected engagements', href: '/#work' },
-      { label: 'How we work', href: '/#how-we-work' },
+      { label: 'What we do', href: '/#what-we-do' },
+      { label: 'Our partners', href: '/#partners' },
+      { label: 'Client stories', href: '/#work' },
       { label: 'Why OPENCREW', href: '/#why' },
-      { label: 'Join the Crew', href: '/join' },
+      { label: 'How we work', href: '/#how-we-work' },
     ],
   },
   {
