@@ -14,8 +14,11 @@ import { cn } from '@/lib/utils';
  * A CDN miss (404) or load failure drops to 3 at runtime, so the wall never
  * shows a broken image. Client component only for that onError flip.
  *
- * Marks render greyscale at rest; the surfaces that want colour on hover add
- * `group` and the `group-hover` classes via `className`.
+ * Marks render in their OWN colours, on the light `.logo-plate` chip the
+ * surfaces provide. The previous greyscale-and-invert treatment existed only
+ * because the marks sat on black, where 11 of the 26 fell below 3:1 — and an
+ * inverted mark is not that company's mark. The chip solves the contrast, so
+ * the filters are gone.
  */
 export function BrandMark({
   item,
@@ -38,14 +41,6 @@ export function BrandMark({
   const src = item.logo ?? cdn;
   const [failed, setFailed] = React.useState(false);
 
-  const isDarkThemed = item.logoTheme === 'dark';
-
-  // Dark-themed logos (pure black/dark artwork) get masked/inverted to crisp white on dark background.
-  // Color logos sit in clean grayscale at rest and smoothly reveal full brand color on hover.
-  const themeFilter = isDarkThemed
-    ? 'brightness-0 invert opacity-70 transition-[opacity] duration-[var(--dur-base)] ease-hover group-hover:opacity-100 group-hover:brightness-0 group-hover:invert'
-    : 'grayscale opacity-75 brightness-110 transition-[filter,opacity] duration-[var(--dur-base)] ease-hover group-hover:grayscale-0 group-hover:brightness-100 group-hover:invert-0 group-hover:opacity-100';
-
   if (src && !failed) {
     return (
       // eslint-disable-next-line @next/next/no-img-element
@@ -56,7 +51,7 @@ export function BrandMark({
         decoding="async"
         referrerPolicy="strict-origin-when-cross-origin"
         onError={() => setFailed(true)}
-        className={cn('object-contain select-none', themeFilter, className)}
+        className={cn('object-contain select-none', className)}
       />
     );
   }
@@ -66,7 +61,10 @@ export function BrandMark({
       <span
         aria-hidden="true"
         className={cn(
-          'flex shrink-0 items-center justify-center rounded-sm border border-border-strong font-mono text-2xs text-secondary',
+          // `logo-monogram` takes its colours from the chip it sits on
+          // (tokens.css .logo-plate), because the ink steps a light surface
+          // needs are not exposed as utilities — only the dark-surface ones are.
+          'logo-monogram flex shrink-0 items-center justify-center rounded-sm border font-mono text-2xs',
           monogramClassName,
         )}
       >

@@ -537,6 +537,62 @@
   .card-glass-hover:focus-visible::after,
   .card-glass-hover:focus-within::after { opacity: 1; }
 
+  /* ---------------------------------------------------------- .logo-plate
+     Third-party marks sit on a warm near-white chip, not on the canvas.
+     Measured, not assumed: of the 26 marks we hold, 11 fall below 3:1 against
+     the dark surface (OKX, Visa, Wise, HKEX, BNY, NTT, CertiK, OSL and friends
+     are drawn in near-black), while on a light chip 21 clear it comfortably
+     and in their own brand colour. A chip also removes the need to invert
+     anything: an inverted mark is not that company's mark.
+
+     Warm rather than pure white so a wall of them reads as paper in a
+     black-and-gold system instead of holes cut in the page. The card around
+     it stays dark — only the mark's ground changes. */
+  .logo-plate {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    background: color-mix(in oklab, var(--gold-50) 55%, var(--ink-0));
+    border: 1px solid color-mix(in oklab, var(--gold-500) 26%, transparent);
+    box-shadow:
+      inset 0 1px 0 var(--ink-0),
+      0 1px 2px rgb(0 0 0 / 0.35);
+    transition:
+      border-color var(--dur-base) var(--ease-hover),
+      box-shadow var(--dur-base) var(--ease-hover);
+  }
+  /* A handful of marks are supplied only as light artwork for a dark ground
+     (see `logoTheme: 'light'` in content/site.ts). Those keep a dark chip —
+     two dark chips in a wall of light ones is a smaller price than two marks
+     nobody can see, and inverting someone's logo is not an option. */
+  .logo-plate--dark {
+    background: var(--ink-900);
+    border-color: var(--color-border-strong);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.05);
+  }
+  .logo-plate--dark .logo-monogram {
+    border-color: var(--ink-700);
+    color: var(--ink-300);
+  }
+
+  /* Fallback monogram, when neither a local file nor the CDN resolves. Its
+     colours live here rather than as utilities: the ink steps a light surface
+     needs (200, 600) are deliberately not exposed to Tailwind, since every
+     other surface in the system is dark. */
+  .logo-plate .logo-monogram {
+    border-color: var(--ink-200);
+    color: var(--ink-600);
+  }
+
+  .group:hover .logo-plate,
+  .logo-plate:hover {
+    border-color: color-mix(in oklab, var(--gold-500) 60%, transparent);
+    box-shadow:
+      inset 0 1px 0 var(--ink-0),
+      0 0 0 3px color-mix(in oklab, var(--gold-500) 16%, transparent);
+  }
+
   /* ---------------------------------------------------------- .marker-dot
      The list marker. Em dashes are retired site-wide (client direction):
      every "—" bullet is a 6px gold dot, optically centred on the first line

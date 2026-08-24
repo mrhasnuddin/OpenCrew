@@ -1,10 +1,11 @@
 import { NETWORK, type Institution } from '@/content/site';
 import { BrandMark } from './BrandMark';
+import { logoPlateClass } from './logoPlate';
 import { cn } from '@/lib/utils';
 
 /**
  * Partner marquee in the ENI reference's manner: three continuous rows of
- * uniform logo plates on black (client direction: three is enough),
+ * uniform logo chips (client direction: three is enough),
  * alternating direction, edges faded into the canvas so the strip reads as
  * passing beneath a mask. All institutions lumped together (no category
  * split), dealt round-robin across rows so no row is "the exchanges row" and
@@ -52,15 +53,12 @@ function Plate({ item }: { item: Institution }) {
     <li
       className={cn(
         'group flex h-[64px] w-[168px] shrink-0 items-center justify-center gap-3 rounded-md px-5',
-        // Lighter-than-canvas plate (client direction: the black plates
-        // swallowed dark marks). A soft top-lit gradient two steps above the
-        // canvas, a strong border and a hairline top sheen give every mark a
-        // ground to sit on; marks measured dark are additionally inverted to
-        // white via logoTheme (content/site.ts).
-        'border border-ink-700 bg-[linear-gradient(180deg,#222222_0%,#161616_58%,#111111_100%)]',
-        'shadow-[inset_0_1px_0_rgb(255_255_255/0.07)]',
-        'transition-[transform,border-color] duration-[var(--dur-base)] ease-out',
-        '[@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-[2px] hover:border-ink-600',
+        // Light chip: measured, 11 of the 26 marks we hold sit below 3:1 on a
+        // dark plate because they are drawn in near-black. On this ground they
+        // read in their own brand colour, which is what a partner wall is for.
+        logoPlateClass(item),
+        'transition-transform duration-[var(--dur-base)] ease-out',
+        '[@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-[2px]',
       )}
     >
       {/* Local file → Brandfetch by domain (if configured) → monogram + name.
@@ -70,10 +68,10 @@ function Plate({ item }: { item: Institution }) {
         item={item}
         type="logo"
         h={56}
-        className="max-h-[28px] max-w-[128px]"
+        className="max-h-[30px] max-w-[128px]"
         monogramClassName="size-[28px]"
       >
-        <span className="truncate text-xs font-medium text-secondary">{item.name}</span>
+        <span className="truncate text-xs font-medium text-ink-700">{item.name}</span>
       </BrandMark>
     </li>
   );

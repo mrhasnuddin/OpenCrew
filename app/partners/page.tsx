@@ -4,6 +4,8 @@ import { Section } from '@/components/primitives/Layout';
 import { buttonClasses } from '@/components/ui/Button';
 import { Disclaimer } from '@/components/marketing/Blocks';
 import { BrandMark } from '@/components/marketing/BrandMark';
+import { logoPlateClass } from '@/components/marketing/logoPlate';
+import { cn } from '@/lib/utils';
 import { NETWORK, INDEPENDENCE_DISCLAIMER, type Institution } from '@/content/site';
 import { PageBanner } from '@/components/ui/PageBanner';
 
@@ -32,16 +34,20 @@ function PartnerCard({ item }: { item: Institution }) {
 
   const body = (
     <>
-      <span className="flex items-center justify-between gap-4">
-        {/* Local file → Brandfetch by domain (if configured) → monogram.
-            Greyscale at rest, colour on hover (the card is the `group`). */}
-        <BrandMark
-          item={item}
-          type="logo"
-          h={72}
-          className="max-h-[32px] max-w-[160px]"
-          monogramClassName="size-[36px] text-muted"
-        />
+      <span className="flex items-start justify-between gap-4">
+        {/* Local file → Brandfetch by domain (if configured) → monogram, in
+            the institution's own colours on a light chip. The chip is what
+            makes near-black marks (OKX, Visa, HKEX, BNY…) legible without
+            inverting anyone's logo. */}
+        <span className={cn(logoPlateClass(item), 'h-[64px] w-[168px] shrink-0 px-5')}>
+          <BrandMark
+            item={item}
+            type="logo"
+            h={72}
+            className="max-h-[34px] max-w-[128px]"
+            monogramClassName="size-[34px]"
+          />
+        </span>
         {href ? (
           <svg viewBox="0 0 12 12" className="size-[12px] shrink-0 text-muted" aria-hidden="true">
             <path
