@@ -37,3 +37,13 @@ export const SOCIAL: Channel[] = [
 export const BRIEF_EMAIL: string | null = null;
 
 export const RESPONSE_TIME = 'We reply to every project within two business days.';
+
+/**
+ * True while a channel is still the bracketed token above. Nothing in this
+ * file is allowed to reach a public page unresolved: a reader who sees
+ * 【contact email】 has learned that the site is unfinished, which is the one
+ * impression a page about verifiable people cannot afford.
+ */
+export function isPlaceholder(value: string) {
+  return value.startsWith('【');
+}

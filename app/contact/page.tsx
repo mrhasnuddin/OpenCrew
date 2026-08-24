@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import { Section } from '@/components/primitives/Layout';
+import { PageBanner } from '@/components/ui/PageBanner';
 import { IntakeForm } from '@/components/start/IntakeForm';
-import { TextLink } from '@/components/marketing/Blocks';
 import { CLOSING_CTA } from '@/content/site';
-import { CONTACT } from '@/content/contact';
+import { CONTACT, RESPONSE_TIME, isPlaceholder } from '@/content/contact';
 
 export const metadata: Metadata = {
   title: 'Contact',
@@ -12,43 +12,93 @@ export const metadata: Metadata = {
 };
 
 /**
- * The named door — the reference has /contacts with a form; ours carries the
- * four-step brief plus the direct channels. Formerly /start (301 kept).
+ * The named door. Built on the same spine as every other subpage — banner,
+ * then the work, then the rail beside it — because a contact page that looks
+ * like a different site is the moment a reader starts wondering who they are
+ * writing to.
+ *
+ * The brief is the page: it takes the wide column, with the things a sender
+ * wants to know while filling it in (what happens next, how fast we answer,
+ * the direct channels) held in a sticky rail rather than stacked underneath
+ * where nobody scrolls to find them.
  */
 export default function ContactPage() {
   return (
     <>
-      <Section className="pt-8 pb-7 lg:pt-9">
-        <p className="eyebrow mb-6">{CLOSING_CTA.eyebrow}</p>
-        <h1 className="max-w-[16ch] text-4xl tracking-[-0.025em] lg:text-5xl lg:tracking-[-0.03em]">
-          {CLOSING_CTA.title}
-        </h1>
-        <p className="lead-measure mt-6 text-lg text-secondary">
-          Four short steps. If you have already shortlisted crew members, they attach automatically.
-        </p>
+      <Section className="pt-7 pb-0 lg:pt-8">
+        <PageBanner
+          motif="contact"
+          eyebrow={CLOSING_CTA.eyebrow}
+          title={CLOSING_CTA.title}
+          subtitle="Four short steps. If you have already shortlisted crew members, they attach to the brief automatically."
+        />
       </Section>
 
-      <Section className="border-t border-border">
-        <div className="max-w-[var(--container-content)]">
-          <IntakeForm />
+      <Section className="pt-8 lg:pt-8">
+        <div className="grid gap-8 lg:grid-cols-[1.618fr_1fr] lg:gap-7">
+          <div className="min-w-0">
+            <IntakeForm />
+          </div>
+
+          <aside className="lg:sticky lg:top-[calc(64px+var(--spacing-6))] lg:self-start">
+            <div className="flex flex-col gap-5">
+              <div className="card-glass card-glass-open rounded-lg p-6">
+                <p className="eyebrow mb-5">What happens next</p>
+                <ol className="flex flex-col gap-5">
+                  {[
+                    ['01', 'We read the brief', 'Stage, market, roles and timeline — the four things that decide whether we are the right fit.'],
+                    ['02', 'We come back with a shape', 'Which capability, which members, and the engagement model that fits the stage.'],
+                    ['03', 'We scope it properly', 'A written proposal with the people named, before anything is committed.'],
+                  ].map(([index, title, body]) => (
+                    <li key={index} className="flex gap-5">
+                      <span className="font-label text-2xs font-semibold tracking-[0.06em] text-accent-text tabular-nums">
+                        {index}
+                      </span>
+                      <span className="min-w-0">
+                        <span className="block font-medium text-text">{title}</span>
+                        <span className="mt-2 block text-sm text-muted">{body}</span>
+                      </span>
+                    </li>
+                  ))}
+                </ol>
+                <p className="mt-6 border-t border-border pt-5 text-sm text-secondary">
+                  {RESPONSE_TIME}
+                </p>
+              </div>
+
+              <div className="card-glass rounded-lg p-6">
+                <p className="eyebrow mb-5">Prefer to write directly?</p>
+                <ul className="flex flex-col gap-4">
+                  {CONTACT.map((c) => (
+                    <li
+                      key={c.key}
+                      className="flex items-baseline justify-between gap-5 border-t border-border pt-4 first:border-t-0 first:pt-0"
+                    >
+                      <span className="font-label text-2xs font-semibold tracking-[0.06em] text-muted uppercase">
+                        {c.label}
+                      </span>
+                      {/* A bracketed placeholder is a broken page, not a
+                          channel: until a real value lands the row says so
+                          plainly. Same rule as the footer. */}
+                      {isPlaceholder(c.value) ? (
+                        <span className="text-sm text-muted">On request</span>
+                      ) : c.href ? (
+                        <a
+                          href={c.href}
+                          className="text-sm text-link underline decoration-from-font underline-offset-4 transition-colors duration-[var(--dur-fast)] ease-hover hover:text-link-hover"
+                        >
+                          {c.value}
+                        </a>
+                      ) : (
+                        <span className="text-sm text-text">{c.value}</span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </aside>
         </div>
-      </Section>
-
-      <Section eyebrow="Prefer to write directly?" className="border-t border-border">
-        <ul className="flex flex-col gap-4">
-          {CONTACT.map((c) => (
-            <li key={c.key} className="flex flex-wrap gap-4 border-t border-border pt-4">
-              <span className="w-[120px] shrink-0 font-mono text-2xs tracking-[0.06em] text-muted uppercase">
-                {c.label}
-              </span>
-              {c.href ? (
-                <TextLink href={c.href}>{c.value}</TextLink>
-              ) : (
-                <span className="text-text">{c.value}</span>
-              )}
-            </li>
-          ))}
-        </ul>
       </Section>
     </>
   );

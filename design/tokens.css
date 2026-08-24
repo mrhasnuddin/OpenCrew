@@ -404,7 +404,17 @@
     to   { transform: translateX(-50%); }
   }
 
-  .marquee { overflow: hidden; }
+  /* The clip box is taller than the plates: a hovering plate lifts 2px and
+     grows a 3px ring, and with a flush `overflow: hidden` both were sheared
+     off at the row edge. Padding gives the clip room; the equal negative
+     margin means the row still occupies exactly the space it did. A single
+     axis cannot be left visible — the spec turns the other one into a scroll
+     container. */
+  .marquee {
+    overflow: hidden;
+    padding-block: 10px;
+    margin-block: -10px;
+  }
 
   .marquee-track {
     display: flex;

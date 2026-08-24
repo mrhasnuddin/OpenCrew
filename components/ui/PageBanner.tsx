@@ -17,7 +17,7 @@ import { cn } from '@/lib/utils';
  * own. Reserve it for pages with real depth behind them; on a thin page it is
  * a lid on an empty box.
  */
-export type BannerMotif = 'crew' | 'partners' | 'about' | 'join';
+export type BannerMotif = 'crew' | 'partners' | 'about' | 'join' | 'contact';
 
 export function PageBanner({
   eyebrow,
@@ -178,6 +178,19 @@ function Glyph({ motif }: { motif: BannerMotif }) {
           opacity="0.5"
         />
         <path d="M232 130h150M-10 130h20" opacity="0.35" />
+      </g>
+    );
+  }
+  if (motif === 'contact') {
+    // a signal leaving a point — the direct line the page is for
+    return (
+      <g>
+        <circle cx="58" cy="130" r="8" fill="currentColor" stroke="none" />
+        <path d="M58 130a34 34 0 0 1 34-34M58 130a34 34 0 0 0 34 34" />
+        <path d="M58 130a62 62 0 0 1 62-62M58 130a62 62 0 0 0 62 62" strokeDasharray="3 7" />
+        <path d="M58 130a90 90 0 0 1 90-90M58 130a90 90 0 0 0 90 90" opacity="0.55" />
+        <path d="M74 130h96" opacity="0.45" />
+        <circle cx="170" cy="130" r="4" fill="currentColor" stroke="none" opacity="0.7" />
       </g>
     );
   }

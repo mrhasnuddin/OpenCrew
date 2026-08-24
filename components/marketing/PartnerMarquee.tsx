@@ -100,7 +100,7 @@ export function PartnerMarquee({ className }: { className?: string }) {
         style={{ background: 'linear-gradient(270deg, var(--color-canvas), transparent)' }}
       />
 
-      <div aria-hidden="true" className="flex flex-col gap-4">
+      <div aria-hidden="true" className="flex flex-col gap-5">
         {rows.map((row, i) => (
           <div key={i} className="marquee">
             <ul

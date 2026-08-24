@@ -189,30 +189,63 @@ export function IntakeForm() {
   /* ------------------------------------------------------------- the form */
   return (
     <div className="flex flex-col gap-7">
-      <ol className="flex flex-wrap gap-2">
-        {STEPS.map((label, i) => (
-          <li key={label} className="flex-1 min-w-[120px]">
-            <button
-              type="button"
-              onClick={() => (i < step ? setStep(i) : validate(step) && setStep(i))}
-              className={cn(
-                'w-full border-t-2 pt-4 text-left transition-colors duration-[var(--dur-fast)] ease-hover',
-                'focus-visible:outline-2 focus-visible:outline-focus focus-visible:outline-offset-2',
-                i === step ? 'border-accent' : i < step ? 'border-border-strong' : 'border-border',
-              )}
-            >
-              <span className="font-mono text-2xs tracking-[0.06em] text-muted">
-                {String(i + 1).padStart(2, '0')}
-              </span>
-              <span className={cn('mt-2 block text-sm', i === step ? 'text-text' : 'text-muted')}>
-                {label}
-              </span>
-            </button>
-          </li>
-        ))}
+      {/* Progress, not decoration: a done step is a gold node you can go back
+          to, the one you are on is lit, and the rest are inert until the step
+          before them validates. Same numbered-node language as the execution
+          flow, so a reader who has seen one recognises the other. */}
+      <ol className="flex gap-2">
+        {STEPS.map((label, i) => {
+          const done = i < step;
+          const current = i === step;
+          return (
+            <li key={label} className="min-w-0 flex-1">
+              <button
+                type="button"
+                onClick={() => (i < step ? setStep(i) : validate(step) && setStep(i))}
+                aria-current={current ? 'step' : undefined}
+                className={cn(
+                  'group/step flex w-full flex-col gap-4 text-left',
+                  '[@media(pointer:coarse)]:min-h-[44px]',
+                  'focus-visible:outline-2 focus-visible:outline-focus focus-visible:outline-offset-2',
+                )}
+              >
+                <span
+                  aria-hidden="true"
+                  className={cn(
+                    'block h-[3px] w-full rounded-full transition-colors duration-[var(--dur-base)] ease-hover',
+                    current ? 'bg-accent' : done ? 'bg-accent/45' : 'bg-border',
+                  )}
+                />
+                <span className="flex min-w-0 items-center gap-3">
+                  <span
+                    className={cn(
+                      'flex size-[26px] shrink-0 items-center justify-center rounded-full border',
+                      'font-label text-2xs font-semibold tabular-nums',
+                      current
+                        ? 'border-accent bg-accent text-on-accent'
+                        : done
+                          ? 'border-[color-mix(in_oklab,var(--gold-500)_55%,transparent)] text-accent-text'
+                          : 'border-border text-disabled',
+                    )}
+                  >
+                    {done ? <Tick /> : String(i + 1).padStart(2, '0')}
+                  </span>
+                  <span
+                    className={cn(
+                      'hidden truncate text-sm sm:block',
+                      current ? 'font-medium text-text' : 'text-muted',
+                    )}
+                  >
+                    {label}
+                  </span>
+                </span>
+              </button>
+            </li>
+          );
+        })}
       </ol>
 
-      <Card className="flex flex-col gap-6">
+      <Card className="flex flex-col gap-6 p-6 lg:p-7">
         {step === 0 ? (
           <>
             <Field id="project" label="Project name" error={errors.project}>
@@ -387,5 +420,23 @@ export function IntakeForm() {
         </div>
       </Card>
     </div>
+  );
+}
+
+/** Completed step marker — the numeral is replaced once a step is behind you. */
+function Tick() {
+  return (
+    <svg
+      viewBox="0 0 12 12"
+      className="size-[11px]"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M2.5 6.4 4.9 8.8 9.6 3.4" />
+    </svg>
   );
 }
