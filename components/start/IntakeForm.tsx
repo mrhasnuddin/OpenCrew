@@ -188,7 +188,7 @@ export function IntakeForm() {
 
   /* ------------------------------------------------------------- the form */
   return (
-    <div className="flex flex-col gap-7">
+    <div className="flex h-full flex-col gap-7">
       {/* Progress, not decoration: a done step is a gold node you can go back
           to, the one you are on is lit, and the rest are inert until the step
           before them validates. Same numbered-node language as the execution
@@ -245,7 +245,7 @@ export function IntakeForm() {
         })}
       </ol>
 
-      <Card className="flex flex-col gap-6 p-6 lg:p-7">
+      <Card className="flex flex-1 flex-col gap-6 p-6 lg:p-7">
         {step === 0 ? (
           <>
             <Field id="project" label="Project name" error={errors.project}>
@@ -401,7 +401,7 @@ export function IntakeForm() {
           </>
         ) : null}
 
-        <div className="flex flex-wrap items-center gap-4 border-t border-border pt-6">
+        <div className="mt-auto flex flex-wrap items-center gap-4 border-t border-border pt-6">
           {step > 0 ? (
             <Button variant="ghost" size="lg" onClick={back}>
               Back

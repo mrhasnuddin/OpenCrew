@@ -2,11 +2,10 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Section } from '@/components/primitives/Layout';
 import { buttonClasses } from '@/components/ui/Button';
-import { Disclaimer } from '@/components/marketing/Blocks';
 import { BrandMark } from '@/components/marketing/BrandMark';
 import { logoPlateClass } from '@/components/marketing/logoPlate';
 import { cn } from '@/lib/utils';
-import { NETWORK, INDEPENDENCE_DISCLAIMER, type Institution } from '@/content/site';
+import { NETWORK, type Institution } from '@/content/site';
 import { PageBanner } from '@/components/ui/PageBanner';
 
 export const metadata: Metadata = {
@@ -112,8 +111,6 @@ export default function PartnersPage() {
           ))}
         </ul>
 
-        <Disclaimer>{NETWORK.qualifier}</Disclaimer>
-        <Disclaimer>{INDEPENDENCE_DISCLAIMER}</Disclaimer>
       </Section>
 
       <Section className="border-t border-border">

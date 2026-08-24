@@ -649,76 +649,82 @@
   .reveal[data-shown] {
     opacity: 1;
     transform: none;
+  }
+  /* The resolved clip belongs to the MASK variant only. Left on every shown
+     wrapper it sheared anything inside that lifts past the wrapper's edge on
+     hover — marquee plates, bento cells — because inset(0) clips exactly at
+     the border box. Mask is used on headlines, which have no hover children,
+     so it alone keeps the clip it animated to. */
+  .reveal[data-reveal='mask'][data-shown] {
     clip-path: inset(0 0 0 0);
   }
   /* Once revealed, release the compositor hint. */
   .reveal[data-shown] { will-change: auto; }
 
-  /* ------------------------------------------------------- flow rail
-     Execution flow, static (client direction: no animation). A rail runs
-     through numbered nodes 01→05; every segment carries a chevron pointing
-     forward, and the rail brightens as it goes, so the direction reads at a
-     glance without motion. Horizontal at lg (five columns), vertical below
-     (a left rail with the steps stacked). Everything is a pseudo-element on
-     the step, so the markup is one <ol>. */
-  .flow-rail { position: relative; }
-  .flow-step { position: relative; }
-  /* the node: numbered ring, gold, on the canvas so the rail passes behind */
-  .flow-node {
-    position: relative; z-index: 1;
+  /* -------------------------------------------------------- flow cells
+     Execution flow (ExecutionFlow.tsx): five stage cells behind one rail of
+     numbered nodes. The SELECTED stage is the composition's one accent — the
+     cell fills with the primary gold and every layer of its content flips to
+     ink so contrast is kept, not implied: title full ink, body at 72%, the
+     watermark numeral as a darker wash. Selection is a real button state
+     (aria-pressed), driven by data-active, so the treatment lives here in
+     the system rather than in a component's class soup. */
+  .flow-cell {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    background: linear-gradient(160deg, var(--ink-950), var(--ink-1000));
+    padding: var(--spacing-6);
+    text-align: left;
+    transition:
+      border-color var(--dur-base) var(--ease-hover),
+      transform var(--dur-base) var(--ease-out),
+      box-shadow var(--dur-base) var(--ease-hover);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .flow-cell:hover {
+      border-color: color-mix(in oklab, var(--gold-500) 45%, transparent);
+      transform: translateY(-2px);
+    }
+  }
+  .flow-cell .flow-cell-title { color: var(--color-text); }
+  .flow-cell .flow-cell-body  { color: var(--color-muted); }
+  .flow-cell .flow-cell-mark  { color: rgb(255 255 255 / 0.04); }
+
+  .flow-cell[data-active] {
+    border-color: var(--gold-400);
+    background: linear-gradient(160deg, var(--gold-400), var(--gold-600));
+    box-shadow:
+      0 0 0 4px color-mix(in oklab, var(--gold-500) 18%, transparent),
+      0 18px 48px -18px color-mix(in oklab, var(--gold-500) 55%, transparent);
+  }
+  .flow-cell[data-active] .flow-cell-title { color: var(--ink-1000); }
+  .flow-cell[data-active] .flow-cell-body  { color: color-mix(in oklab, var(--ink-1000) 72%, var(--gold-200)); }
+  .flow-cell[data-active] .flow-cell-mark  { color: rgb(0 0 0 / 0.14); }
+
+  /* the node on the cell's edge follows the same state */
+  .flow-cell-node {
+    position: absolute; top: 0; left: 0; z-index: 10;
     display: flex; align-items: center; justify-content: center;
-    width: 40px; height: 40px; border-radius: 9999px;
-    border: 1.5px solid color-mix(in oklab, var(--gold-500) 55%, transparent);
+    width: 27px; height: 27px; border-radius: 9999px;
+    border: 1px solid color-mix(in oklab, var(--gold-500) 55%, transparent);
     background: var(--color-canvas);
     color: var(--color-accent-text);
-    font-family: var(--font-label); font-size: var(--text-xs); font-weight: 600;
-    letter-spacing: 0.04em; font-variant-numeric: tabular-nums;
-    box-shadow: 0 0 0 4px color-mix(in oklab, var(--gold-500) 8%, transparent);
+    font-family: var(--font-label); font-size: var(--text-2xs); font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    transition:
+      background-color var(--dur-base) var(--ease-hover),
+      color var(--dur-base) var(--ease-hover),
+      border-color var(--dur-base) var(--ease-hover),
+      box-shadow var(--dur-base) var(--ease-hover);
   }
-  /* first node is filled: the flow starts here. Last node wears a dashed
-     outer ring: review and expansion is the stage that keeps going. */
-  .flow-step:first-child .flow-node {
-    background: var(--gold-500); color: var(--ink-1000); border-color: var(--gold-400);
-    box-shadow: 0 0 0 4px color-mix(in oklab, var(--gold-500) 18%, transparent),
-                0 0 24px color-mix(in oklab, var(--gold-500) 35%, transparent);
-  }
-  .flow-step:last-child .flow-node {
-    outline: 1px dashed color-mix(in oklab, var(--gold-500) 55%, transparent);
-    outline-offset: 5px;
-  }
-  /* the segment: from this node to the next; hidden on the last step */
-  .flow-step::before {
-    content: ''; position: absolute;
-    background: linear-gradient(90deg,
-      color-mix(in oklab, var(--gold-500) 40%, transparent),
-      color-mix(in oklab, var(--gold-500) 70%, transparent));
-  }
-  /* the chevron, mid-segment, pointing forward */
-  .flow-step::after {
-    content: ''; position: absolute; width: 7px; height: 7px;
-    border-right: 1.5px solid var(--gold-400); border-bottom: 1.5px solid var(--gold-400);
-    opacity: 0.9;
-  }
-  .flow-step:last-child::before, .flow-step:last-child::after { display: none; }
-
-  /* vertical rail (default, below lg): rail down the left, steps indented */
-  .flow-step { padding-left: 60px; }
-  .flow-step .flow-node { position: absolute; left: 0; top: 0; }
-  .flow-step::before { left: 19px; top: 40px; bottom: calc(-1 * var(--flow-gap, 26px)); width: 1.5px;
-    background: linear-gradient(180deg,
-      color-mix(in oklab, var(--gold-500) 40%, transparent),
-      color-mix(in oklab, var(--gold-500) 70%, transparent)); }
-  .flow-step::after { left: 16px; top: calc(50% + 12px); transform: rotate(45deg); }
-
-  /* horizontal rail (lg+): node on top, segment runs to the next column */
-  @media (min-width: 64rem) {
-    .flow-step { padding-left: 0; padding-top: 60px; }
-    .flow-step .flow-node { position: absolute; left: 0; top: 0; }
-    .flow-step::before { left: 40px; right: calc(-1 * var(--flow-gap, 26px)); top: 19px; bottom: auto; height: 1.5px; width: auto;
-      background: linear-gradient(90deg,
-        color-mix(in oklab, var(--gold-500) 40%, transparent),
-        color-mix(in oklab, var(--gold-500) 70%, transparent)); }
-    .flow-step::after { left: auto; right: calc(-0.5 * var(--flow-gap, 26px) - 3px); top: 16px; transform: rotate(-45deg); }
+  .flow-cell-node[data-active] {
+    background: var(--gold-500);
+    border-color: var(--gold-400);
+    color: var(--ink-1000);
+    box-shadow: 0 0 0 5px color-mix(in oklab, var(--gold-500) 16%, transparent);
   }
 
   /* ------------------------------------------------------------ skeleton

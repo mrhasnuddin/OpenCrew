@@ -1,7 +1,8 @@
 import Link from 'next/link';
-import { ENGAGEMENT_MODELS, EXECUTION_FLOW } from '@/content/site';
+import { ENGAGEMENT_MODELS } from '@/content/site';
 import { buttonClasses } from '@/components/ui/Button';
 import { Reveal } from '@/components/motion/Reveal';
+import { ExecutionFlow } from './ExecutionFlow';
 import { cn } from '@/lib/utils';
 
 /**
@@ -53,72 +54,12 @@ export function ModelsBento() {
             Start a project
           </Link>
         </div>
-        {/* Execution flow. Five cells rather than labels hung off a hairline:
-            each stage is a surface of its own, the rail runs between them at
-            the node line, and the numeral is repeated as a watermark so the
-            order reads before any of the words do. The last cell is gold —
-            it is the one the whole sequence is for, and the reference decks
-            always resolve a composition on one accent, never five.
-
-            Below lg the cells stack and the rail turns vertical, drawn down
-            the left through the same nodes. */}
+        {/* Execution flow — five selectable stage cells behind one rail;
+            the chosen stage carries the composition's gold (client direction:
+            click to highlight). Markup + state: ExecutionFlow.tsx; the active
+            treatment: tokens.css `.flow-cell`. */}
         <Reveal className="mt-7 border-t border-border pt-8">
-          <ol className="grid gap-6 lg:grid-cols-5 lg:gap-5">
-            {EXECUTION_FLOW.map((step, i) => {
-              const last = i === EXECUTION_FLOW.length - 1;
-              return (
-                <li key={step.index} className="relative pl-8 lg:pt-6 lg:pl-0">
-                  {/* rail: to the next cell on lg, down to it below */}
-                  {!last ? (
-                    <span
-                      aria-hidden="true"
-                      className={cn(
-                        'absolute bg-[linear-gradient(180deg,color-mix(in_oklab,var(--gold-500)_55%,transparent),color-mix(in_oklab,var(--gold-500)_20%,transparent))]',
-                        'top-[26px] left-[13px] w-px h-[calc(100%-4px)]',
-                        'lg:top-[13px] lg:left-[26px] lg:h-px lg:w-[calc(100%-6px)]',
-                        'lg:bg-[linear-gradient(90deg,color-mix(in_oklab,var(--gold-500)_55%,transparent),color-mix(in_oklab,var(--gold-500)_20%,transparent))]',
-                      )}
-                    />
-                  ) : null}
-
-                  {/* node, sitting on the cell's edge */}
-                  <span
-                    aria-hidden="true"
-                    className={cn(
-                      'absolute top-0 left-0 z-10 flex size-[27px] items-center justify-center rounded-full',
-                      'font-label text-2xs font-semibold tracking-[0.04em] tabular-nums',
-                      'border bg-canvas',
-                      last
-                        ? 'border-accent bg-accent text-on-accent shadow-[0_0_0_5px_color-mix(in_oklab,var(--gold-500)_16%,transparent)]'
-                        : 'border-[color-mix(in_oklab,var(--gold-500)_55%,transparent)] text-accent-text',
-                      'lg:left-[13px]',
-                    )}
-                  >
-                    {step.index}
-                  </span>
-
-                  <div
-                    className={cn(
-                      'relative h-full overflow-hidden rounded-md border p-6 lg:pt-7',
-                      last
-                        ? 'border-[color-mix(in_oklab,var(--gold-500)_38%,transparent)] bg-[linear-gradient(160deg,color-mix(in_oklab,var(--gold-500)_12%,var(--ink-950)),var(--ink-1000))]'
-                        : 'border-border bg-[linear-gradient(160deg,var(--ink-950),var(--ink-1000))]',
-                    )}
-                  >
-                    {/* the order, readable before the words */}
-                    <span
-                      aria-hidden="true"
-                      className="pointer-events-none absolute -right-2 -bottom-4 font-label text-[64px] leading-none font-bold text-[rgb(255_255_255/0.04)] tabular-nums"
-                    >
-                      {step.index}
-                    </span>
-                    <h4 className="relative font-medium text-text">{step.title}</h4>
-                    <p className="relative mt-3 text-sm text-muted">{step.body}</p>
-                  </div>
-                </li>
-              );
-            })}
-          </ol>
+          <ExecutionFlow />
         </Reveal>
       </div>
     </div>

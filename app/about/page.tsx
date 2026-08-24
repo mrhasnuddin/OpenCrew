@@ -3,7 +3,7 @@ import { Section } from '@/components/primitives/Layout';
 import { PageBanner } from '@/components/ui/PageBanner';
 import { ProfileCard } from '@/components/marketing/ProfileCard';
 import { PillarBento } from '@/components/marketing/PillarBento';
-import { Manifesto, TextLink } from '@/components/marketing/Blocks';
+import { Manifesto } from '@/components/marketing/Blocks';
 import { Reveal } from '@/components/motion/Reveal';
 import { LEADERSHIP, ADVISORS, TALENT_NETWORK_CATEGORIES } from '@/lib/team';
 import { PROBLEM } from '@/content/site';
@@ -98,19 +98,30 @@ export default function AboutPage() {
         title="A network built across markets."
         lead="Professionals across major global markets who can participate publicly and perform clearly defined roles."
       >
+        {/* The five categories as indexed cells (the bare hairline list they
+            replace read as a footnote, not a network). Same glass-and-numeral
+            language as the rest of the site; the disclaimer that used to
+            trail this section is removed at the client's direction. */}
         <Reveal>
-          <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
-            {TALENT_NETWORK_CATEGORIES.map((cat) => (
-              <li key={cat} className="border-t border-border pt-5">
-                <h3 className="font-medium text-text">{cat}</h3>
+          <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-5 lg:gap-6">
+            {TALENT_NETWORK_CATEGORIES.map((cat, i) => (
+              <li
+                key={cat}
+                className="card-glass card-glass-hover group relative flex min-h-[150px] flex-col justify-between overflow-hidden rounded-lg p-6 transition-[border-color] duration-[var(--dur-base)] ease-hover"
+              >
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute -right-2 -bottom-4 font-label text-[64px] leading-none font-bold text-[rgb(255_255_255/0.04)] tabular-nums"
+                >
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <span className="font-label text-2xs font-semibold tracking-[0.06em] text-accent-text tabular-nums">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <h3 className="relative mt-6 font-medium text-text">{cat}</h3>
               </li>
             ))}
           </ul>
-          <p className="mt-7 max-w-[var(--measure-prose)] text-sm text-muted">
-            Members are listed publicly where their role is public, and by role only where it is not.
-            Either way, every listed member holds a genuine role and can be verified. See our{' '}
-            <TextLink href="/legal/disclosure">verification and engagement policy</TextLink>.
-          </p>
         </Reveal>
       </Section>
 
