@@ -217,10 +217,10 @@ export const NETWORK: TeamMember[] = [
     verified: true,
   },
   {
-    slug: 'david',
+    slug: 'deepak-sharma',
     tier: 'public',
-    displayName: 'David',
-    initials: 'D',
+    displayName: 'Deepak Sharma',
+    initials: 'DS',
     role: 'Community & Ecosystem Contributor',
     credentials: [
       'Community Leader at EraX.io',
@@ -237,8 +237,10 @@ export const NETWORK: TeamMember[] = [
     ],
     markets: null,
     languages: null,
-    links: {},
-    portrait: '/thumbnail/david.jpg',
+    links: {
+      linkedin: 'https://www.linkedin.com/in/deepak-sharma-542b6477/',
+    },
+    portrait: '/thumbnail/deepak-sharma.jpg',
     verified: true,
   },
 ];

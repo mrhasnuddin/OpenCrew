@@ -154,7 +154,7 @@ const CORE_CREW: CrewMember[] = [
   },
   {
     track: 'core',
-    ...byRole('david'),
+    ...byRole('deepak-sharma'),
     headline: 'Community Leader · Web3 Ecosystem Contributor · Token Launches',
     roleCode: 'ECOSYSTEM / COMMUNITY',
     roles: ['advisor', 'community-lead'],
