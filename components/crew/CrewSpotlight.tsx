@@ -38,7 +38,10 @@ function SpotlightCard({ member }: { member: CrewMember }) {
           'focus-visible:outline-2 focus-visible:outline-focus focus-visible:outline-offset-2',
         )}
       >
-        <span className="relative block w-[38%] shrink-0 overflow-hidden sm:w-[34%]">
+        {/* A percentage portrait leaves the copy column too narrow on a phone,
+            where these cards go full width: a fixed 130px there, back to a
+            share of the card once there is room. */}
+        <span className="relative block w-[130px] shrink-0 overflow-hidden sm:w-[34%]">
           {member.portrait ? (
             <Image
               src={member.portrait}
@@ -65,7 +68,7 @@ function SpotlightCard({ member }: { member: CrewMember }) {
             {member.credentials.slice(0, 3).map((c) => (
               <span key={c} className="flex gap-3 text-sm text-secondary">
                 <span aria-hidden="true" className="marker-dot" />
-                <span className="line-clamp-1">{c}</span>
+                <span className="line-clamp-2 sm:line-clamp-1">{c}</span>
               </span>
             ))}
           </span>

@@ -61,7 +61,9 @@ export function CrewToolbar({
             onChange={(e) => onChange(e.target.value)}
             className={cn(
               'appearance-none rounded-full border border-border bg-surface-raised py-2 pr-9 pl-5',
-              'text-sm font-medium text-text',
+              // 16px on touch: iOS zooms the page when a focused field is
+              // smaller than that, and it never zooms back out.
+              'text-sm font-medium text-text [@media(pointer:coarse)]:h-[44px] [@media(pointer:coarse)]:text-base',
               'transition-[border-color] duration-[var(--dur-fast)] ease-hover hover:border-border-strong',
               'focus-visible:outline-2 focus-visible:outline-focus focus-visible:outline-offset-2',
             )}

@@ -59,7 +59,7 @@ function ArrowBtn({ dir, onClick, label }: { dir: 'prev' | 'next'; onClick: () =
       onClick={onClick}
       aria-label={label}
       className={cn(
-        'flex size-[40px] items-center justify-center rounded-full border border-border-strong text-secondary',
+        'flex size-[40px] items-center justify-center rounded-full border border-border-strong text-secondary [@media(pointer:coarse)]:size-[44px]',
         'transition-[color,border-color,background-color] duration-[var(--dur-fast)] ease-hover',
         'hover:border-accent hover:bg-accent-subtle hover:text-text',
         'focus-visible:outline-2 focus-visible:outline-focus focus-visible:outline-offset-2',
@@ -249,7 +249,7 @@ export function ClientStories() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className={cn(
-                    'inline-flex items-center gap-3 rounded-full border border-border px-5 py-2.5 text-sm font-medium text-secondary',
+                    'inline-flex min-h-[36px] items-center gap-3 rounded-full border border-border px-5 py-2.5 text-sm font-medium text-secondary [@media(pointer:coarse)]:min-h-[44px]',
                     'transition-[color,border-color,background-color] duration-[var(--dur-fast)] ease-hover',
                     'hover:border-accent hover:bg-accent-subtle hover:text-text',
                     'focus-visible:outline-2 focus-visible:outline-focus focus-visible:outline-offset-2',

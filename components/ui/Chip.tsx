@@ -50,7 +50,7 @@ export function FilterChip({
         // No gap: the check manages its own margin, so an UNSELECTED chip
         // reserves no icon space and hugs its label (client annotation —
         // every chip used to carry 24px of phantom check width).
-        'inline-flex min-h-[32px] items-center rounded-xs border px-4',
+        'inline-flex min-h-[32px] items-center rounded-xs border px-4 [@media(pointer:coarse)]:min-h-[44px]',
         'font-mono text-2xs uppercase tracking-[0.06em] whitespace-nowrap',
         'transition-[background-color,border-color,color,transform] duration-[var(--dur-fast)] ease-hover',
         'active:scale-[0.97] active:duration-[var(--dur-instant)]',

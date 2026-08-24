@@ -42,7 +42,9 @@ export function CrewBuilderTray() {
   const sectorCount = new Set(members.flatMap((m) => m.sectors)).size;
 
   return (
-    <div className="fixed right-5 bottom-5 z-[300] flex flex-col items-end gap-4 md:right-6 md:bottom-6">
+    // Below md the sticky CTA owns the bottom edge, so the tray sits above it
+    // (84px bar + the home-indicator inset) instead of overlapping.
+    <div className="fixed right-5 bottom-[calc(84px+max(1.25rem,env(safe-area-inset-bottom)))] z-[300] flex flex-col items-end gap-4 md:right-6 md:bottom-6">
       <div
         id="crew-tray-panel"
         hidden={!open}

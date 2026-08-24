@@ -26,10 +26,18 @@ const VARIANTS: Record<ButtonVariant, string> = {
 
 /* Pill everywhere (client direction: one CTA design across the site). The
    header's Contact, the hero pair, the footer CTA and every subpage CTA were
-   already pills by hand; making it the default removes the drift. */
+   already pills by hand; making it the default removes the drift.
+
+   Heights are mouse sizes; on a touch screen every control grows to 44px, the
+   minimum a thumb can hit reliably (WCAG 2.5.5, Apple HIG). `pointer: coarse`
+   rather than a width breakpoint, because the question is the input device,
+   not the screen — a touch laptop needs it and a narrow desktop window does
+   not. */
+const TOUCH = '[@media(pointer:coarse)]:h-[44px]';
+
 const SIZES: Record<ButtonSize, string> = {
-  sm: 'h-[32px] px-5 text-sm gap-3 rounded-full',
-  md: 'h-[40px] px-6 text-sm gap-3 rounded-full',
+  sm: `h-[32px] px-5 text-sm gap-3 rounded-full ${TOUCH}`,
+  md: `h-[40px] px-6 text-sm gap-3 rounded-full ${TOUCH}`,
   lg: 'h-[48px] px-7 text-base gap-4 rounded-full',
 };
 

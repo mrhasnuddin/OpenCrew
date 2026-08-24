@@ -81,7 +81,7 @@ export function Header() {
       )}
     >
       <Container className="flex h-full items-center justify-between gap-6">
-        <Link href="/" aria-label="OPENCREW Labs, home" className="flex items-center">
+        <Link href="/" aria-label="OPENCREW Labs, home" className="flex min-h-[44px] items-center">
           <Logo variant="horizontal" height={26} className="hidden md:block" label="OPENCREW Labs" />
           <Logo variant="mark" height={22} className="md:hidden" label="OPENCREW Labs" />
         </Link>

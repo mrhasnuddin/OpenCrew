@@ -80,7 +80,7 @@ export function CrewCard({ member }: { member: CrewMember }) {
           aria-pressed={added}
           aria-label={added ? `Remove ${name} from your crew` : `Add ${name} to your crew`}
           className={cn(
-            'absolute top-5 right-5 z-10 flex size-[36px] items-center justify-center rounded-full',
+            'absolute top-5 right-5 z-10 flex size-[36px] items-center justify-center rounded-full [@media(pointer:coarse)]:size-[44px]',
             'border backdrop-blur-[6px] transition-[color,border-color,background-color] duration-[var(--dur-fast)] ease-hover',
             'focus-visible:outline-2 focus-visible:outline-focus focus-visible:outline-offset-2',
             added

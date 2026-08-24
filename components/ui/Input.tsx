@@ -7,6 +7,9 @@ import { cn } from '@/lib/utils';
  * aria-describedby at the message. docs/03-design-system.md §3.5.
  */
 
+/* On a touch screen every field grows to the 44px minimum a thumb can hit
+   (WCAG 2.5.5). text-base is already 17px, which also keeps iOS from zooming
+   the page on focus — it does that below 16px and never zooms back. */
 const FIELD_BASE = cn(
   'w-full rounded-sm border border-border-strong bg-surface px-5 text-base text-text',
   'placeholder:text-ink-400',
@@ -64,7 +67,9 @@ export function Field({
 
 export const Input = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(
   function Input({ className, ...props }, ref) {
-    return <input ref={ref} className={cn(FIELD_BASE, 'h-[40px]', className)} {...props} />;
+    return (
+      <input ref={ref} className={cn(FIELD_BASE, 'h-[40px] [@media(pointer:coarse)]:h-[44px]', className)} {...props} />
+    );
   },
 );
 
@@ -80,7 +85,11 @@ export const Select = React.forwardRef<
   React.SelectHTMLAttributes<HTMLSelectElement>
 >(function Select({ className, children, ...props }, ref) {
   return (
-    <select ref={ref} className={cn(FIELD_BASE, 'h-[40px] appearance-none pr-7', className)} {...props}>
+    <select
+      ref={ref}
+      className={cn(FIELD_BASE, 'h-[40px] appearance-none pr-7 [@media(pointer:coarse)]:h-[44px]', className)}
+      {...props}
+    >
       {children}
     </select>
   );

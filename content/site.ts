@@ -173,8 +173,8 @@ export const NETWORK: {
       items: [
         { name: 'OKX', domain: 'okx.com', logo: '/partners/okx.svg', industry: 'Digital asset exchange', blurb: 'Global digital asset exchange and Web3 technology company.' },
         { name: 'UOB Venture Management', domain: 'uobvm.com.sg', logo: '/partners/uobvm.svg', industry: 'Private equity', blurb: 'Private equity arm of United Overseas Bank, investing across Southeast Asia.' },
-        { name: 'Signum Capital', domain: 'signum.capital', logo: '/partners/signum-capital.png', industry: 'Venture capital', blurb: 'Singapore-based venture firm focused on blockchain and digital assets.' },
-        { name: 'Ledger Capital', domain: 'ledgercap.xyz', logo: '/partners/ledgercapital.png', logoTheme: 'light', industry: 'Investment firm', blurb: 'Investment firm focused on Web3 infrastructure and digital assets.' },
+        { name: 'Signum Capital', domain: 'signum.capital', logo: '/partners/signum-capital.webp', industry: 'Venture capital', blurb: 'Singapore-based venture firm focused on blockchain and digital assets.' },
+        { name: 'Ledger Capital', domain: 'ledgercap.xyz', logo: '/partners/ledgercapital.webp', logoTheme: 'light', industry: 'Investment firm', blurb: 'Investment firm focused on Web3 infrastructure and digital assets.' },
         { name: 'Republic Crypto', domain: 'republic.com', logo: '/partners/republic.svg', industry: 'Advisory & investment', blurb: 'Digital asset advisory and investment arm of the Republic group.' },
         { name: 'HKEX', domain: 'hkex.com.hk', logo: '/partners/hkex.svg', industry: 'Securities exchange', blurb: "Operator of Hong Kong's securities and derivatives markets." },
         { name: 'OSL', domain: 'osl.com', logo: '/partners/osl-color.svg', industry: 'Digital asset platform', blurb: 'Licensed digital asset trading platform headquartered in Hong Kong.' },
@@ -196,7 +196,7 @@ export const NETWORK: {
       items: [
         { name: 'OpenEden', domain: 'openeden.com', logo: '/partners/openeden.svg', industry: 'Tokenised RWA', blurb: 'Platform for tokenised real-world assets and treasury products.' },
         { name: 'BNY', domain: 'bny.com', logo: '/partners/bny.svg', industry: 'Global custody bank', blurb: 'Global custody bank and financial services group.' },
-        { name: 'Eddid Financial', domain: 'eddid.com.hk', logo: '/partners/eddid.png', industry: 'Financial services', blurb: 'Hong Kong financial services group spanning securities, futures and fintech.' },
+        { name: 'Eddid Financial', domain: 'eddid.com.hk', logo: '/partners/eddid.webp', industry: 'Financial services', blurb: 'Hong Kong financial services group spanning securities, futures and fintech.' },
         { name: 'INK Finance', domain: 'inkfinance.xyz', logo: '/partners/inkfinance.svg', logoTheme: 'light', industry: 'On-chain finance', blurb: 'Decentralised finance and governance infrastructure.' },
       ],
     },
@@ -207,7 +207,7 @@ export const NETWORK: {
         { name: 'RootData', domain: 'rootdata.com', logo: '/partners/rootdata.webp', industry: 'Data & research', blurb: 'Web3 asset data platform covering projects, funds and fundraising.' },
         { name: 'Dun & Bradstreet', domain: 'dnb.com', logo: '/partners/dnb.svg', industry: 'Business intelligence', blurb: 'Business data and analytics for credit, risk and compliance.' },
         { name: 'SafeEdges', domain: 'safeedges.in', logo: '/partners/safeedges.webp', logoTheme: 'light', industry: 'Security', blurb: 'Security assessment and audit services for Web3 systems.' },
-        { name: 'ALLO Lawyers', domain: 'allolawyers.com', logo: '/partners/allo-lawyers.png', logoTheme: 'light', industry: 'Legal', blurb: 'Legal practice advising on corporate and digital asset matters.' },
+        { name: 'ALLO Lawyers', domain: 'allolawyers.com', logo: '/partners/allo-lawyers.webp', logoTheme: 'light', industry: 'Legal', blurb: 'Legal practice advising on corporate and digital asset matters.' },
       ],
     },
     {
@@ -215,7 +215,7 @@ export const NETWORK: {
       items: [
         { name: 'NTT Digital', domain: 'nttdigital.io', logo: '/partners/nttdigital.svg', industry: 'Web3 infrastructure', blurb: 'Web3 company of the NTT Group building wallet and chain infrastructure.' },
         { name: 'BitTrade', domain: 'bittrade.co.jp', logo: '/partners/bittrade.svg', industry: 'Exchange · Japan', blurb: 'Licensed cryptocurrency exchange operating in Japan.' },
-        { name: 'Malaysia Blockchain Institution', domain: 'malaysiablockchain.my', logo: '/partners/mbi2.png', industry: 'Industry body', blurb: 'Malaysian institution connecting blockchain ventures, talent and partners.' },
+        { name: 'Malaysia Blockchain Institution', domain: 'malaysiablockchain.my', logo: '/partners/mbi.webp', industry: 'Industry body', blurb: 'Malaysian institution connecting blockchain ventures, talent and partners.' },
         { name: 'Malaysia Digital Asset Community', domain: 'mydac.org.my', logo: '/partners/mydac.svg', industry: 'Community body', blurb: 'Community organisation for digital asset education and adoption in Malaysia.' },
         { name: 'InfraSingularity', domain: 'infrasingularity.com', logo: '/partners/infrasingularity.png', logoTheme: 'light', industry: 'Web3 infrastructure', blurb: 'Web3 infrastructure investor and node operations firm.' },
       ],

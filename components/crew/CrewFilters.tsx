@@ -97,7 +97,7 @@ export function CrewFilters({ facets }: { facets: Record<FacetKey, string[]> }) 
         aria-expanded={openOnMobile}
         aria-controls="crew-facets"
         className={cn(
-          'flex items-center justify-between gap-4 rounded-full border border-border px-6 py-3 lg:hidden',
+          'flex min-h-[44px] items-center justify-between gap-4 rounded-full border border-border px-6 py-3 lg:hidden',
           'text-sm font-medium text-text transition-[border-color] duration-[var(--dur-fast)] ease-hover hover:border-border-strong',
           'focus-visible:outline-2 focus-visible:outline-focus focus-visible:outline-offset-2',
         )}
