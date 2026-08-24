@@ -18,6 +18,7 @@ import {
   type CrewQuery,
   type FacetKey,
   type SortKey,
+  type ViewKey,
 } from '@/content/crew';
 
 export const metadata: Metadata = {
@@ -61,6 +62,9 @@ export default async function CrewPage({
     if (value) query[key] = value.split(',').filter(Boolean);
   });
   const sort = (typeof params.sort === 'string' ? params.sort : 'featured') as SortKey;
+  // Layout is a URL parameter like everything else here, so a filtered, sorted,
+  // row-view roster is one link and the page stays server-rendered.
+  const view: ViewKey = params.view === 'list' ? 'list' : 'grid';
 
   const facets = buildFacets(CREW);
   const results = sortCrew(filterCrew(CREW, query), sort);
@@ -117,9 +121,16 @@ export default async function CrewPage({
             </Suspense>
 
             {results.length > 0 ? (
-              <ul className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3 lg:gap-6">
+              <ul
+                data-view={view}
+                className={
+                  view === 'list'
+                    ? 'flex flex-col gap-4'
+                    : 'grid gap-5 sm:grid-cols-2 lg:gap-6 xl:grid-cols-3'
+                }
+              >
                 {results.map((member) => (
-                  <CrewCard key={member.slug} member={member} />
+                  <CrewCard key={member.slug} member={member} view={view} />
                 ))}
               </ul>
             ) : (

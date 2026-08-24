@@ -296,6 +296,22 @@ export const FACET_LABELS: Record<FacetKey, string> = {
   availability: 'Availability',
 };
 
+/* ------------------------------------------------------------------- view */
+
+/**
+ * How the results are laid out. Two, not the file-manager's eight: a card wall
+ * and a compact row. The sizes in between (small / medium / large icons) are
+ * the same layout at different scales, which is a preference, not a different
+ * way of reading the list — and every extra option is one more thing to
+ * choose before you have found anyone.
+ */
+export type ViewKey = 'grid' | 'list';
+
+export const VIEW_LABELS: Record<ViewKey, string> = {
+  grid: 'Grid',
+  list: 'List',
+};
+
 /* ------------------------------------------------------------------- sort */
 
 export type SortKey = 'featured' | 'name' | 'web3' | 'availability';

@@ -10,8 +10,8 @@ import { cn } from '@/lib/utils';
 /**
  * "What we do" as a stacked accordion — the reference's exact pattern: one
  * card open (dark, tall, full description), the rest collapsed to a title row
- * with its numeral at the far right. Click a row to open it; the previously
- * open card collapses.
+ * with its numeral at the far right. Click a row to open it; clicking it again
+ * closes it, and opening another swaps. The stack can rest fully collapsed.
  *
  * The capability SUBPAGES are retired (client direction): each open card now
  * carries the capability's full approved content — lead, the V3 groups, the
@@ -58,10 +58,11 @@ export function CapabilityStack() {
   // The card itself (the li) still clips at its rounded edge.
   const [settled, setSettled] = React.useState(0);
   const btnRefs = React.useRef<(HTMLButtonElement | null)[]>([]);
+  // Tapping the open card closes it (client direction), so the stack can rest
+  // with nothing expanded; -1 is that state. Tapping another card swaps.
   const select = (i: number) => {
-    if (i === open) return;
     setSettled(-1);
-    setOpen(i);
+    setOpen((current) => (current === i ? -1 : i));
   };
 
   // /#cap-<slug> deep links (header panel, footer, other pages): open the
@@ -96,7 +97,8 @@ export function CapabilityStack() {
     if (e.key === 'End') next = last;
     if (next === null) return;
     e.preventDefault();
-    select(next);
+    setSettled(-1);
+    setOpen(next);
     btnRefs.current[next]?.focus();
   };
 
