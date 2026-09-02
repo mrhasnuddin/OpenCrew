@@ -336,9 +336,15 @@ const AVAILABILITY_RANK: Record<Availability, number> = {
  * badges state, so the grid never contradicts them. Every sort falls back to
  * name, so the order is stable and does not depend on array order.
  */
+const CHINESE_MEMBERS = ['adam-gee', 'ak', 'arion', 'candy-lim', 'ning-chan'];
+
 export function sortCrew(crew: CrewMember[], sort: SortKey = 'featured') {
   const byName = (a: CrewMember, b: CrewMember) => a.displayName.localeCompare(b.displayName);
-  const rank = (m: CrewMember) => (m.topPerforming ? 0 : m.verified ? 1 : 2);
+  const rank = (m: CrewMember) => {
+    if (m.topPerforming) return 0;
+    if (CHINESE_MEMBERS.includes(m.slug)) return 3;
+    return m.verified ? 1 : 2;
+  };
 
   return [...crew].sort((a, b) => {
     if (sort === 'name') return byName(a, b);

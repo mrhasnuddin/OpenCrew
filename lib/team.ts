@@ -77,7 +77,6 @@ export const LEADERSHIP: TeamMember[] = [
     // 1:1 crop from a fireside-panel stage photo (2560×1920 source).
     portrait: '/thumbnail/adam-square.jpg',
     verified: true,
-    topPerforming: true,
   },
   {
     slug: 'amir-leo',

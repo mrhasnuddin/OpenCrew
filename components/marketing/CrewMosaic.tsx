@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { CREW } from '@/content/crew';
+import { CREW, getCrewMember } from '@/content/crew';
 import { cn } from '@/lib/utils';
 
 /**
@@ -17,13 +17,18 @@ import { cn } from '@/lib/utils';
  * Portraits are 1:1 crops with the head high in the frame, so the tiles are
  * square (native ratio, no re-cropping) and cover from a top-biased anchor
  * where a browser rounds the cell off-square. Scales with the column: the
- * grid is `aspect-square w-full`, capped at 560px like the orbit before it.
+ * grid is `aspect-square w-full`.
  * No motion beyond the hover state.
  */
 const PLATE = 'absolute inset-x-0 bottom-0 flex flex-col p-4';
 
 export function CrewMosaic({ className }: { className?: string }) {
-  const [lead, ...rest] = CREW;
+  // Explicitly pick Amir, Dean, and three overseas members with professional pictures
+  const selectedSlugs = ['amir-leo', 'dean', 'david', 'timothy-marvelous', 'brad-johnson'];
+  const mosaicMembers = selectedSlugs.map(slug => getCrewMember(slug)!).filter(Boolean);
+  
+  const [lead, ...rest] = mosaicMembers;
+  
   // Cell map for the four singles: [column, row] on the 3×3 grid.
   const cells: [number, number][] = [
     [3, 1],
@@ -35,7 +40,7 @@ export function CrewMosaic({ className }: { className?: string }) {
   return (
     <ul
       className={cn(
-        'mx-auto grid aspect-square w-full max-w-[560px] grid-cols-3 grid-rows-3 gap-3 sm:gap-4',
+        'grid aspect-square w-full grid-cols-3 grid-rows-3 gap-3 sm:gap-4',
         className,
       )}
     >
