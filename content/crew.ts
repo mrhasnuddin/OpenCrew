@@ -152,21 +152,6 @@ const CORE_CREW: CrewMember[] = [
       'Content strategy',
     ],
   },
-    {
-      track: 'core',
-      ...byRole('david'),
-      headline: 'Community Leader · EraX.io · Contributor, StartFi.io',
-      roleCode: 'ECOSYSTEM / COMMUNITY',
-      roles: ['community-lead', 'consultant'],
-      sectors: ['Web3', 'Ecosystems', 'Venture capital'],
-      availability: 'limited',
-      deploymentScope: [
-        'Community building',
-        'Token launches',
-        'Venture capital',
-        'Web3 ecosystem support',
-      ],
-    },
   {
     track: 'core',
     ...byRole('deepak-sharma'),

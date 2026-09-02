@@ -24,7 +24,7 @@ const PLATE = 'absolute inset-x-0 bottom-0 flex flex-col p-4';
 
 export function CrewMosaic({ className }: { className?: string }) {
   // Explicitly pick Amir, Dean, and three overseas members with professional pictures
-  const selectedSlugs = ['amir-leo', 'dean', 'david', 'timothy-marvelous', 'brad-johnson'];
+  const selectedSlugs = ['amir-leo', 'dean', 'deepak-sharma', 'timothy-marvelous', 'brad-johnson'];
   const mosaicMembers = selectedSlugs.map(slug => getCrewMember(slug)!).filter(Boolean);
   
   const [lead, ...rest] = mosaicMembers;
